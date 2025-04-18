@@ -101,7 +101,7 @@ public:
         return false;
     }
 
-    virtual void draw();
+    void draw() override;
 
     void set_mouse_filter(MouseFilter filter);
 
