@@ -44,7 +44,7 @@ Vec2F NodeUi::get_effective_minimum_size() const {
 void NodeUi::draw() {
     Node::draw();
 
-    if (theme_bg.has_value()) {
+    if (visible_ && theme_bg.has_value()) {
         auto vector_server = VectorServer::get_singleton();
 
         auto global_position = get_global_position();
