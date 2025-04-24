@@ -110,7 +110,7 @@ GLFWwindow *WindowBuilder::glfw_window_init(const Vec2I &logical_size,
 
     #if defined(__linux__) || defined(_WIN32)
     auto physical_size = (logical_size.to_f32() * dpi_scaling_factor).to_i32();
-    #else ifdef __APPLE__
+    #elif defined(__APPLE__)
     auto physical_size = logical_size;
     #endif
 
