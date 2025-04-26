@@ -72,10 +72,14 @@ void ScrollContainer::input(InputEvent &event) {
 
             if (active_rect.contains_point(InputServer::get_singleton()->cursor_position)) {
                 if (!event.is_consumed()) {
-                    if (InputServer::get_singleton()->is_key_pressed(KeyCode::LeftShift)) {
+                    if (hscroll_enabled && !vscroll_enabled) {
                         hscroll -= delta * scroll_speed;
                     } else {
-                        vscroll -= delta * scroll_speed;
+                        if (InputServer::get_singleton()->is_key_pressed(KeyCode::LeftShift)) {
+                            hscroll -= delta * scroll_speed;
+                        } else {
+                            vscroll -= delta * scroll_speed;
+                        }
                     }
                 }
 
@@ -145,10 +149,10 @@ void ScrollContainer::draw_scroll_bar() {
     auto global_pos = get_global_position();
     auto size = get_size();
 
+    float bar_width = 2.0;
+
     // Vertical.
     if (content_size.y > size.y) {
-        float bar_width = 4.0;
-
         auto scroll_bar_pos = Vec2F(size.x - bar_width, 0) + global_pos;
         auto scroll_bar_size = Vec2F(bar_width, size.y);
 
@@ -164,15 +168,15 @@ void ScrollContainer::draw_scroll_bar() {
 
     // Horizontal.
     if (content_size.x > size.x) {
-        auto scroll_bar_pos = Vec2F(0, size.y - 8) + global_pos;
-        auto scroll_bar_size = Vec2F(size.x, 8);
+        auto scroll_bar_pos = Vec2F(0, size.y - bar_width) + global_pos;
+        auto scroll_bar_size = Vec2F(size.x, bar_width);
 
         vector_server->draw_style_box(theme_scroll_bar, scroll_bar_pos, scroll_bar_size);
 
         auto grabber_length = size.x / content_size.x * size.x;
 
-        auto grabber_pos = Vec2F(size.x / content_size.x * hscroll, size.y - 8) + global_pos;
-        auto grabber_size = Vec2F(grabber_length, 8);
+        auto grabber_pos = Vec2F(size.x / content_size.x * hscroll, size.y - bar_width) + global_pos;
+        auto grabber_size = Vec2F(grabber_length, bar_width);
 
         vector_server->draw_style_box(theme_scroll_grabber, grabber_pos, grabber_size);
     }
@@ -200,6 +204,14 @@ void ScrollContainer::set_vscroll(int32_t value) {
 
 int32_t ScrollContainer::get_vscroll() const {
     return vscroll;
+}
+
+void ScrollContainer::enable_hscroll(bool enabled) {
+    hscroll_enabled = enabled;
+}
+
+void ScrollContainer::enable_vscroll(bool enabled) {
+    vscroll_enabled = enabled;
 }
 
 void ScrollContainer::set_size(Vec2F new_size) {

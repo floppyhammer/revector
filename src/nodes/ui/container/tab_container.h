@@ -6,6 +6,7 @@
 #include "container.h"
 
 namespace revector {
+class ScrollContainer;
 
 class TabContainer : public Container {
 public:
@@ -35,6 +36,7 @@ protected:
     std::optional<uint32_t> current_tab;
 
     std::shared_ptr<HBoxContainer> button_container;
+    std::shared_ptr<ScrollContainer> button_scroll_container;
 
     ButtonGroup tab_button_group;
 

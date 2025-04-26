@@ -35,6 +35,9 @@ public:
 
     void set_size(Vec2F new_size) override;
 
+    void enable_hscroll(bool enabled);
+    void enable_vscroll(bool enabled);
+
 protected:
     bool hscroll_enabled = true;
     bool vscroll_enabled = true;

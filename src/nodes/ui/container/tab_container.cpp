@@ -1,6 +1,7 @@
 #include "tab_container.h"
 
 #include "../../../resources/default_resource.h"
+#include "scroll_container.h"
 
 namespace revector {
 
@@ -18,8 +19,12 @@ TabContainer::TabContainer() {
     theme_button_panel.value().border_width = 0;
     theme_button_panel.value().bg_color = ColorU(20, 20, 20);
 
+    button_scroll_container = std::make_shared<ScrollContainer>();
+    button_scroll_container->enable_vscroll(false);
+    add_embedded_child(button_scroll_container);
+
     button_container = std::make_shared<HBoxContainer>();
-    add_embedded_child(button_container);
+    button_scroll_container->add_child(button_container);
 }
 
 void TabContainer::adjust_layout() {
@@ -38,7 +43,7 @@ void TabContainer::adjust_layout() {
         }
     }
 
-    button_container->set_size({size.x, 0});
+    button_scroll_container->set_custom_minimum_size({size.x, tab_button_height});
 }
 
 void TabContainer::update(double dt) {
