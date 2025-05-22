@@ -6,9 +6,6 @@ file(GLOB FRIBIDI_SOURCE_FILES CONFIGURE_DEPENDS ${FRIBIDI_SOURCE_FILES} "src/*.
 
 add_library(fribidi STATIC ${FRIBIDI_SOURCE_FILES})
 
-# To fix "error: call to undeclared library function 'memset' with type 'void *(void *, int, unsigned long)'".
-target_compile_features(fribidi PRIVATE c_std_90)
-
 target_include_directories(fribidi PUBLIC "src")
 target_include_directories(fribidi PUBLIC "generated")
 target_compile_definitions(fribidi PUBLIC HAVE_STRINGIZE=1 HAVE_STDLIB_H)
