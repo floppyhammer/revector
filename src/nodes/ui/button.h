@@ -52,6 +52,11 @@ public:
         return pressed;
     }
 
+    /// Manual setting, no signal.
+    void set_pressed(bool new_pressed) {
+        pressed = new_pressed;
+    }
+
     void set_disabled(bool disabled) {
         disabled_ = disabled;
     }

@@ -65,6 +65,7 @@ void CollapseContainer::set_collapse(bool collapse) {
         return;
     }
     collapsed_ = collapse;
+    collapse_button_->set_pressed(collapse);
 
     if (!collapse) {
         this->size = this->size_before_collapse_;
