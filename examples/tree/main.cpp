@@ -10,7 +10,7 @@ using Pathfinder::Vec3;
 
 class MyNode : public Node {
     void custom_ready() override {
-        auto collapse = std::make_shared<CollapseContainer>();
+        auto collapse = std::make_shared<CollapseContainer>(CollapseButtonType::Default);
         collapse->set_position({100, 100});
         collapse->set_size({400, 300});
         add_child(collapse);
