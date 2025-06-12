@@ -215,11 +215,11 @@ Label::Label() {
     font = DefaultResource::get_singleton()->get_default_font();
     // emoji_font = ResourceManager::get_singleton()->load<Font>("assets/fonts/EmojiOneColor.otf");
 
-    text_style.color = {163, 163, 163, 255};
+    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
-    theme_background = DefaultResource::get_singleton()->get_default_theme()->label.styles["background"];
-
-    font_size_ = DefaultResource::get_singleton()->get_default_theme()->font_size;
+    text_style.color = default_theme->label.colors["text"];
+    theme_background = default_theme->label.styles["background"];
+    font_size_ = default_theme->font_size;
 }
 
 void Label::set_text(const std::string &new_text) {

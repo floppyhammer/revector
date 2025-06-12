@@ -14,7 +14,7 @@ ProgressBar::ProgressBar() {
 
     theme_fg = std::optional(StyleBox());
     theme_fg->bg_color = ColorU();
-    theme_fg->border_color = ColorU(150, 150, 150);
+    theme_fg->border_color = ColorU(200, 200, 200, 255);
     theme_fg->border_width = 2;
 
     // Don't add the label as a child since it's not a normal node but part of the button.

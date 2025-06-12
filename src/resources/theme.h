@@ -9,9 +9,9 @@ namespace revector {
 class Theme {
 public:
     Theme() {
-        button.colors["text"] = ColorU(229, 229, 229, 255);
+        button.colors["text"] = ColorU(200, 200, 200, 255);
 
-        button.colors["text_disabled"] = ColorU(229, 229, 229, 100);
+        button.colors["text_disabled"] = ColorU(200, 200, 200, 100);
 
         {
             auto style_box = StyleBox();
@@ -41,6 +41,7 @@ public:
             button.styles["disabled"] = style_box;
         }
 
+        label.colors["text"] = ColorU(200, 200, 200, 255);
         label.styles["background"] = StyleBox::from_empty();
 
         {
