@@ -18,6 +18,8 @@ CollapseContainer::CollapseContainer(NodeType button_type) {
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
     theme_title_bar_ = std::make_optional(default_theme->collapsing_panel.styles["title_bar"]);
+    theme_title_bar_->border_width = 2;
+    theme_title_bar_->border_color = theme_color_;
     theme_title_bar_->corner_radii = {8, 8, 0, 0};
     theme_panel_ = std::make_optional(default_theme->collapsing_panel.styles["background"]);
 
@@ -70,6 +72,22 @@ void CollapseContainer::adjust_layout() {
         child->set_visibility(!collapsed_);
     }
 }
+
+void CollapseContainer::set_color(ColorU color) {
+    theme_color_ = color;
+
+    if (theme_title_bar_.has_value()) {
+        if (!collapsed_) {
+            theme_title_bar_->bg_color = color;
+        }
+
+        theme_title_bar_->border_color = color;
+    }
+    if (theme_panel_.has_value()) {
+        theme_panel_->border_color = color;
+    }
+}
+
 void CollapseContainer::set_collapse(bool collapse) {
     if (collapsed_ == collapse) {
         return;
@@ -88,12 +106,12 @@ void CollapseContainer::set_collapse(bool collapse) {
     }
 
     if (collapse) {
-        theme_title_bar_->bg_color = theme_color_collapsed;
-        theme_title_bar_->border_color = theme_color_collapsed;
+        theme_title_bar_->bg_color = theme_panel_->bg_color;
+        theme_title_bar_->border_color = theme_color_;
         theme_title_bar_->corner_radii = {8, 8, 8, 8};
     } else {
-        theme_title_bar_->bg_color = theme_color_expanded;
-        theme_title_bar_->border_color = theme_color_expanded;
+        theme_title_bar_->bg_color = theme_color_;
+        theme_title_bar_->border_color = theme_color_;
         theme_title_bar_->corner_radii = {8, 8, 0, 0};
     }
 }
@@ -162,8 +180,10 @@ void CollapseContainer::draw() {
 
     auto global_position = get_global_position();
 
-    if (theme_panel_.has_value()) {
-        vector_server->draw_style_box(theme_panel_.value(), global_position, size);
+    if (!collapsed_) {
+        if (theme_panel_.has_value()) {
+            vector_server->draw_style_box(theme_panel_.value(), global_position, size);
+        }
     }
 
     if (theme_title_bar_.has_value()) {

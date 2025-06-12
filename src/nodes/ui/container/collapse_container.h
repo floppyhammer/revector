@@ -23,20 +23,7 @@ public:
 
     void adjust_layout() override;
 
-    void set_color(ColorU color) {
-        theme_color_expanded = color;
-
-        if (theme_title_bar_.has_value()) {
-            theme_title_bar_->bg_color = color;
-        }
-        if (theme_panel_.has_value()) {
-            theme_panel_->border_color = color;
-        }
-    }
-
-    void set_collapsed_color(ColorU color) {
-        theme_color_collapsed = color;
-    }
+    void set_color(ColorU color);
 
     void set_collapse(bool collapse);
 
@@ -56,8 +43,7 @@ private:
 
     Vec2F size_before_collapse_;
 
-    ColorU theme_color_collapsed = {};
-    ColorU theme_color_expanded = {};
+    ColorU theme_color_ = {};
 
     std::optional<StyleBox> theme_title_bar_;
     std::optional<StyleBox> theme_panel_;
