@@ -4,6 +4,7 @@
 
 #include "../../../common/utils.h"
 #include "../../../resources/default_resource.h"
+#include "src/nodes/ui/check_button.h"
 
 namespace revector {
 
@@ -11,7 +12,7 @@ void cc(bool p) {
     int a = 1;
 }
 
-CollapseContainer::CollapseContainer() {
+CollapseContainer::CollapseContainer(NodeType button_type) {
     type = NodeType::CollapseContainer;
 
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
@@ -20,14 +21,23 @@ CollapseContainer::CollapseContainer() {
     theme_title_bar_->corner_radii = {8, 8, 0, 0};
     theme_panel_ = std::make_optional(default_theme->collapsing_panel.styles["background"]);
 
-    collapse_button_ = std::make_shared<Button>();
+    switch (button_type) {
+        case NodeType::CheckButton: {
+            collapse_button_ = std::make_shared<CheckButton>();
+        } break;
+        default: {
+            collapse_button_ = std::make_shared<Button>();
+        } break;
+    }
+
     collapse_button_->set_custom_minimum_size({0, title_bar_height_});
     // collapse_button_->set_icon_normal(std::make_shared<VectorImage>("assets/icons/ArrowDown.svg"));
     // collapse_button_->set_icon_pressed(std::make_shared<VectorImage>("assets/icons/ArrowRight.svg"));
     collapse_button_->set_text("Collapsing Container");
     collapse_button_->set_flat(true);
     collapse_button_->set_toggle_mode(true);
-    collapse_button_->connect_signal("toggled", [this](bool p_pressed) { set_collapse(p_pressed); });
+    collapse_button_->connect_signal("toggled", [this](bool p_pressed) { set_collapse(!p_pressed); });
+    collapse_button_->set_pressed_no_signal(!collapsed_);
 
     add_embedded_child(collapse_button_);
 
@@ -65,7 +75,9 @@ void CollapseContainer::set_collapse(bool collapse) {
         return;
     }
     collapsed_ = collapse;
-    collapse_button_->set_pressed(collapse);
+    collapse_button_->set_pressed_no_signal(!collapse);
+
+    when_collapsed(collapsed_);
 
     if (!collapse) {
         this->size = this->size_before_collapse_;
@@ -76,9 +88,31 @@ void CollapseContainer::set_collapse(bool collapse) {
     }
 
     if (collapse) {
+        theme_title_bar_->bg_color = theme_color_collapsed;
+        theme_title_bar_->border_color = theme_color_collapsed;
         theme_title_bar_->corner_radii = {8, 8, 8, 8};
     } else {
+        theme_title_bar_->bg_color = theme_color_expanded;
+        theme_title_bar_->border_color = theme_color_expanded;
         theme_title_bar_->corner_radii = {8, 8, 0, 0};
+    }
+}
+
+void CollapseContainer::when_collapsed(bool collapsed) {
+    for (auto &callback : collapsed_callbacks) {
+        try {
+            callback.operator()<bool>(std::move(collapsed));
+        } catch (std::bad_any_cast &) {
+            Logger::error("Mismatched signal argument types!", "revector");
+        }
+    }
+}
+
+void CollapseContainer::connect_signal(const std::string &signal, const AnyCallable<void> &callback) {
+    Container::connect_signal(signal, callback);
+
+    if (signal == "collapsed") {
+        collapsed_callbacks.push_back(callback);
     }
 }
 

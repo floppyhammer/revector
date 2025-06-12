@@ -53,7 +53,7 @@ public:
     }
 
     /// Manual setting, no signal.
-    void set_pressed(bool new_pressed) {
+    void set_pressed_no_signal(bool new_pressed) {
         pressed = new_pressed;
     }
 
