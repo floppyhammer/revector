@@ -9,9 +9,14 @@
 
 namespace revector {
 
+enum class CollapseButtonType {
+    Default,
+    Check,
+};
+
 class CollapseContainer : public Container {
 public:
-    CollapseContainer(NodeType button_type);
+    CollapseContainer(CollapseButtonType button_type);
 
     void update(double dt) override;
 

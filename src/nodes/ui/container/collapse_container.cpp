@@ -4,27 +4,24 @@
 
 #include "../../../common/utils.h"
 #include "../../../resources/default_resource.h"
-#include "src/nodes/ui/check_button.h"
+#include "../check_button.h"
 
 namespace revector {
 
-void cc(bool p) {
-    int a = 1;
-}
-
-CollapseContainer::CollapseContainer(NodeType button_type) {
+CollapseContainer::CollapseContainer(CollapseButtonType button_type) {
     type = NodeType::CollapseContainer;
 
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
     theme_title_bar_ = std::make_optional(default_theme->collapsing_panel.styles["title_bar"]);
     theme_title_bar_->border_width = 2;
-    theme_title_bar_->border_color = theme_color_;
     theme_title_bar_->corner_radii = {8, 8, 0, 0};
     theme_panel_ = std::make_optional(default_theme->collapsing_panel.styles["background"]);
 
+    set_color(ColorU(78, 135, 82));
+
     switch (button_type) {
-        case NodeType::CheckButton: {
+        case CollapseButtonType::Check: {
             collapse_button_ = std::make_shared<CheckButton>();
         } break;
         default: {
