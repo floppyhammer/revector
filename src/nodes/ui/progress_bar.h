@@ -13,6 +13,12 @@ class ProgressBar : public NodeUi {
 public:
     ProgressBar();
 
+    enum class FillMode {
+        LeftToRight,
+        RightToLeft,
+        CenterToSide,
+    };
+
     void update(double dt) override;
 
     void draw() override;
@@ -49,6 +55,8 @@ public:
 
     void set_lerp_duration(float new_lerp_duration);
 
+    void set_fill_mode(FillMode new_fill_mode);
+
 protected:
     float value = 50;
     float target_value = 50;
@@ -58,6 +66,7 @@ protected:
     float ratio = 0;
 
     bool label_visible = true;
+    FillMode fill_mode_ = FillMode::LeftToRight;
 
     bool lerp_enabled = false;
     float lerp_elapsed_ = 0;

@@ -53,12 +53,26 @@ void ProgressBar::update(double dt) {
 void ProgressBar::draw() {
     auto vector_server = VectorServer::get_singleton();
 
+    Vec2F start_pos = get_global_position();
+
+    switch (fill_mode_) {
+        case FillMode::RightToLeft: {
+            start_pos.x += size.x * (1.0f - ratio);
+        } break;
+        case FillMode::CenterToSide: {
+            start_pos.x += size.x * (1.0f - ratio) * 0.5f;
+        } break;
+        case FillMode::LeftToRight:
+        default: {
+        } break;
+    }
+
     if (theme_bg.has_value()) {
         vector_server->draw_style_box(theme_bg.value(), get_global_position(), size);
     }
 
     if (theme_progress.has_value()) {
-        vector_server->draw_style_box(theme_progress.value(), get_global_position(), {size.x * ratio, size.y});
+        vector_server->draw_style_box(theme_progress.value(), start_pos, {size.x * ratio, size.y});
     }
 
     if (theme_fg.has_value()) {
@@ -141,6 +155,10 @@ void ProgressBar::set_lerp_enabled(bool new_lerp_enabled) {
 
 void ProgressBar::set_lerp_duration(float new_lerp_duration) {
     lerp_duration_ = new_lerp_duration;
+}
+
+void ProgressBar::set_fill_mode(FillMode new_fill_mode) {
+    fill_mode_ = new_fill_mode;
 }
 
 } // namespace revector
