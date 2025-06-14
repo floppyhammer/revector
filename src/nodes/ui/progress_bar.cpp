@@ -38,7 +38,10 @@ void ProgressBar::update(double dt) {
     NodeUi::update(dt);
 
     if (lerp_enabled) {
-        value = Pathfinder::lerp(value, target_value, dt * (max_value - min_value) * 0.1);
+        lerp_elapsed_ += dt;
+        float t = std::clamp(lerp_elapsed_ / lerp_duration_, 0.0f, 1.0f);
+        value = Pathfinder::lerp(value, target_value, t);
+
         ratio = (value - min_value) / (max_value - min_value);
 
         if (label_visible) {
@@ -77,9 +80,9 @@ void ProgressBar::set_size(Vec2F new_size) {
 void ProgressBar::set_value(float new_value) {
     if (lerp_enabled) {
         target_value = std::clamp(new_value, min_value, max_value);
+        lerp_elapsed_ = 0;
     } else {
         value = std::clamp(new_value, min_value, max_value);
-
         ratio = (value - min_value) / (max_value - min_value);
 
         if (label_visible) {
@@ -134,6 +137,10 @@ void ProgressBar::set_label_font_size(float new_font_size) {
 
 void ProgressBar::set_lerp_enabled(bool new_lerp_enabled) {
     lerp_enabled = new_lerp_enabled;
+}
+
+void ProgressBar::set_lerp_duration(float new_lerp_duration) {
+    lerp_duration_ = new_lerp_duration;
 }
 
 } // namespace revector

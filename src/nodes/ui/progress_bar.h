@@ -47,17 +47,21 @@ public:
 
     void set_lerp_enabled(bool new_lerp_enabled);
 
+    void set_lerp_duration(float new_lerp_duration);
+
 protected:
     float value = 50;
     float target_value = 50;
     float min_value = 0;
     float max_value = 100;
     float step = 1;
-    float ratio;
+    float ratio = 0;
 
     bool label_visible = true;
 
     bool lerp_enabled = false;
+    float lerp_elapsed_ = 0;
+    float lerp_duration_ = 0.5; // In second
 
     std::optional<StyleBox> theme_progress, theme_bg, theme_fg;
 
