@@ -29,6 +29,8 @@ ProgressBar::ProgressBar() {
 }
 
 void ProgressBar::calc_minimum_size() {
+    calculated_minimum_size = {};
+
     if (label_visible) {
         calculated_minimum_size = label->get_effective_minimum_size();
     }
@@ -51,6 +53,10 @@ void ProgressBar::update(double dt) {
 }
 
 void ProgressBar::draw() {
+    if (!visible_) {
+        return;
+    }
+
     auto vector_server = VectorServer::get_singleton();
 
     Vec2F start_pos = get_global_position();
