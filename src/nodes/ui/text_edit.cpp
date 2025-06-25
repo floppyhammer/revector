@@ -8,6 +8,18 @@
 
 namespace revector {
 
+std::string keep_numbers(const std::string &src) {
+    std::string dst;
+
+    for (const char c : src) {
+        if (std::isdigit(c)) {
+            dst += c;
+        }
+    }
+
+    return dst;
+}
+
 TextEdit::TextEdit() {
     type = NodeType::TextEdit;
 
@@ -46,7 +58,11 @@ TextEdit::TextEdit() {
         [this] { InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow); });
 }
 
-void TextEdit::set_text(const std::string &new_text) {
+void TextEdit::set_text(std::string new_text) const {
+    if (numbers_only) {
+        new_text = keep_numbers(new_text);
+    }
+
     label->set_text(new_text);
 }
 
@@ -112,6 +128,12 @@ void TextEdit::input(InputEvent &event) {
             if (editable) {
                 if (selection_start_index != current_caret_index) {
                     delete_selection();
+                }
+
+                if (numbers_only) {
+                    if (event.args.text.codepoint <= 48 || event.args.text.codepoint >= 57) {
+                        break;
+                    }
                 }
 
                 label->insert_text(current_caret_index, cpp11_codepoint_to_utf8(event.args.text.codepoint));
@@ -194,6 +216,11 @@ void TextEdit::input(InputEvent &event) {
                         delete_selection();
                     }
                     auto clipboard_text = input_server->get_clipboard(get_window_index());
+
+                    if (numbers_only) {
+                        clipboard_text = keep_numbers(clipboard_text);
+                    }
+
                     std::u32string clipboard_text_u32;
                     utf8_to_utf16(clipboard_text, clipboard_text_u32);
                     label->insert_text(current_caret_index, clipboard_text);
@@ -331,6 +358,10 @@ void TextEdit::release_focus() {
 
 void TextEdit::set_editable(bool new_value) {
     editable = new_value;
+}
+
+void TextEdit::set_numbers_only(bool new_value) {
+    numbers_only = new_value;
 }
 
 void TextEdit::delete_selection() {

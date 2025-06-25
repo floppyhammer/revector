@@ -19,7 +19,7 @@ class TextEdit : public NodeUi {
 public:
     TextEdit();
 
-    void set_text(const std::string &new_text);
+    void set_text(std::string new_text) const;
 
     std::string get_text() const;
 
@@ -37,9 +37,12 @@ public:
 
     void set_editable(bool new_value);
 
+    void set_numbers_only(bool new_value);
+
 private:
     bool editable = true;
     bool single_line = false;
+    bool numbers_only = false;
 
     /// The codepoint which the caret currently targets to. (Codepoint, not glyph!)
     /// 0 means the caret is at the begining (before the first codepoint if there's any).
