@@ -180,7 +180,13 @@ void VectorServer::draw_render_image(RenderImage &render_image, Transform2 trans
     canvas->restore_state();
 }
 
-void VectorServer::draw_style_box(const StyleBox &style_box, const Vec2F &position, const Vec2F &size, float alpha) {
+void VectorServer::draw_style_box(const StyleBox &style_box, Vec2F position, Vec2F size, float alpha) {
+    float border_offset = style_box.border_width * 0.5;
+    position.x += border_offset;
+    position.y += border_offset;
+    size.x -= border_offset;
+    size.y -= border_offset;
+
     auto path = Pathfinder::Path2d();
     if (style_box.corner_radii.has_value()) {
         path.add_rect_with_corners({{}, size}, style_box.corner_radii.value());

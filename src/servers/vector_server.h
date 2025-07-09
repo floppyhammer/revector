@@ -54,7 +54,7 @@ public:
 
     std::shared_ptr<Pathfinder::Texture> get_texture_by_render_target_id(Pathfinder::RenderTargetId id);
 
-    void draw_style_box(const StyleBox &style_box, const Vec2F &position, const Vec2F &size, float alpha = 1.0f);
+    void draw_style_box(const StyleBox &style_box, Vec2F position, Vec2F size, float alpha = 1.0f);
 
     void draw_style_line(const StyleLine &style_line, const Vec2F &start, const Vec2F &end);
 
