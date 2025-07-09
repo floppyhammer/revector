@@ -78,7 +78,7 @@ void SpinBox::input(InputEvent &event) {
             drag_to_adjust_value = false;
         }
 
-        if (event.is_consumed()) {
+        if (event.consumed) {
             focused = false;
             pressed_inside = false;
         } else {
@@ -95,7 +95,7 @@ void SpinBox::input(InputEvent &event) {
         }
 
         if (consume_flag) {
-            event.consume();
+            event.consumed = true;
         }
     }
 

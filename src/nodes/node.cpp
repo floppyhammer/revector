@@ -1,5 +1,6 @@
 #include "node.h"
 
+#include <ranges>
 #include <string>
 
 #include "../servers/render_server.h"
@@ -80,12 +81,30 @@ void dfs_postorder_rtl_traversal(Node *node, std::vector<Node *> &ordered_nodes)
         return;
     }
 
-    for (auto riter = node->get_all_children().rbegin(); riter != node->get_all_children().rend(); ++riter) {
-        dfs_postorder_rtl_traversal(riter->get(), ordered_nodes);
+    for (auto &riter : std::ranges::reverse_view(node->get_all_children())) {
+        dfs_postorder_rtl_traversal(riter.get(), ordered_nodes);
     }
 
     // Debug print.
     // std::cout << "Node: " << get_node_type_name(node->type) << std::endl;
+
+    ordered_nodes.push_back(node);
+}
+
+void dfs_postorder_rtl_traversal_skip_priority_node_and_invisible(Node *node, std::vector<Node *> &ordered_nodes) {
+    if (node == nullptr || !node->get_visibility()) {
+        return;
+    }
+    // Skip SubWindow and all its children.
+    if (typeid(*node) == typeid(SubWindow)) {
+        return;
+    }
+
+    auto all_children = node->get_all_children();
+
+    for (auto &riter : std::ranges::reverse_view(all_children)) {
+        dfs_postorder_rtl_traversal_skip_priority_node_and_invisible(riter.get(), ordered_nodes);
+    }
 
     ordered_nodes.push_back(node);
 }
@@ -122,6 +141,14 @@ std::vector<std::shared_ptr<Node>> Node::get_all_children() {
     all_children.reserve(embedded_children.size() + children.size());
     all_children.insert(all_children.end(), embedded_children.begin(), embedded_children.end());
     all_children.insert(all_children.end(), children.begin(), children.end());
+
+    return all_children;
+}
+
+std::vector<std::shared_ptr<Node>> Node::get_all_children_reversed() {
+    auto all_children = get_all_children();
+
+    std::ranges::reverse(all_children);
 
     return all_children;
 }

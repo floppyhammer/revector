@@ -245,7 +245,7 @@ void TreeItem::input(InputEvent &event, Vec2F global_position) {
     if (event.type == InputEventType::MouseButton) {
         auto button_event = event.args.mouse_button;
 
-        if (!event.is_consumed() && button_event.pressed) {
+        if (!event.consumed && button_event.pressed) {
             if (item_global_rect.contains_point(button_event.position)) {
                 selected = true;
                 tree->selected_item = this;

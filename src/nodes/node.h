@@ -108,6 +108,7 @@ public:
     std::vector<std::shared_ptr<Node>> get_children();
     std::vector<std::shared_ptr<Node>> get_embedded_children();
     std::vector<std::shared_ptr<Node>> get_all_children();
+    std::vector<std::shared_ptr<Node>> get_all_children_reversed();
 
     virtual std::shared_ptr<Node> get_child(size_t index);
 
@@ -177,5 +178,7 @@ void dfs_postorder_ltr_traversal(Node *node, std::vector<Node *> &ordered_nodes)
 /// Usages: handle input events front-to-back.
 /// See: https://faculty.cs.niu.edu/~mcmahon/CS241/Notes/Data_Structures/binary_tree_traversals.html
 void dfs_postorder_rtl_traversal(Node *node, std::vector<Node *> &ordered_nodes);
+
+void dfs_postorder_rtl_traversal_skip_priority_node_and_invisible(Node *node, std::vector<Node *> &ordered_nodes);
 
 } // namespace revector

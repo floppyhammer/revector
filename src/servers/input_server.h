@@ -71,11 +71,6 @@ public:
         } text;
     } args{};
 
-    void consume();
-
-    bool is_consumed() const;
-
-private:
     bool consumed = false;
 };
 

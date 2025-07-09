@@ -71,7 +71,7 @@ void ScrollContainer::input(InputEvent &event) {
             float delta = event.args.mouse_scroll.y_delta;
 
             if (active_rect.contains_point(InputServer::get_singleton()->cursor_position)) {
-                if (!event.is_consumed()) {
+                if (!event.consumed) {
                     if (hscroll_enabled && !vscroll_enabled) {
                         hscroll -= delta * scroll_speed;
                     } else {
@@ -95,7 +95,7 @@ void ScrollContainer::input(InputEvent &event) {
     }
 
     if (consume_flag) {
-        event.consume();
+        event.consumed = true;
     }
 }
 

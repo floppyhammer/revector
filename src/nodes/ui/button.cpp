@@ -50,11 +50,15 @@ Button::Button() {
 
     add_embedded_child(margin_container);
 
-    callbacks_cursor_entered.emplace_back(
-        [this] { InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Hand); });
+    callbacks_cursor_entered.emplace_back([this] {
+        hovered = true;
+        InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Hand);
+    });
 
-    callbacks_cursor_exited.emplace_back(
-        [this] { InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow); });
+    callbacks_cursor_exited.emplace_back([this] {
+        hovered = false;
+        InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow);
+    });
 }
 
 void Button::calc_minimum_size() {
@@ -72,18 +76,15 @@ void Button::input(InputEvent &event) {
         if (event.type == InputEventType::MouseMotion) {
             auto args = event.args.mouse_motion;
 
-            if (event.is_consumed()) {
-                hovered = false;
+            if (event.consumed) {
                 if (!toggle_mode) {
                     pressed = false;
                 }
                 pressed_inside = false;
             } else {
                 if (RectF(global_position, global_position + size).contains_point(args.position)) {
-                    hovered = true;
                     consume_flag = true;
                 } else {
-                    hovered = false;
                     if (!toggle_mode) {
                         pressed = false;
                     }
@@ -95,7 +96,7 @@ void Button::input(InputEvent &event) {
         if (event.type == InputEventType::MouseButton) {
             auto args = event.args.mouse_button;
 
-            if (event.is_consumed()) {
+            if (event.consumed) {
                 if (!args.pressed) {
                     if (RectF(global_position, global_position + size).contains_point(args.position)) {
                         if (!toggle_mode) {
@@ -141,7 +142,7 @@ void Button::input(InputEvent &event) {
     NodeUi::input(event);
 
     if (consume_flag) {
-        event.consume();
+        event.consumed = true;
     }
 }
 

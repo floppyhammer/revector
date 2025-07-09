@@ -86,7 +86,7 @@ void TextEdit::input(InputEvent &event) {
         case InputEventType::MouseButton: {
             auto args = event.args.mouse_button;
 
-            if (active_rect.contains_point(args.position)) {
+            if (!event.consumed && active_rect.contains_point(args.position)) {
                 if (args.pressed) {
                     // Decide which codepoint the caret is at.
                     auto local_mouse_pos_to_label = args.position - label->get_global_position();
@@ -244,7 +244,7 @@ void TextEdit::input(InputEvent &event) {
     NodeUi::input(event);
 
     if (consume_flag) {
-        event.consume();
+        event.consumed = true;
     }
 }
 

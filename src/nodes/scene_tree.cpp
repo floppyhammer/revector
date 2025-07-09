@@ -19,7 +19,7 @@ void propagate_input(Node* node, InputEvent& event) {
         return;
     }
 
-    for (auto& child : node->get_all_children()) {
+    for (auto& child : node->get_all_children_reversed()) {
         if (typeid(*child) == typeid(SubWindow) || !node->get_visibility()) {
             continue;
         }
@@ -28,7 +28,7 @@ void propagate_input(Node* node, InputEvent& event) {
         if (node->is_ui_node()) {
             auto ui_node = dynamic_cast<NodeUi*>(node);
 
-            if (ui_node->ignore_mouse_input_outside_rect()) {
+            if (ui_node->get_node_type() == NodeType::ScrollContainer) {
                 // Intercept out-of-scope mouse input events.
                 auto global_position = ui_node->get_global_position();
 
@@ -39,6 +39,12 @@ void propagate_input(Node* node, InputEvent& event) {
                     case InputEventType::MouseButton:
                     case InputEventType::MouseScroll: {
                         if (!active_rect.contains_point(InputServer::get_singleton()->cursor_position)) {
+                            // todo: send an unfocus signal
+                            InputEvent dummy_event = event; // Copy
+                            dummy_event.consumed = false;
+                            dummy_event.type = InputEventType::MouseMotion;
+                            dummy_event.args.mouse_motion.position = {-99999, -99999};
+                            propagate_input(child.get(), dummy_event);
                             continue;
                         }
                     } break;
@@ -55,39 +61,50 @@ void propagate_input(Node* node, InputEvent& event) {
 }
 
 void input_system(Node* root, std::vector<InputEvent>& input_queue) {
-    // Collect all sub-windows.
-    std::vector<SubWindow*> sub_windows;
+    std::vector<Node*> priority_nodes;
     {
         std::vector<Node*> nodes;
-        dfs_preorder_ltr_traversal(root, nodes);
+        dfs_postorder_rtl_traversal(root, nodes);
 
         for (auto& node : nodes) {
-            if (typeid(*node) == typeid(SubWindow)) {
-                auto sub_window = dynamic_cast<SubWindow*>(node);
-                sub_windows.push_back(sub_window);
+            if (typeid(*node) == typeid(SubWindow) || typeid(*node) == typeid(PopupMenu)) {
+                priority_nodes.push_back(node);
             }
         }
     }
 
-    for (auto& w : sub_windows) {
-        if (!w->get_visibility()) {
+    for (auto& p_node : priority_nodes) {
+        if (!p_node->get_visibility()) {
             continue;
         }
 
         for (auto& event : input_queue) {
-            if (event.window_index != w->get_window_index()) {
+            if (event.window_index != p_node->get_window_index()) {
                 continue;
             }
 
-            propagate_input(w, event);
+            // if (p_node->get_node_type() == NodeType::PopupMenu) {
+            //     // if
+            // }
+            //
+            // std::vector<Node*> subnodes;
+            // dfs_postorder_rtl_traversal_skip_priority_node_and_invisible(p_node, subnodes);
+            //
+            // for (auto& node : subnodes) {
+            //     node->input(event);
+            // }
+
+            propagate_input(p_node, event);
         }
     }
 
-    for (auto& event : input_queue) {
-        // if (event.window != root->get_window()->get_glfw_handle()) {
-        //     continue;
-        // }
+    // std::vector<Node*> subnodes;
+    // dfs_postorder_rtl_traversal_skip_priority_node_and_invisible(root, subnodes);
 
+    for (auto& event : input_queue) {
+        if (event.window_index != 0) {
+            continue;
+        }
         propagate_input(root, event);
     }
 }

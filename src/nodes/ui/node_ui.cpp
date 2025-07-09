@@ -79,7 +79,7 @@ void NodeUi::input(InputEvent &event) {
             local_mouse_position = event.args.mouse_motion.position - global_position;
 
             if (active_rect.contains_point(event.args.mouse_motion.position)) {
-                if (!event.is_consumed()) {
+                if (!event.consumed) {
                     is_cursor_inside = true;
                     cursor_entered();
                 }
@@ -95,7 +95,7 @@ void NodeUi::input(InputEvent &event) {
         case InputEventType::MouseButton: {
             auto args = event.args.mouse_button;
 
-            if (args.pressed) {
+            if (!event.consumed && args.pressed) {
                 if (active_rect.contains_point(args.position)) {
                     grab_focus();
 
@@ -110,7 +110,7 @@ void NodeUi::input(InputEvent &event) {
     }
 
     if (consume_flag) {
-        event.consume();
+        event.consumed = true;
     }
 
     Node::input(event);

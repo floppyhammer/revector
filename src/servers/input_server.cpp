@@ -26,14 +26,6 @@ std::string cpp11_codepoint_to_utf8(char32_t codepoint) {
     return {utf8, end_of_utf8};
 }
 
-void InputEvent::consume() {
-    consumed = true;
-}
-
-bool InputEvent::is_consumed() const {
-    return consumed;
-}
-
 InputServer::InputServer() {
     // All remaining cursors are destroyed when glfwTerminate is called.
     arrow_cursor = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
@@ -52,7 +44,7 @@ void InputServer::initialize_window_callbacks(uint8_t window_index) {
 
     // A lambda function that doesn't capture anything can be implicitly converted to a regular function pointer.
     auto cursor_position_callback = [](GLFWwindow *window, double x_pos, double y_pos) {
-        // Mouse position are under the logical coordinates instead of the physical ones.
+        // Mouse position is under the logical coordinates instead of the physical ones.
 
         auto pf_window = reinterpret_cast<Pathfinder::Window *>(glfwGetWindowUserPointer(window));
 

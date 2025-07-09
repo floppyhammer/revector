@@ -127,7 +127,7 @@ void PopupMenu::input(InputEvent &event) {
     //     item->input(event, global_position);
     // }
     //
-    // event.consume();
+    // event.consumed = true;
 
     NodeUi::input(event);
 }
