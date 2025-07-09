@@ -250,7 +250,14 @@ void Button::connect_signal(const std::string &signal, const AnyCallable<void> &
 }
 
 void Button::set_text(const std::string &text) {
+    if (text.empty()) {
+        label->set_text("");
+        label->set_visibility(false);
+        return;
+    }
+
     label->set_text(text);
+    label->set_visibility(true);
 }
 
 std::string Button::get_text() const {

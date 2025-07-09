@@ -439,7 +439,7 @@ void Label::set_font(std::shared_ptr<Font> new_font) {
 void Label::consider_alignment() {
     alignment_shift = Vec2F(0);
 
-    // For multi line label, the text box always occupies the whole label area.
+    // For multi-line label, the text box always occupies the whole label area.
     if (multi_line_) {
         return;
     }
@@ -534,7 +534,7 @@ void Label::set_vertical_alignment(Alignment alignment) {
 void Label::calc_minimum_size() {
     auto min_size = get_text_minimum_size();
 
-    // Label has a minimal height even when the text is empty.
+    // A Label has a minimal height even when the text is empty.
     min_size.y = std::max(min_size.y, (float)font_size_);
 
     calculated_minimum_size = min_size;
