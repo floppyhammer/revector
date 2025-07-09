@@ -34,6 +34,26 @@ struct StyleBox {
 
         return box;
     }
+
+    StyleBox lerp_style_box(const StyleBox target_box, const float t) const {
+        StyleBox box;
+        box.border_width = Pathfinder::lerp(border_width, target_box.border_width, t);
+        box.corner_radius = Pathfinder::lerp(corner_radius, target_box.corner_radius, t);
+
+        box.bg_color = bg_color.lerp(target_box.bg_color, t);
+        box.border_color = border_color.lerp(target_box.border_color, t);
+
+        // todo: lerp corner radii
+        if (corner_radii.has_value()) {
+            if (target_box.corner_radii.has_value()) {
+                box.corner_radii = target_box.corner_radii;
+            }
+        } else if (target_box.corner_radii.has_value()) {
+            box.corner_radii = target_box.corner_radii;
+        }
+
+        return box;
+    }
 };
 
 struct StyleLine {

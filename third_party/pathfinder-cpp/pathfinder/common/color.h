@@ -88,6 +88,8 @@ struct ColorU {
     /// Check for transparency.
     bool is_opaque() const;
 
+    ColorU lerp(const ColorU& other, float t) const;
+
     bool operator<(const ColorU& rhs) const {
         return to_u32() < rhs.to_u32();
     }
