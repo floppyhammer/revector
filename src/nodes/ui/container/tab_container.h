@@ -6,6 +6,7 @@
 #include "container.h"
 
 namespace revector {
+
 class ScrollContainer;
 
 class TabContainer : public Container {
@@ -22,7 +23,7 @@ public:
 
     void set_current_tab(uint32_t index);
 
-    void set_tab_title(uint32_t tab_idx, const std::string& title);
+    void set_tab_title(uint32_t tab_index, const std::string& title);
 
     void set_tab_disabled(bool disabled);
 

@@ -28,19 +28,21 @@ TabContainer::TabContainer() {
 }
 
 void TabContainer::adjust_layout() {
-    // Adjust own size.
+    // Adjust self size.
     size = get_effective_minimum_size().max(size);
 
     auto tab_button_height = button_container->get_effective_minimum_size().y;
 
     for (int i = 0; i < children.size(); i++) {
+        if (!children[i]->is_ui_node()) {
+            continue;
+        }
+
         children[i]->set_visibility(i == current_tab);
 
-        if (children[i]->is_ui_node()) {
-            auto ui_child = dynamic_cast<NodeUi *>(children[i].get());
-            ui_child->set_position({0, tab_button_height});
-            ui_child->set_size({size.x, size.y - tab_button_height});
-        }
+        auto ui_child = dynamic_cast<NodeUi *>(children[i].get());
+        ui_child->set_position({0, tab_button_height});
+        ui_child->set_size({size.x, size.y - tab_button_height});
     }
 
     button_scroll_container->set_custom_minimum_size({size.x, tab_button_height});
@@ -134,16 +136,16 @@ void TabContainer::add_tab_button() {
     button->theme_pressed.bg_color = ColorU(32, 32, 32);
 }
 
-void TabContainer::set_tab_title(uint32_t tab_idx, const std::string &title) {
-    if (tab_idx >= tab_buttons.size()) {
+void TabContainer::set_tab_title(uint32_t tab_index, const std::string &title) {
+    if (tab_index >= tab_buttons.size()) {
         return;
     }
-    tab_buttons[tab_idx]->set_text(title);
+    tab_buttons[tab_index]->set_text(title);
 }
 
 void TabContainer::set_tab_disabled(bool disabled) {
-    for (auto &b : tab_buttons) {
-        b->set_disabled(disabled);
+    for (auto &btn : tab_buttons) {
+        btn->set_disabled(disabled);
     }
 }
 

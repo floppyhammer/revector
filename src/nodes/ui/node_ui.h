@@ -83,6 +83,7 @@ public:
 
     Vec2F get_effective_minimum_size() const;
 
+    /// Calculates the minimum size of this node, considering all its children's sizing effect.
     /// Runs once per frame.
     virtual void calc_minimum_size();
 

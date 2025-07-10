@@ -167,6 +167,9 @@ void PopupMenu::create_item(const std::string &text) {
     new_item->set_text(text);
     new_item->theme_normal.bg_color = ColorU::transparent_black();
     new_item->theme_normal.border_width = 0;
+    new_item->theme_hovered.bg_color = ColorU(67, 67, 67);
+    new_item->theme_hovered.border_width = 0;
+    new_item->theme_pressed = new_item->theme_hovered;
     vbox_container_->add_child(new_item);
     vbox_container_->set_separation(0);
 

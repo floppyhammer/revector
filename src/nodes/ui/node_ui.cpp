@@ -12,7 +12,6 @@ NodeUi::NodeUi() {
     type = NodeType::NodeUi;
 }
 
-/// Runs once per frame.
 void NodeUi::calc_minimum_size() {
     calculated_minimum_size = {};
 }
