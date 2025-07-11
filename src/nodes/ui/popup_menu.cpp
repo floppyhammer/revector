@@ -11,11 +11,6 @@ namespace revector {
 PopupMenu::PopupMenu() {
     type = NodeType::PopupMenu;
 
-    auto panel = StyleBox();
-    panel.bg_color = ColorU(39, 39, 39, 255);
-    panel.corner_radius = 8;
-    panel.border_width = 2;
-
     scroll_container_ = std::make_shared<ScrollContainer>();
     scroll_container_->render_layer = 1;
     scroll_container_->set_anchor_flag(AnchorFlag::FullRect);
@@ -24,15 +19,13 @@ PopupMenu::PopupMenu() {
     margin_container_ = std::make_shared<MarginContainer>();
     scroll_container_->add_child(margin_container_);
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
-    theme_bg_ = std::make_optional(default_theme->panel.styles["background"]);
+    theme_bg_ = std::make_optional(default_theme->popup_menu.styles["background"]);
 
     vbox_container_ = std::make_shared<VBoxContainer>();
     margin_container_->add_child(vbox_container_);
 
     auto callback = [this] { set_visibility(false); };
     connect_signal("focus_released", callback);
-
-    theme_bg_ = std::make_optional(panel);
 }
 
 void PopupMenu::update(double dt) {
@@ -165,11 +158,12 @@ void PopupMenu::calc_minimum_size() {
 void PopupMenu::create_item(const std::string &text) {
     auto new_item = std::make_shared<Button>();
     new_item->set_text(text);
-    new_item->theme_normal.bg_color = ColorU(255, 255, 255, 0);
-    new_item->theme_normal.border_width = 0;
-    new_item->theme_hovered.bg_color = ColorU(67, 67, 67);
-    new_item->theme_hovered.border_width = 0;
+
+    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
+    new_item->theme_normal = default_theme->popup_menu.styles["item_normal"];
+    new_item->theme_hovered = default_theme->popup_menu.styles["item_hovered"];
     new_item->theme_pressed = new_item->theme_hovered;
+    new_item->set_animated(false);
     vbox_container_->add_child(new_item);
     vbox_container_->set_separation(0);
 

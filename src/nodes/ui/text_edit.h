@@ -52,7 +52,7 @@ private:
     Vec2F caret_position;
 
     StyleLine theme_caret;
-    StyleBox theme_selection_box;
+    StyleBox theme_selection;
 
     std::shared_ptr<MarginContainer> margin_container;
     std::shared_ptr<Label> label;
@@ -67,9 +67,9 @@ private:
 
     Vec2F calculate_caret_position(int32_t caret_index);
 
-    std::optional<StyleBox> theme_normal;
-    std::optional<StyleBox> theme_focused;
-    std::optional<StyleBox> theme_uneditable;
+    StyleBox theme_normal;
+    StyleBox theme_focused;
+    StyleBox theme_uneditable;
 };
 
 } // namespace revector

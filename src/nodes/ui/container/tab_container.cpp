@@ -10,14 +10,9 @@ TabContainer::TabContainer() {
 
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
-    theme_bg = std::make_optional(default_theme->panel.styles["background"]);
-    theme_bg.value().corner_radius = 0;
-    theme_bg.value().border_width = 0;
+    theme_bg = std::make_optional(default_theme->tab_container.styles["background"]);
 
-    theme_button_panel = std::make_optional<StyleBox>();
-    theme_button_panel.value().corner_radius = 0;
-    theme_button_panel.value().border_width = 0;
-    theme_button_panel.value().bg_color = ColorU(20, 20, 20);
+    theme_button_panel = default_theme->tab_container.styles["tab_background"];
 
     button_scroll_container = std::make_shared<ScrollContainer>();
     button_scroll_container->enable_vscroll(false);
@@ -123,17 +118,11 @@ void TabContainer::add_tab_button() {
     button->connect_signal("pressed", callback);
     button->set_toggle_mode(true);
 
-    button->theme_normal.border_width = 0;
-    button->theme_normal.corner_radius = 0;
-    button->theme_normal.bg_color = ColorU(20, 20, 20);
+    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
-    button->theme_hovered.border_width = 0;
-    button->theme_hovered.corner_radius = 0;
-    button->theme_hovered.bg_color = ColorU(40, 40, 40);
-
-    button->theme_pressed.border_width = 0;
-    button->theme_pressed.corner_radius = 0;
-    button->theme_pressed.bg_color = ColorU(32, 32, 32);
+    button->theme_normal = default_theme->tab_container.styles["tab_button_normal"];
+    button->theme_hovered = default_theme->tab_container.styles["tab_button_hovered"];
+    button->theme_pressed = default_theme->tab_container.styles["tab_button_pressed"];
 }
 
 void TabContainer::set_tab_title(uint32_t tab_index, const std::string &title) {

@@ -65,6 +65,8 @@ public:
 
     void press();
 
+    void set_animated(bool animated);
+
     // Styles.
     StyleBox theme_normal;
     StyleBox theme_hovered;
@@ -90,7 +92,7 @@ protected:
 
     bool disabled_ = false;
 
-    bool animation_enabled = true;
+    bool animated_ = true;
 
     /// Button[HBoxContainer[TextureRect, Label]]
     std::shared_ptr<MarginContainer> margin_container;

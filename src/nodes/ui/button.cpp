@@ -202,6 +202,7 @@ void Button::draw() {
             // When toggled, hovering the button should show the hover effect.
             if (toggle_mode && hovered) {
                 target_style_box = theme_hovered;
+                active_style_box = theme_hovered;
             }
         } else if (hovered) {
             target_style_box = theme_hovered;
@@ -210,7 +211,7 @@ void Button::draw() {
             target_style_box = theme_normal;
         }
 
-        if (animation_enabled) {
+        if (animated_) {
             active_style_box = active_style_box.lerp_style_box(target_style_box, 0.1);
         } else {
             active_style_box = target_style_box;
@@ -318,6 +319,10 @@ void Button::press() {
     } else {
         when_pressed();
     }
+}
+
+void Button::set_animated(bool animated) {
+    animated_ = animated;
 }
 
 void ButtonGroup::update() {

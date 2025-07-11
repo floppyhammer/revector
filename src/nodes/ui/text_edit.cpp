@@ -5,6 +5,7 @@
 #include "../../common/utils.h"
 #include "../../servers/input_server.h"
 #include "container/margin_container.h"
+#include "src/resources/default_resource.h"
 
 namespace revector {
 
@@ -36,18 +37,15 @@ TextEdit::TextEdit() {
 
     add_embedded_child(margin_container);
 
-    theme_normal = std::optional(StyleBox());
-    theme_normal->bg_color = ColorU(10, 10, 10);
+    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
-    theme_focused = std::optional(theme_normal.value());
-    theme_focused->border_color = ColorU(163, 163, 163, 255);
-    theme_focused->border_width = 2;
+    theme_normal = default_theme->text_edit.styles["normal"];
 
-    theme_caret.width = 2;
+    theme_focused = default_theme->text_edit.styles["focused"];
 
-    theme_selection_box.bg_color = ColorU(33, 66, 131, 255);
-    theme_selection_box.border_width = 0;
-    theme_selection_box.corner_radius = {};
+    theme_caret = default_theme->text_edit.caret;
+
+    theme_selection = default_theme->text_edit.styles["selection"];
 
     set_text("Enter text");
 
@@ -278,7 +276,7 @@ void TextEdit::draw() {
             auto end = calculate_caret_position(std::max(current_caret_index, selection_start_index));
             auto box_position = label->get_global_position() + start;
             auto box_size = Vec2F(0, label->get_font_size()) + (end - start);
-            vector_server->draw_style_box(theme_selection_box, box_position, box_size);
+            vector_server->draw_style_box(theme_selection, box_position, box_size);
         }
     }
 

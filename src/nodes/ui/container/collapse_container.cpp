@@ -13,10 +13,10 @@ CollapseContainer::CollapseContainer(CollapseButtonType button_type) {
 
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
-    theme_title_bar_ = std::make_optional(default_theme->collapsing_panel.styles["title_bar"]);
+    theme_title_bar_ = std::make_optional(default_theme->collapse_container.styles["title_bar"]);
     theme_title_bar_->border_width = 2;
     theme_title_bar_->corner_radii = {8, 8, 0, 0};
-    theme_panel_ = std::make_optional(default_theme->collapsing_panel.styles["background"]);
+    theme_panel_ = std::make_optional(default_theme->collapse_container.styles["background"]);
 
     set_color(ColorU(78, 135, 82));
 

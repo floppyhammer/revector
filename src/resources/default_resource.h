@@ -10,7 +10,7 @@ class Font;
 class DefaultResource {
 public:
     DefaultResource() {
-        default_theme = std::make_shared<Theme>();
+        default_theme = Theme::dark_new();
         default_font =
             std::make_shared<Font>(std::vector<char>(std::begin(DEFAULT_FONT_DATA), std::end(DEFAULT_FONT_DATA)));
     }
