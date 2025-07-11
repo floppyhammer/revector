@@ -13,14 +13,14 @@ public:
     static std::shared_ptr<Theme> dark_new() {
         auto theme = std::make_shared<Theme>();
 
-        theme->button.colors["text"] = ColorU(200, 200, 200, 255);
+        theme->button.colors["text"] = ColorU(200, 200, 200);
 
         theme->button.colors["text_disabled"] = ColorU(200, 200, 200, 100);
 
         {
             auto style_box = StyleBox();
-            style_box.bg_color = ColorU(32, 32, 32, 255);
-            style_box.border_color = ColorU(67, 67, 67, 255);
+            style_box.bg_color = ColorU(32, 32, 32);
+            style_box.border_color = ColorU(67, 67, 67);
             style_box.border_width = 2;
             theme->button.styles["normal"] = style_box;
         }
@@ -165,18 +165,17 @@ public:
                 theme->text_edit.styles["focused"] = style_box;
             }
 
+            theme->text_edit.caret.color = ColorU(200, 200, 200);
             theme->text_edit.caret.width = 2;
 
             {
                 auto style_box = StyleBox();
                 style_box.border_width = 0;
                 style_box.corner_radius = 0;
-                style_box.bg_color = ColorU(33, 66, 131, 255);
+                style_box.bg_color = ColorU(35, 92, 207);
                 theme->text_edit.styles["selection"] = style_box;
             }
         }
-
-        theme->text_edit.caret.color = theme->accent_color;
 
         return theme;
     }
@@ -184,7 +183,7 @@ public:
     static std::shared_ptr<Theme> light_new() {
         auto theme = std::make_shared<Theme>();
 
-        theme->button.colors["text"] = ColorU(55, 55, 55, 255);
+        theme->button.colors["text"] = ColorU(55, 55, 55);
 
         theme->button.colors["text_disabled"] = ColorU(55, 55, 55, 100);
 
@@ -310,13 +309,14 @@ public:
                 theme->text_edit.styles["focused"] = style_box;
             }
 
+            theme->text_edit.caret.color = ColorU(55, 55, 55);
             theme->text_edit.caret.width = 2;
 
             {
                 auto style_box = StyleBox();
                 style_box.border_width = 0;
                 style_box.corner_radius = 0;
-                style_box.bg_color = theme->accent_color;
+                style_box.bg_color = ColorU(35, 92, 207);
                 theme->text_edit.styles["selection"] = style_box;
             }
         }
@@ -346,8 +346,6 @@ public:
                 theme->popup_menu.styles["item_hovered"] = style_box;
             }
         }
-
-        theme->text_edit.caret.color = theme->accent_color;
 
         return theme;
     }

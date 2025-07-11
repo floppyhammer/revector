@@ -17,7 +17,7 @@
 namespace revector {
 class App {
 public:
-    explicit App(Vec2I primary_window_size);
+    explicit App(Vec2I primary_window_size, bool dark_mode);
 
     ~App();
 
@@ -33,6 +33,8 @@ public:
 
 private:
     std::unique_ptr<SceneTree> tree;
+
+    bool dark_mode_ = false;
 
     std::shared_ptr<Pathfinder::Texture> vector_target_;
 };

@@ -9,15 +9,17 @@ class Font;
 
 class DefaultResource {
 public:
-    DefaultResource() {
-        default_theme = Theme::dark_new();
-        default_font =
-            std::make_shared<Font>(std::vector<char>(std::begin(DEFAULT_FONT_DATA), std::end(DEFAULT_FONT_DATA)));
-    }
+    DefaultResource() = default;
 
     static DefaultResource *get_singleton() {
         static DefaultResource singleton;
         return &singleton;
+    }
+
+    void init(bool dark_mode) {
+        default_theme = dark_mode ? Theme::dark_new() : Theme::light_new();
+        default_font =
+            std::make_shared<Font>(std::vector<char>(std::begin(DEFAULT_FONT_DATA), std::end(DEFAULT_FONT_DATA)));
     }
 
     std::shared_ptr<Theme> get_default_theme() {

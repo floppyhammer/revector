@@ -13,10 +13,14 @@
 
 namespace revector {
 
-App::App(Vec2I primary_window_size) {
+App::App(Vec2I primary_window_size, bool dark_mode) {
     // Set logger level.
     Logger::set_default_level(Logger::Level::Silence);
     Logger::set_module_level("revector", Logger::Level::Warn);
+
+    dark_mode_ = dark_mode;
+
+    DefaultResource::get_singleton()->init(dark_mode_);
 
     auto render_server = RenderServer::get_singleton();
 

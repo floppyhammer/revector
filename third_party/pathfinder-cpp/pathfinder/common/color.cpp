@@ -46,7 +46,8 @@ bool ColorU::is_opaque() const {
 }
 
 ColorU ColorU::lerp(const ColorU& other, float t) const {
-    return ColorU(to_f32().lerp(other.to_f32(), t));
+    auto ret = ColorU(to_f32().lerp(other.to_f32(), t));
+    return ret;
 }
 
 // --------------------
@@ -60,12 +61,14 @@ ColorF ColorF::lerp(const ColorF& other, float t) const {
     assert(t >= 0 && t <= 1);
     t = clamp(t, 0.0f, 1.0f);
 
-    return {
+    auto ret = ColorF{
         r_ + (other.r_ - r_) * t,
         g_ + (other.g_ - g_) * t,
         b_ + (other.b_ - b_) * t,
         a_ + (other.a_ - a_) * t,
     };
+
+    return ret;
 }
 // --------------------
 

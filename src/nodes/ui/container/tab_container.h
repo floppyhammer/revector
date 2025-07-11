@@ -39,7 +39,7 @@ protected:
     std::shared_ptr<HBoxContainer> button_container;
     std::shared_ptr<ScrollContainer> button_scroll_container;
 
-    ButtonGroup tab_button_group;
+    std::shared_ptr<ButtonGroup> tab_button_group;
 
     std::vector<std::shared_ptr<Button>> tab_buttons;
 

@@ -20,6 +20,8 @@ TabContainer::TabContainer() {
 
     button_container = std::make_shared<HBoxContainer>();
     button_scroll_container->add_child(button_container);
+
+    tab_button_group = std::make_shared<ButtonGroup>();
 }
 
 void TabContainer::adjust_layout() {
@@ -45,8 +47,6 @@ void TabContainer::adjust_layout() {
 
 void TabContainer::update(double dt) {
     Container::update(dt);
-
-    tab_button_group.update();
 }
 
 void TabContainer::calc_minimum_size() {
@@ -77,8 +77,7 @@ std::optional<uint32_t> TabContainer::get_current_tab() const {
 
 void TabContainer::set_current_tab(uint32_t index) {
     current_tab = index;
-    tab_buttons[index]->press();
-    tab_button_group.pressed_button = tab_buttons[index];
+    tab_buttons[index]->set_pressed(true);
 }
 
 void TabContainer::draw() {
@@ -109,10 +108,9 @@ void TabContainer::add_tab_button() {
 
     uint32_t button_idx = tab_buttons.size();
     button->set_text("Tab " + std::to_string(button_idx));
-
     tab_buttons.push_back(button);
 
-    tab_button_group.add_button(button);
+    tab_button_group->add_button(button);
 
     auto callback = [this, button_idx] { current_tab = button_idx; };
     button->connect_signal("pressed", callback);

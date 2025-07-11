@@ -11,6 +11,8 @@
 
 namespace revector {
 
+class ButtonGroup;
+
 class Button : public NodeUi {
     friend class ButtonGroup;
 
@@ -50,6 +52,8 @@ public:
 
     void set_toggle_mode(bool enable);
 
+    void set_pressed(bool p_pressed);
+
     bool get_pressed() const {
         return pressed;
     }
@@ -63,9 +67,11 @@ public:
         disabled_ = disabled;
     }
 
-    void press();
+    // void set_pressed(true);
 
     void set_animated(bool animated);
+
+    ButtonGroup *group = nullptr;
 
     // Styles.
     StyleBox theme_normal;
@@ -73,6 +79,7 @@ public:
     StyleBox theme_pressed;
     StyleBox theme_disabled;
     StyleBox active_style_box;
+    StyleBox target_style_box;
 
 protected:
     /**
@@ -94,6 +101,9 @@ protected:
 
     bool animated_ = true;
 
+    float lerp_elapsed_ = 0.0;
+    float lerp_duration_ = 1.0; // In second
+
     /// Button[HBoxContainer[TextureRect, Label]]
     std::shared_ptr<MarginContainer> margin_container;
     std::shared_ptr<HBoxContainer> hbox_container;
@@ -107,8 +117,6 @@ protected:
     std::vector<AnyCallable<void>> pressed_callbacks;
     std::vector<AnyCallable<void>> toggled_callbacks;
     std::vector<AnyCallable<void>> hovered_callbacks;
-    std::vector<AnyCallable<void>> down_callbacks;
-    std::vector<AnyCallable<void>> up_callbacks;
 
     void when_pressed();
 
@@ -119,12 +127,9 @@ class ButtonGroup {
 public:
     void add_button(const std::weak_ptr<Button> &new_button);
 
-    void update();
+    void when_pressed(Button *pressed);
 
     std::vector<std::weak_ptr<Button>> buttons;
-    std::weak_ptr<Button> pressed_button;
-
-    std::vector<AnyCallable<void>> pressed_callbacks;
 };
 
 } // namespace revector

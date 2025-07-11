@@ -50,14 +50,41 @@ Button::Button() {
 
     add_embedded_child(margin_container);
 
+    pressed_callbacks.emplace_back([this]() {
+        target_style_box = theme_pressed;
+        active_style_box = theme_pressed;
+        lerp_elapsed_ = lerp_duration_;
+    });
+
+    toggled_callbacks.emplace_back([this](bool toggled) {
+        lerp_elapsed_ = lerp_duration_;
+        if (toggled) {
+            target_style_box = theme_pressed;
+            active_style_box = theme_pressed;
+        } else {
+            target_style_box = theme_normal;
+            active_style_box = theme_normal;
+        }
+    });
+
     callbacks_cursor_entered.emplace_back([this] {
         hovered = true;
         InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Hand);
+        target_style_box = theme_hovered;
+        active_style_box = theme_hovered;
+        lerp_elapsed_ = lerp_duration_;
     });
 
     callbacks_cursor_exited.emplace_back([this] {
         hovered = false;
         InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow);
+        if (pressed) {
+            target_style_box = theme_pressed;
+            lerp_elapsed_ = 0;
+        } else {
+            target_style_box = theme_normal;
+            lerp_elapsed_ = 0;
+        }
     });
 }
 
@@ -75,6 +102,7 @@ void Button::ready() {
     ready_ = true;
 
     active_style_box = theme_normal;
+    target_style_box = theme_normal;
 
     custom_ready();
 }
@@ -161,11 +189,15 @@ void Button::input(InputEvent &event) {
 void Button::update(double dt) {
     NodeUi::update(dt);
 
-    // std::vector<Node *> descendants;
-    // dfs_preorder_ltr_traversal(margin_container.get(), descendants);
-    // for (auto &node : descendants) {
-    //     node->update(dt);
-    // }
+    if (animated_) {
+        if (lerp_elapsed_ < lerp_duration_) {
+            lerp_elapsed_ += dt;
+            float t = std::clamp(lerp_elapsed_ / lerp_duration_, 0.0f, 1.0f);
+            active_style_box = active_style_box.lerp_style_box(target_style_box, t);
+        }
+    } else {
+        active_style_box = target_style_box;
+    }
 }
 
 void Button::draw() {
@@ -195,28 +227,6 @@ void Button::draw() {
 
     // Draw style box.
     if (!flat_) {
-        StyleBox target_style_box;
-        if (pressed) {
-            target_style_box = theme_pressed;
-
-            // When toggled, hovering the button should show the hover effect.
-            if (toggle_mode && hovered) {
-                target_style_box = theme_hovered;
-                active_style_box = theme_hovered;
-            }
-        } else if (hovered) {
-            target_style_box = theme_hovered;
-            active_style_box = theme_hovered;
-        } else {
-            target_style_box = theme_normal;
-        }
-
-        if (animated_) {
-            active_style_box = active_style_box.lerp_style_box(target_style_box, 0.1);
-        } else {
-            active_style_box = target_style_box;
-        }
-
         // Consider modulating.
         target_style_box.bg_color = ColorU(target_style_box.bg_color.to_f32() * modulate.to_f32());
         target_style_box.border_color = ColorU(target_style_box.border_color.to_f32() * modulate.to_f32());
@@ -248,6 +258,9 @@ void Button::set_size(Vec2F p_size) {
 void Button::when_pressed() {
     for (auto &callback : pressed_callbacks) {
         callback();
+    }
+    if (group) {
+        group->when_pressed(this);
     }
 }
 
@@ -308,39 +321,56 @@ void Button::set_toggle_mode(bool enable) {
     toggle_mode = enable;
 }
 
-void Button::press() {
+void Button::set_pressed(bool p_pressed) {
     if (disabled_) {
         return;
     }
 
-    if (toggle_mode) {
-        pressed = !pressed;
-        when_toggled(pressed);
-    } else {
+    if (!pressed && p_pressed) {
         when_pressed();
+        if (toggle_mode) {
+            when_toggled(true);
+        }
     }
+    if (pressed && !p_pressed) {
+        if (toggle_mode) {
+            when_toggled(false);
+        }
+    }
+    pressed = p_pressed;
 }
+
+// void Button::set_pressed(true) {
+//
+//
+//     if (toggle_mode) {
+//         pressed = !pressed;
+//         when_toggled(pressed);
+//     } else {
+//         when_pressed();
+//     }
+// }
 
 void Button::set_animated(bool animated) {
     animated_ = animated;
 }
 
-void ButtonGroup::update() {
+void ButtonGroup::when_pressed(Button *pressed) {
     // We should not trigger any button signals when changing their states from ButtonGroup.
     for (auto &b : buttons) {
-        if (b.lock() == pressed_button.lock()) {
-            b.lock()->pressed = true;
+        // b.lock()->pressed = false;
+
+        if (b.lock().get() == pressed) {
+            // b.lock()->set_pressed_no_signal(true);
         } else {
-            b.lock()->pressed = false;
+            b.lock()->set_pressed(false);
         }
     }
 }
 
 void ButtonGroup::add_button(const std::weak_ptr<Button> &new_button) {
+    new_button.lock()->group = this;
     buttons.push_back(new_button);
-
-    auto callback = [this, new_button] { pressed_button = new_button; };
-    new_button.lock()->connect_signal("pressed", callback);
 }
 
 } // namespace revector

@@ -79,8 +79,10 @@ void NodeUi::input(InputEvent &event) {
 
             if (active_rect.contains_point(event.args.mouse_motion.position)) {
                 if (!event.consumed) {
+                    if (!is_cursor_inside) {
+                        cursor_entered();
+                    }
                     is_cursor_inside = true;
-                    cursor_entered();
                 }
 
                 consume_flag = true;
