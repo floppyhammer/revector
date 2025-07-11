@@ -50,6 +50,9 @@ Button::Button() {
 
     add_embedded_child(margin_container);
 
+    // In order to make a button responsive, no animation should be set when it is pressed/hovered.
+    // Animations should only happen upon unpressing/unhovering.
+
     pressed_callbacks.emplace_back([this]() {
         target_style_box = theme_pressed;
         active_style_box = theme_pressed;
@@ -356,7 +359,6 @@ void Button::set_animated(bool animated) {
 }
 
 void ButtonGroup::when_pressed(Button *pressed) {
-    // We should not trigger any button signals when changing their states from ButtonGroup.
     for (auto &b : buttons) {
         // b.lock()->pressed = false;
 
