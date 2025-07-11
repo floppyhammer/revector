@@ -67,6 +67,18 @@ void Button::calc_minimum_size() {
     calculated_minimum_size = container_size;
 }
 
+void Button::ready() {
+    if (ready_) {
+        return;
+    }
+
+    ready_ = true;
+
+    active_style_box = theme_normal;
+
+    custom_ready();
+}
+
 void Button::input(InputEvent &event) {
     auto global_position = get_global_position();
 
@@ -175,30 +187,40 @@ void Button::draw() {
         label->set_text_style(TextStyle{default_theme->button.colors["text"]});
     }
 
-    // Draw bg.
-    std::optional<StyleBox> active_style_box;
     if (pressed) {
-        active_style_box = theme_pressed;
-
-        // When toggled, hovering the button should show the hover effect.
-        if (toggle_mode && hovered) {
-            active_style_box = theme_hovered;
-        }
-
         if (icon_pressed_) {
             icon_rect->set_texture(icon_pressed_);
         }
-    } else if (hovered) {
-        active_style_box = theme_hovered;
-    } else {
-        active_style_box = theme_normal;
     }
 
-    active_style_box->bg_color = ColorU(active_style_box->bg_color.to_f32() * modulate.to_f32());
-    active_style_box->border_color = ColorU(active_style_box->border_color.to_f32() * modulate.to_f32());
+    // Draw style box.
+    if (!flat_) {
+        StyleBox target_style_box;
+        if (pressed) {
+            target_style_box = theme_pressed;
 
-    if (active_style_box.has_value() && !flat_) {
-        vector_server->draw_style_box(active_style_box.value(), global_position, size);
+            // When toggled, hovering the button should show the hover effect.
+            if (toggle_mode && hovered) {
+                target_style_box = theme_hovered;
+            }
+        } else if (hovered) {
+            target_style_box = theme_hovered;
+            active_style_box = theme_hovered;
+        } else {
+            target_style_box = theme_normal;
+        }
+
+        if (animation_enabled) {
+            active_style_box = active_style_box.lerp_style_box(target_style_box, 0.1);
+        } else {
+            active_style_box = target_style_box;
+        }
+
+        // Consider modulating.
+        target_style_box.bg_color = ColorU(target_style_box.bg_color.to_f32() * modulate.to_f32());
+        target_style_box.border_color = ColorU(target_style_box.border_color.to_f32() * modulate.to_f32());
+
+        vector_server->draw_style_box(active_style_box, global_position, size);
     }
 
     NodeUi::draw();

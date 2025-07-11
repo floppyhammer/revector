@@ -123,6 +123,11 @@ struct ColorU {
     }
 };
 
+inline std::ostream& operator<<(std::ostream& os, const ColorU& obj) {
+    os << "ColorU(" << (int)obj.r_ << "," << (int)obj.g_ << "," << (int)obj.b_ << "," << (int)obj.a_ << ")";
+    return os;
+}
+
 } // namespace Pathfinder
 
 #endif // PATHFINDER_COLOR_H

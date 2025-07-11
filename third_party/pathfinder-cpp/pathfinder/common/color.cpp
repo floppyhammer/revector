@@ -57,6 +57,9 @@ ColorF::ColorF(float r, float g, float b, float a) : r_(r), g_(g), b_(b), a_(a) 
 }
 
 ColorF ColorF::lerp(const ColorF& other, float t) const {
+    assert(t >= 0 && t <= 1);
+    t = clamp(t, 0.0f, 1.0f);
+
     return {
         r_ + (other.r_ - r_) * t,
         g_ + (other.g_ - g_) * t,

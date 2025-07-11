@@ -165,7 +165,7 @@ void PopupMenu::calc_minimum_size() {
 void PopupMenu::create_item(const std::string &text) {
     auto new_item = std::make_shared<Button>();
     new_item->set_text(text);
-    new_item->theme_normal.bg_color = ColorU::transparent_black();
+    new_item->theme_normal.bg_color = ColorU(255, 255, 255, 0);
     new_item->theme_normal.border_width = 0;
     new_item->theme_hovered.bg_color = ColorU(67, 67, 67);
     new_item->theme_hovered.border_width = 0;

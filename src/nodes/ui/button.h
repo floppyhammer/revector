@@ -17,6 +17,8 @@ class Button : public NodeUi {
 public:
     Button();
 
+    void ready() override;
+
     void input(InputEvent &event) override;
 
     void update(double dt) override;
@@ -68,6 +70,7 @@ public:
     StyleBox theme_hovered;
     StyleBox theme_pressed;
     StyleBox theme_disabled;
+    StyleBox active_style_box;
 
 protected:
     /**
@@ -86,6 +89,8 @@ protected:
     bool flat_ = false;
 
     bool disabled_ = false;
+
+    bool animation_enabled = true;
 
     /// Button[HBoxContainer[TextureRect, Label]]
     std::shared_ptr<MarginContainer> margin_container;
