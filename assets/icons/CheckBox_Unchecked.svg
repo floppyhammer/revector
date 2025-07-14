@@ -23,11 +23,11 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="12.546875"
      inkscape:cx="0.43835616"
-     inkscape:cy="18.211706"
+     inkscape:cy="18.132005"
      inkscape:window-width="1033"
      inkscape:window-height="749"
-     inkscape:window-x="461"
-     inkscape:window-y="81"
+     inkscape:window-x="436"
+     inkscape:window-y="122"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg1" />
   <rect
@@ -39,5 +39,5 @@
      fill-opacity=".2"
      rx="2.333"
      id="rect1"
-     style="stroke-width:2;stroke-dasharray:none;stroke:#cdcdcd;stroke-opacity:1" />
+     style="stroke-width:2;stroke-dasharray:none;stroke:#d65d33;stroke-opacity:1;fill:none;fill-opacity:1" />
 </svg>
