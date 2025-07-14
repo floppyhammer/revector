@@ -50,7 +50,7 @@ Button::Button() {
 
     add_embedded_child(margin_container);
 
-    // In order to make a button responsive, no animation should be set when it is pressed/hovered.
+    // To make a button responsive, no animation should be set when it is pressed/hovered.
     // Animations should only happen upon unpressing/unhovering.
 
     pressed_callbacks.emplace_back([this]() {
@@ -104,8 +104,15 @@ void Button::ready() {
 
     ready_ = true;
 
-    active_style_box = theme_normal;
-    target_style_box = theme_normal;
+    if (pressed) {
+        target_style_box = theme_pressed;
+        active_style_box = theme_pressed;
+    } else {
+        target_style_box = theme_normal;
+        active_style_box = theme_normal;
+    }
+
+    lerp_elapsed_ = lerp_duration_;
 
     custom_ready();
 }
@@ -171,7 +178,11 @@ void Button::input(InputEvent &event) {
                                     when_pressed();
                                 }
 
-                                when_toggled(pressed);
+                                if (group) {
+                                    group->when_pressed(this);
+                                } else {
+                                    when_toggled(pressed);
+                                }
                             }
                         }
                     }
@@ -262,8 +273,11 @@ void Button::when_pressed() {
     for (auto &callback : pressed_callbacks) {
         callback();
     }
-    if (group) {
-        group->when_pressed(this);
+}
+
+void Button::when_released() {
+    for (auto &callback : pressed_callbacks) {
+        callback();
     }
 }
 
@@ -280,8 +294,14 @@ void Button::when_toggled(bool pressed) {
 void Button::connect_signal(const std::string &signal, const AnyCallable<void> &callback) {
     NodeUi::connect_signal(signal, callback);
 
+    if (signal == "hovered") {
+        hovered_callbacks.push_back(callback);
+    }
     if (signal == "pressed") {
         pressed_callbacks.push_back(callback);
+    }
+    if (signal == "released") {
+        released_callbacks.push_back(callback);
     }
     if (signal == "toggled") {
         toggled_callbacks.push_back(callback);
@@ -343,30 +363,13 @@ void Button::set_pressed(bool p_pressed) {
     pressed = p_pressed;
 }
 
-// void Button::set_pressed(true) {
-//
-//
-//     if (toggle_mode) {
-//         pressed = !pressed;
-//         when_toggled(pressed);
-//     } else {
-//         when_pressed();
-//     }
-// }
-
 void Button::set_animated(bool animated) {
     animated_ = animated;
 }
 
-void ButtonGroup::when_pressed(Button *pressed) {
+void ButtonGroup::when_pressed(Button *button) {
     for (auto &b : buttons) {
-        // b.lock()->pressed = false;
-
-        if (b.lock().get() == pressed) {
-            // b.lock()->set_pressed_no_signal(true);
-        } else {
-            b.lock()->set_pressed(false);
-        }
+        b.lock()->set_pressed(b.lock().get() == button);
     }
 }
 

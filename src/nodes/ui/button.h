@@ -114,11 +114,14 @@ protected:
     std::shared_ptr<Image> icon_pressed_;
 
     // Callbacks.
-    std::vector<AnyCallable<void>> pressed_callbacks;
-    std::vector<AnyCallable<void>> toggled_callbacks;
     std::vector<AnyCallable<void>> hovered_callbacks;
+    std::vector<AnyCallable<void>> pressed_callbacks;  // Button is down
+    std::vector<AnyCallable<void>> released_callbacks; // Button is up
+    std::vector<AnyCallable<void>> toggled_callbacks;  // For toggle mode only
 
     void when_pressed();
+
+    void when_released();
 
     void when_toggled(bool pressed);
 };
