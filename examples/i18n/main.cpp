@@ -84,7 +84,7 @@ class MyNode : public Node {
 };
 
 int main() {
-    App app({1280, 720});
+    App app({1280, 720}, true);
 
     app.get_tree()->replace_root(std::make_shared<MyNode>());
 
