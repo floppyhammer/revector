@@ -6,6 +6,8 @@
 
 namespace revector {
 
+class Font;
+
 class Theme {
 public:
     Theme() = default;
@@ -177,6 +179,8 @@ public:
             }
         }
 
+        theme->load_system_font();
+
         return theme;
     }
 
@@ -347,8 +351,14 @@ public:
             }
         }
 
+        theme->load_system_font();
+
         return theme;
     }
+
+    void load_system_font();
+
+    std::shared_ptr<Font> font;
 
     uint32_t font_size = 24;
 

@@ -212,10 +212,14 @@ Label::Label() {
 
     text_ = "Label";
 
-    font = DefaultResource::get_singleton()->get_default_font();
-    // emoji_font = ResourceManager::get_singleton()->load<Font>("assets/fonts/EmojiOneColor.otf");
-
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
+
+    if (default_theme->font) {
+        font = default_theme->font;
+    } else {
+        font = DefaultResource::get_singleton()->get_default_font();
+    }
+    // emoji_font = ResourceManager::get_singleton()->load<Font>("assets/fonts/EmojiOneColor.otf");
 
     text_style.color = default_theme->label.colors["text"];
     theme_background = default_theme->label.styles["background"];
