@@ -148,7 +148,7 @@ public:
 
 protected:
     Vec2F position{0};
-    Vec2F size{16, 16};
+    Vec2F size{1, 1};
     Vec2F scale{1};
     Vec2F pivot_offset{0}; // Top-left as the default pivot.
     float rotation = 0;
