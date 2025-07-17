@@ -35,22 +35,17 @@ class Label : public NodeUi {
 public:
     Label();
 
-    /**
-     * Set text context.
-     * @note See https://www.freetype.org/freetype2/docs/glyphs/glyphs-3.html for glyph conventions.
-     * @param new_text Text string.
-     */
     void set_text(const std::string &new_text);
 
     std::string get_text() const;
 
     std::u32string get_text_u32() const;
 
-    void insert_text(uint32_t codepint_position, const std::string &new_text);
+    void insert_text(uint32_t codepoint_position, const std::string &new_text);
 
-    void remove_text(uint32_t codepint_position, uint32_t count);
+    void remove_text(uint32_t codepoint_position, uint32_t count);
 
-    std::string get_sub_text(uint32_t codepint_position, uint32_t count) const;
+    std::string get_sub_text(uint32_t codepoint_position, uint32_t count) const;
 
     void set_size(Vec2F new_size) override;
 

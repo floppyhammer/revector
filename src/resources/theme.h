@@ -163,6 +163,7 @@ public:
                 auto style_box = StyleBox();
                 style_box.corner_radius = 8;
                 style_box.border_width = 2;
+                style_box.border_color = theme->accent_color;
                 style_box.bg_color = ColorU(10, 10, 10);
                 theme->text_edit.styles["focused"] = style_box;
             }
@@ -307,9 +308,10 @@ public:
 
             {
                 auto style_box = StyleBox();
+                style_box.corner_radius = 8;
                 style_box.border_width = 2;
+                style_box.border_color = theme->accent_color;
                 style_box.bg_color = ColorU(232, 232, 232);
-                style_box.border_color = ColorU(188, 188, 188);
                 theme->text_edit.styles["focused"] = style_box;
             }
 

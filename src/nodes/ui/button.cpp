@@ -163,7 +163,7 @@ void Button::input(InputEvent &event) {
                             pressed_inside = true;
                         } else {
                             if (pressed_inside) {
-                                when_pressed();
+                                notify_pressed();
                             }
                         }
                     } else {
@@ -175,13 +175,13 @@ void Button::input(InputEvent &event) {
                                     pressed = false;
                                 } else {
                                     pressed = true;
-                                    when_pressed();
+                                    notify_pressed();
                                 }
 
                                 if (group) {
-                                    group->when_pressed(this);
+                                    group->notify_pressed(this);
                                 } else {
-                                    when_toggled(pressed);
+                                    notify_toggled(pressed);
                                 }
                             }
                         }
@@ -269,19 +269,19 @@ void Button::set_size(Vec2F p_size) {
     size = final_size;
 }
 
-void Button::when_pressed() {
+void Button::notify_pressed() {
     for (auto &callback : pressed_callbacks) {
         callback();
     }
 }
 
-void Button::when_released() {
+void Button::notify_released() {
     for (auto &callback : pressed_callbacks) {
         callback();
     }
 }
 
-void Button::when_toggled(bool pressed) {
+void Button::notify_toggled(bool pressed) {
     for (auto &callback : toggled_callbacks) {
         try {
             callback.operator()<bool>(std::move(pressed));
@@ -350,14 +350,14 @@ void Button::set_pressed(bool p_pressed) {
     }
 
     if (!pressed && p_pressed) {
-        when_pressed();
+        notify_pressed();
         if (toggle_mode) {
-            when_toggled(true);
+            notify_toggled(true);
         }
     }
     if (pressed && !p_pressed) {
         if (toggle_mode) {
-            when_toggled(false);
+            notify_toggled(false);
         }
     }
     pressed = p_pressed;
@@ -367,7 +367,7 @@ void Button::set_animated(bool animated) {
     animated_ = animated;
 }
 
-void ButtonGroup::when_pressed(Button *button) {
+void ButtonGroup::notify_pressed(Button *button) {
     for (auto &b : buttons) {
         b.lock()->set_pressed(b.lock().get() == button);
     }

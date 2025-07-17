@@ -5,6 +5,8 @@
 
 #include "../../resources/default_resource.h"
 
+// See https://www.freetype.org/freetype2/docs/glyphs/glyphs-3.html for glyph conventions.
+
 using Pathfinder::Transform2;
 
 namespace revector {
@@ -238,35 +240,35 @@ void Label::set_text(const std::string &new_text) {
     need_to_remeasure = true;
 }
 
-void Label::insert_text(uint32_t codepint_position, const std::string &new_text) {
+void Label::insert_text(uint32_t codepoint_position, const std::string &new_text) {
     if (new_text.empty()) {
         return;
     }
 
-    assert(codepint_position <= text_u32_.size() && "Codepoint index is out of bounds!");
+    assert(codepoint_position <= text_u32_.size() && "Codepoint index is out of bounds!");
 
     std::u32string new_text_u32;
     utf8_to_utf32(new_text, new_text_u32);
 
-    text_u32_.insert(codepint_position, new_text_u32);
+    text_u32_.insert(codepoint_position, new_text_u32);
     text_ = utf32_to_utf8(text_u32_);
 
     need_to_remeasure = true;
 }
 
-void Label::remove_text(uint32_t codepint_position, uint32_t count) {
-    assert((codepint_position + count) <= text_u32_.size() && "Codepoint index is out of bounds!");
+void Label::remove_text(uint32_t codepoint_position, uint32_t count) {
+    assert((codepoint_position + count) <= text_u32_.size() && "Codepoint index is out of bounds!");
 
-    text_u32_.erase(codepint_position, count);
+    text_u32_.erase(codepoint_position, count);
     text_ = utf32_to_utf8(text_u32_);
 
     need_to_remeasure = true;
 }
 
-std::string Label::get_sub_text(uint32_t codepint_position, uint32_t count) const {
-    assert((codepint_position + count) <= text_u32_.size() && "Codepoint index is out of bounds!");
+std::string Label::get_sub_text(uint32_t codepoint_position, uint32_t count) const {
+    assert((codepoint_position + count) <= text_u32_.size() && "Codepoint index is out of bounds!");
 
-    auto subtext_u32 = text_u32_.substr(codepint_position, count);
+    auto subtext_u32 = text_u32_.substr(codepoint_position, count);
     auto subtext = utf32_to_utf8(subtext_u32);
 
     return subtext;

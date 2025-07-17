@@ -104,7 +104,7 @@ protected:
     float lerp_elapsed_ = 0.0;
     float lerp_duration_ = 1.0; // In second
 
-    /// Button[HBoxContainer[TextureRect, Label]]
+    /// Embed children: Button<HBoxContainer<TextureRect, Label>>
     std::shared_ptr<MarginContainer> margin_container;
     std::shared_ptr<HBoxContainer> hbox_container;
     std::shared_ptr<TextureRect> icon_rect;
@@ -114,23 +114,23 @@ protected:
     std::shared_ptr<Image> icon_pressed_;
 
     // Callbacks.
-    std::vector<AnyCallable<void>> hovered_callbacks;
+    std::vector<AnyCallable<void>> hovered_callbacks;  // Cursor entered
     std::vector<AnyCallable<void>> pressed_callbacks;  // Button is down
     std::vector<AnyCallable<void>> released_callbacks; // Button is up
     std::vector<AnyCallable<void>> toggled_callbacks;  // For toggle mode only
 
-    void when_pressed();
+    void notify_pressed();
 
-    void when_released();
+    void notify_released();
 
-    void when_toggled(bool pressed);
+    void notify_toggled(bool pressed);
 };
 
 class ButtonGroup {
 public:
     void add_button(const std::weak_ptr<Button> &new_button);
 
-    void when_pressed(Button *pressed);
+    void notify_pressed(Button *pressed);
 
     std::vector<std::weak_ptr<Button>> buttons;
 };
