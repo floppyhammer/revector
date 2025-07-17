@@ -26,6 +26,8 @@ add_library(revector STATIC ${REVECTOR_SOURCE_FILES})
 
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
+file(COPY third_party/font-kit-wrapper/font_kit_wrapper.dll DESTINATION ${CMAKE_BINARY_DIR}/bin)
+
 # Has to be 20 or above.
 target_compile_features(revector PUBLIC cxx_std_20)
 
