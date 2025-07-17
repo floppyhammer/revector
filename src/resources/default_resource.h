@@ -30,10 +30,6 @@ public:
         return default_font;
     }
 
-    void set_default_font(std::shared_ptr<Font> font) {
-        default_font = font;
-    }
-
 private:
     std::shared_ptr<Theme> default_theme;
     std::shared_ptr<Font> default_font;

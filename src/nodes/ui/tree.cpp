@@ -94,8 +94,7 @@ TreeItem::TreeItem() {
     collapse_button->set_text("");
     collapse_button->set_icon_expand(true);
     collapse_button->set_custom_minimum_size({24, 24});
-    collapse_button->theme_normal.border_width = 0;
-    collapse_button->theme_normal.bg_color = ColorU::transparent_black();
+    collapse_button->set_flat(true);
 
     auto callback = [this] {
         collapsed = !collapsed;

@@ -26,8 +26,8 @@ add_library(revector STATIC ${REVECTOR_SOURCE_FILES})
 
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
-# Has to be 17 or above.
-target_compile_features(revector PUBLIC cxx_std_17)
+# Has to be 20 or above.
+target_compile_features(revector PUBLIC cxx_std_20)
 
 # Include external and third-party headers.
 target_include_directories(revector PUBLIC "third_party")

@@ -12,14 +12,11 @@ class MyNode : public Node {
         panel->set_anchor_flag(AnchorFlag::FullRect);
         add_child(panel);
         {
-            StyleBox new_theme;
-            new_theme.bg_color = ColorU(27, 27, 27, 255);
-            new_theme.corner_radius = 0;
-            panel->set_theme_panel(new_theme);
+            StyleBox new_bg;
+            new_bg.bg_color = ColorU(27, 27, 27, 255);
+            new_bg.corner_radius = 0;
+            panel->set_theme_panel(new_bg);
         }
-
-        DefaultResource::get_singleton()->set_default_font(
-            std::make_shared<Font>(revector::get_asset_dir("fonts/unifont-16.0.02.otf")));
 
         auto margin_container = std::make_shared<MarginContainer>();
         margin_container->set_margin_all(8);

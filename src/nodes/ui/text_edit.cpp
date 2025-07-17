@@ -3,9 +3,9 @@
 #include <string>
 
 #include "../../common/utils.h"
+#include "../../resources/default_resource.h"
 #include "../../servers/input_server.h"
 #include "container/margin_container.h"
-#include "src/resources/default_resource.h"
 
 namespace revector {
 

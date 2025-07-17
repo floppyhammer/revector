@@ -12,9 +12,12 @@ class MyNode : public Node {
         panel->set_size({200, 300});
         add_child(panel);
 
+        auto margin_container = std::make_shared<MarginContainer>();
+        margin_container->set_anchor_flag(AnchorFlag::FullRect);
+        panel->add_child(margin_container);
+
         auto scroll_container = std::make_shared<ScrollContainer>();
-        scroll_container->set_anchor_flag(AnchorFlag::FullRect);
-        panel->add_child(scroll_container);
+        margin_container->add_child(scroll_container);
 
         auto vbox_container = std::make_shared<VBoxContainer>();
         vbox_container->set_separation(8);
