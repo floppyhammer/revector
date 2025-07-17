@@ -15,7 +15,10 @@ MenuButton::MenuButton() {
     theme_pressed = theme_normal;
 
     menu = std::make_shared<PopupMenu>();
-    add_embedded_child(menu);
+    // Add a Node to disable transform propagation since a PopupMenu will always be in the global coordinates.
+    auto node = std::make_shared<Node>();
+    add_embedded_child(node);
+    node->add_child(menu);
 
     menu->set_visibility(false);
 
@@ -23,9 +26,8 @@ MenuButton::MenuButton() {
         if (menu->get_item_count() == 0) {
             return;
         }
-        menu->set_position(Vec2F{0, size.y});
         auto global_pos = get_global_position();
-        menu->calc_global_position(global_pos);
+        menu->set_popup_position(global_pos, size.y);
         menu->set_custom_minimum_size({size.x, 0});
         menu->set_visibility(true);
     });

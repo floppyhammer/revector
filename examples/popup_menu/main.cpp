@@ -13,8 +13,6 @@ public:
     std::weak_ptr<PopupMenu> menu_;
 
     void custom_ready() override {
-        // add_child(std::make_shared<Label>());
-
         auto menu = std::make_shared<PopupMenu>();
         for (int i = 0; i < 20; i++) {
             menu->create_item("Item " + std::to_string(i));
@@ -30,7 +28,7 @@ public:
             auto args = event.args.mouse_button;
 
             if (!args.pressed && args.button == 1) {
-                menu_.lock()->set_position(args.position);
+                menu_.lock()->set_popup_position(args.position, 0);
                 menu_.lock()->set_visibility(true);
             }
 
@@ -45,11 +43,18 @@ int main() {
     App app({640, 480}, true);
 
     // Menu of a menu button.
-    auto menu_button = std::make_shared<MenuButton>();
-    menu_button->get_popup_menu().lock()->create_item("Item 1");
-    menu_button->get_popup_menu().lock()->create_item("Item 2");
-    menu_button->get_popup_menu().lock()->create_item("Item 3");
-    app.get_tree()->get_root()->add_child(menu_button);
+    auto menu_button_top = std::make_shared<MenuButton>();
+    menu_button_top->get_popup_menu().lock()->create_item("Item 1");
+    menu_button_top->get_popup_menu().lock()->create_item("Item 2");
+    menu_button_top->get_popup_menu().lock()->create_item("Item 3");
+    app.get_tree()->get_root()->add_child(menu_button_top);
+
+    auto menu_button_bottom = std::make_shared<MenuButton>();
+    menu_button_bottom->set_position({0, 250});
+    menu_button_bottom->get_popup_menu().lock()->create_item("Item 1");
+    menu_button_bottom->get_popup_menu().lock()->create_item("Item 2");
+    menu_button_bottom->get_popup_menu().lock()->create_item("Item 3");
+    app.get_tree()->get_root()->add_child(menu_button_bottom);
 
     // Free menu.
     app.get_tree()->get_root()->add_child(std::make_shared<MyNodeUi>());

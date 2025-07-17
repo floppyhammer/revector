@@ -132,12 +132,32 @@ void PopupMenu::set_visibility(bool visible) {
         auto window = render_server->window_builder_->get_window(get_window_index());
 
         // We updated its global position in MenuButton before calling set_visibility.
-        auto global_position = get_global_position();
+        auto global_position = popup_position;
 
         float menu_width = std::max(size.x, margin_container_->get_effective_minimum_size().x);
-        float menu_height = std::min(margin_container_->get_effective_minimum_size().y,
-                                     window.lock()->get_logical_size().y - global_position.y);
-        set_size({menu_width, menu_height});
+        float menu_top_space = global_position.y;
+        float menu_bottom_space = window.lock()->get_logical_size().y - global_position.y - button_height;
+
+        float min_menu_height = margin_container_->get_effective_minimum_size().y;
+
+        bool drop_down = true;
+        float actual_menu_height = std::min(min_menu_height, menu_bottom_space);
+
+        // No enough space for dropping down.
+        if (min_menu_height > menu_bottom_space) {
+            if (menu_top_space > menu_bottom_space) {
+                drop_down = false;
+                actual_menu_height = std::min(min_menu_height, menu_top_space);
+            }
+        }
+
+        if (drop_down) {
+            set_position(popup_position + Vec2F{0, button_height});
+            set_size({menu_width, actual_menu_height});
+        } else {
+            set_position(popup_position - Vec2F{0, actual_menu_height});
+            set_size({menu_width, actual_menu_height});
+        }
     } else {
         when_popup_hide();
     }
@@ -150,6 +170,11 @@ void PopupMenu::clear_items() {
 
 void PopupMenu::calc_minimum_size() {
     calculated_minimum_size = {};
+}
+
+void PopupMenu::set_popup_position(Vec2F new_position, float new_button_height) {
+    popup_position = new_position;
+    button_height = new_button_height;
 }
 
 void PopupMenu::create_item(const std::string &text) {

@@ -93,9 +93,14 @@ public:
 
     void calc_minimum_size() override;
 
+    void set_popup_position(Vec2F new_position, float new_button_height);
+
 private:
     void when_item_selected(uint32_t item_index);
     void when_popup_hide();
+
+    Vec2F popup_position;
+    float button_height;
 
     std::shared_ptr<ScrollContainer> scroll_container_;
 
