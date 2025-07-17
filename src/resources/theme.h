@@ -175,7 +175,7 @@ public:
                 auto style_box = StyleBox();
                 style_box.border_width = 0;
                 style_box.corner_radius = 0;
-                style_box.bg_color = ColorU(35, 92, 207);
+                style_box.bg_color = theme->accent_color;
                 theme->text_edit.styles["selection"] = style_box;
             }
         }
@@ -322,7 +322,7 @@ public:
                 auto style_box = StyleBox();
                 style_box.border_width = 0;
                 style_box.corner_radius = 0;
-                style_box.bg_color = ColorU(35, 92, 207);
+                style_box.bg_color = theme->accent_color;
                 theme->text_edit.styles["selection"] = style_box;
             }
         }
