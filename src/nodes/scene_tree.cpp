@@ -154,7 +154,14 @@ void propagate_draw(Node* node) {
     node->pre_draw_children();
 
     for (auto& child : node->get_all_children()) {
-        if (typeid(*child) == typeid(SubWindow) || !node->get_visibility()) {
+        if (!node->get_visibility()) {
+            continue;
+        }
+        // Don't propagate to SubWindows/PopupMenus as we'll handle them differently.
+        if (typeid(*child) == typeid(SubWindow)) {
+            continue;
+        }
+        if (typeid(*child) == typeid(PopupMenu)) {
             continue;
         }
 
@@ -168,6 +175,8 @@ void draw_system(Node* root) {
     // Collect all sub-windows.
 
     std::vector<SubWindow*> sub_windows;
+    std::vector<PopupMenu*> popup_menus;
+
     {
         std::vector<Node*> nodes;
         dfs_preorder_ltr_traversal(root, nodes);
@@ -175,6 +184,10 @@ void draw_system(Node* root) {
             if (typeid(*node) == typeid(SubWindow)) {
                 auto sub_window = dynamic_cast<SubWindow*>(node);
                 sub_windows.push_back(sub_window);
+            }
+            if (typeid(*node) == typeid(PopupMenu)) {
+                auto popup_menu = dynamic_cast<PopupMenu*>(node);
+                popup_menus.push_back(popup_menu);
             }
         }
     }
@@ -196,6 +209,20 @@ void draw_system(Node* root) {
     VectorServer::get_singleton()->set_global_scale(
         RenderServer::get_singleton()->window_builder_->get_window(0).lock()->get_dpi_scaling_factor());
     propagate_draw(root);
+
+    // Draw sub-windows.
+    for (auto& m : popup_menus) {
+        if (!m->get_visibility()) {
+            continue;
+        }
+
+        m->pre_draw_children();
+
+        // DRAW
+        propagate_draw(m);
+
+        m->post_draw_children();
+    }
 }
 
 void calc_minimum_size(Node* root) {

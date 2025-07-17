@@ -233,11 +233,10 @@ void ScrollContainer::pre_draw_children() {
     auto size = get_size() * dpi_scale;
 
     auto vector_server = VectorServer::get_singleton();
-    vector_server->set_render_layer(render_layer);
 
     auto canvas = vector_server->get_canvas();
 
-    // Use a RenderTarget to achieve content clip, instead of using clip path.
+    // Use a RenderTarget to achieve content clip, instead of using a clip path.
     Pathfinder::RenderTargetDesc render_target_desc = {size.to_i32(), "ScrollContainer render target"};
 
     // Draw all children onto the temporary render target.
@@ -270,8 +269,6 @@ void ScrollContainer::post_draw_children() {
 
     auto dst_rect = RectF(global_pos * dpi_scale, (global_pos + size) * dpi_scale);
     vector_server->get_canvas()->draw_render_target(temp_draw_data.render_target_id, dst_rect);
-
-    vector_server->set_render_layer(0);
 }
 
 } // namespace revector

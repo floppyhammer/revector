@@ -11,8 +11,6 @@
 
 namespace revector {
 
-constexpr int MAX_RENDER_LAYER = 8;
-
 /**
  * All visible shapes will be collected by the vector server and drawn at once.
  */
@@ -61,8 +59,8 @@ public:
     /**
      * @param transform
      * @param clip_box Enable content clip, portion of anything drawn afterward
-     * outside the clip box will not show. The rect is in local coordinates and the transform will be applied to it.
-     * We shouldn't use clip path to achieve general content clip (like scrolling)
+     * outside the clip box will not show. The rect is in local coordinates, and the transform will be applied to it.
+     * We shouldn't use a clip path to achieve general content clip (like scrolling)
      * since it's quite performance heavy and easily produces nested clipping.
      */
     void draw_glyphs(std::vector<Glyph> &glyphs,
@@ -80,8 +78,6 @@ public:
 
     void set_global_scale(float new_scale);
 
-    void set_render_layer(uint8_t layer_id);
-
     // Only used with ScrollContainer.
     Transform2 global_transform_offset;
 
@@ -90,8 +86,6 @@ private:
 
     // Never expose this.
     std::shared_ptr<Pathfinder::Canvas> canvas;
-
-    std::array<std::shared_ptr<Pathfinder::Scene>, MAX_RENDER_LAYER> render_layers;
 
     float global_scale_ = 1.0f;
 };

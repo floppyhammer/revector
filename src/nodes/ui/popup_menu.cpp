@@ -12,7 +12,6 @@ PopupMenu::PopupMenu() {
     type = NodeType::PopupMenu;
 
     scroll_container_ = std::make_shared<ScrollContainer>();
-    scroll_container_->render_layer = 1;
     scroll_container_->set_anchor_flag(AnchorFlag::FullRect);
     add_embedded_child(scroll_container_);
 
@@ -54,9 +53,7 @@ void PopupMenu::draw() {
     NodeUi::draw();
 
     if (theme_bg_.has_value()) {
-        vector_server->set_render_layer(render_layer);
         vector_server->draw_style_box(theme_bg_.value(), get_global_position(), size);
-        vector_server->set_render_layer(0);
     }
 
     // auto global_position = get_global_position();

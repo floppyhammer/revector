@@ -141,9 +141,6 @@ public:
 
     SceneTree *get_tree() const;
 
-    // todo: remove this
-    int render_layer = 0;
-
 protected:
     NodeType type = NodeType::Node;
 

@@ -15,7 +15,6 @@ MenuButton::MenuButton() {
     theme_pressed = theme_normal;
 
     menu = std::make_shared<PopupMenu>();
-    menu->render_layer = 1;
     add_embedded_child(menu);
 
     menu->set_visibility(false);
