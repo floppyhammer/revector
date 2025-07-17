@@ -47,12 +47,12 @@ struct MaskStorage {
 
 enum class RenderLevel {
     D3d9,
-    D3d11,
+    D3d11, // Buggy
 };
 
 /// In most cases, we have only one renderer set up, while having
 /// multiple scenes prepared for rendering.
-/// All GPU operations happens in the renderer.
+/// All GPU operations happen in the renderer.
 class Renderer {
 public:
     Renderer(const std::shared_ptr<Device> &_device, const std::shared_ptr<Queue> &_queue);
