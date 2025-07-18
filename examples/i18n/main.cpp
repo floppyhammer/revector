@@ -36,10 +36,6 @@ class MyNode : public Node {
         text += "שלום עולם!\n\n";                // Hebrew
         text += "Hello123!مرحبا٠١٢!你好123！\n"; // Mixed languages
 
-        // auto font = std::make_shared<Font>("assets/fonts/test.ttf");
-        DefaultResource::get_singleton()->set_default_font(
-            std::make_shared<Font>(get_asset_dir("fonts/unifont-16.0.02.otf")));
-
         // No word wrapping.
         {
             auto label = std::make_shared<Label>();
