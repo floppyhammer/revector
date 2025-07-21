@@ -87,9 +87,6 @@ public:
     /// Runs once per frame.
     virtual void calc_minimum_size();
 
-    /// Only for secondary (off-tree) nodes.
-    void calc_minimum_size_recursively();
-
     bool is_ui_node() const override {
         return true;
     }

@@ -11,17 +11,26 @@ namespace revector {
 PopupMenu::PopupMenu() {
     type = NodeType::PopupMenu;
 
-    scroll_container_ = std::make_shared<ScrollContainer>();
-    scroll_container_->set_anchor_flag(AnchorFlag::FullRect);
-    add_embedded_child(scroll_container_);
-
     margin_container_ = std::make_shared<MarginContainer>();
-    scroll_container_->add_child(margin_container_);
+    margin_container_->name = "PopupMenu embedded margin container";
+    margin_container_->set_anchor_flag(AnchorFlag::FullRect);
+    add_embedded_child(margin_container_);
+
+    scroll_container_ = std::make_shared<ScrollContainer>();
+    scroll_container_->enable_hscroll(false);
+    margin_container_->add_child(scroll_container_);
+
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
     theme_bg_ = std::make_optional(default_theme->popup_menu.styles["background"]);
 
+    // Add an extra one-pixel margin to avoid rendering glitch of a scroll RenderTarget.
+    auto glitch_margin_container = std::make_shared<MarginContainer>();
+    glitch_margin_container->name = "PopupMenu embedded glitch fixing margin container";
+    glitch_margin_container->set_margin_all(1);
+    scroll_container_->add_child(glitch_margin_container);
+
     vbox_container_ = std::make_shared<VBoxContainer>();
-    margin_container_->add_child(vbox_container_);
+    glitch_margin_container->add_child(vbox_container_);
 
     auto callback = [this] { set_visibility(false); };
     connect_signal("focus_released", callback);
@@ -125,9 +134,6 @@ void PopupMenu::input(InputEvent &event) {
 void PopupMenu::set_visibility(bool visible) {
     visible_ = visible;
     if (visible_) {
-        // TODO: we should not do this manually in here.
-        margin_container_->calc_minimum_size_recursively();
-
         auto render_server = RenderServer::get_singleton();
         auto window = render_server->window_builder_->get_window(get_window_index());
 
@@ -138,7 +144,8 @@ void PopupMenu::set_visibility(bool visible) {
         float menu_top_space = global_position.y;
         float menu_bottom_space = window.lock()->get_logical_size().y - global_position.y - button_height;
 
-        float min_menu_height = margin_container_->get_effective_minimum_size().y;
+        float min_menu_height = vbox_container_->get_effective_minimum_size().y + margin_container_->get_margin().top +
+                                margin_container_->get_margin().bottom + 2; // 2 comes from the glitch margin container.
 
         bool drop_down = true;
         float actual_menu_height = std::min(min_menu_height, menu_bottom_space);
@@ -169,7 +176,7 @@ void PopupMenu::clear_items() {
 }
 
 void PopupMenu::calc_minimum_size() {
-    calculated_minimum_size = {};
+    calculated_minimum_size = margin_container_->get_effective_minimum_size();
 }
 
 void PopupMenu::set_popup_position(Vec2F new_position, float new_button_height) {

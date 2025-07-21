@@ -46,4 +46,8 @@ void MarginContainer::set_margin(const RectF &margin) {
     margin_ = margin;
 }
 
+RectF MarginContainer::get_margin() const {
+    return margin_;
+}
+
 } // namespace revector

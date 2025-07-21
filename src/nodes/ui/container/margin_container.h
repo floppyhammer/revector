@@ -18,6 +18,8 @@ public:
 
     void set_margin(const RectF &margin);
 
+    RectF get_margin() const;
+
     void set_margin_all(float margin);
 
 private:

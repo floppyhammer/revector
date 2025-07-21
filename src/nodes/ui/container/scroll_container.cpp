@@ -7,10 +7,10 @@ namespace revector {
 ScrollContainer::ScrollContainer() {
     type = NodeType::ScrollContainer;
 
-    theme_scroll_bar.bg_color = ColorU(100, 100, 100, 50);
+    theme_scroll_bar.bg_color = ColorU(100, 100, 100, 100);
     theme_scroll_bar.corner_radius = 8;
 
-    theme_scroll_grabber.bg_color = ColorU(163, 163, 163, 255);
+    theme_scroll_grabber.bg_color = ColorU(163, 163, 163, 150);
     theme_scroll_grabber.corner_radius = 8;
 }
 
@@ -46,7 +46,24 @@ void ScrollContainer::adjust_layout() {
 }
 
 void ScrollContainer::calc_minimum_size() {
-    calculated_minimum_size = custom_minimum_size;
+    // Get the minimum child size.
+    Vec2F min_child_size{};
+    for (const auto &child : children) {
+        if (!child->is_ui_node()) {
+            continue;
+        }
+        auto cast_child = dynamic_cast<NodeUi *>(child.get());
+        auto child_min_size = cast_child->get_effective_minimum_size();
+        min_child_size = min_child_size.max(child_min_size);
+    }
+
+    calculated_minimum_size = {};
+    if (!hscroll_enabled) {
+        calculated_minimum_size.x = min_child_size.x;
+    }
+    if (!vscroll_enabled) {
+        calculated_minimum_size.y = min_child_size.y;
+    }
 }
 
 void ScrollContainer::input(InputEvent &event) {
@@ -149,7 +166,7 @@ void ScrollContainer::draw_scroll_bar() {
     auto global_pos = get_global_position();
     auto size = get_size();
 
-    float bar_width = 2.0;
+    float bar_width = 4.0;
 
     // Vertical.
     if (content_size.y > size.y) {

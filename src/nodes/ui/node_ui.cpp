@@ -16,25 +16,6 @@ void NodeUi::calc_minimum_size() {
     calculated_minimum_size = {};
 }
 
-void NodeUi::calc_minimum_size_recursively() {
-    std::vector<Node *> secondary_nodes;
-    dfs_postorder_ltr_traversal(this, secondary_nodes);
-    for (auto &node : secondary_nodes) {
-        if (node->is_ui_node()) {
-            auto ui_node = dynamic_cast<NodeUi *>(node);
-            ui_node->calc_minimum_size();
-
-            // Debug.
-            // auto effective_minimum_size = ui_node->get_effective_minimum_size();
-            // auto child_name = get_node_type_name(ui_node->type);
-            // auto _ = 0;
-        }
-    }
-
-    // After we get all children's minimum sizes, we calculate it own minimum size.
-    calc_minimum_size();
-}
-
 Vec2F NodeUi::get_effective_minimum_size() const {
     // Take both custom_minimum_size and calculated_minimum_size into account.
     return custom_minimum_size.max(calculated_minimum_size);
