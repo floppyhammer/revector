@@ -7,8 +7,8 @@ namespace revector {
 ScrollContainer::ScrollContainer() {
     type = NodeType::ScrollContainer;
 
-    theme_scroll_bar.bg_color = ColorU(100, 100, 100, 100);
-    theme_scroll_bar.corner_radius = 8;
+    theme_scroll_bar.bg_color = ColorU(100, 100, 100, 0);
+    theme_scroll_bar.corner_radius = 0;
 
     theme_scroll_grabber.bg_color = ColorU(163, 163, 163, 150);
     theme_scroll_grabber.corner_radius = 8;
@@ -275,10 +275,6 @@ void ScrollContainer::post_draw_children() {
 
     auto canvas = vector_server->get_canvas();
 
-    draw_scroll_bar();
-
-    vector_server->global_transform_offset = Transform2();
-
     // Don't draw on the temporary render target anymore.
     canvas->get_scene()->pop_render_target();
 
@@ -286,6 +282,9 @@ void ScrollContainer::post_draw_children() {
 
     auto dst_rect = RectF(global_pos * dpi_scale, (global_pos + size) * dpi_scale);
     vector_server->get_canvas()->draw_render_target(temp_draw_data.render_target_id, dst_rect);
+
+    vector_server->global_transform_offset = Transform2();
+    draw_scroll_bar();
 }
 
 } // namespace revector
