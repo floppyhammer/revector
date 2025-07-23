@@ -27,14 +27,14 @@
  * For licensing issues, contact <fribidi.license@gmail.com>.
  */
 
+#include "common.h"
+
 #include <fribidi-bidi.h>
-#include <fribidi-brackets.h>
 #include <fribidi-mirroring.h>
+#include <fribidi-brackets.h>
 #include <fribidi-unicode.h>
-#include <string.h>
 
 #include "bidi-types.h"
-#include "common.h"
 #include "run.h"
 
 /*

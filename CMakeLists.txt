@@ -83,7 +83,7 @@ endif ()
 if (REVECTOR_FRIBIDI)
     # Alternative to icu4c. If the target platform comes with ICU, we just use it.
     # Else, we build fribidi. It's too cumbersome to build ICU ourselves.
-    add_subdirectory("third_party/fribidi")
+    add_subdirectory("third_party/fribidi-1.0.16")
     target_link_libraries(revector PUBLIC fribidi)
 
     target_compile_definitions(revector PUBLIC REVECTOR_USE_FRIBIDI)

@@ -1,0 +1,1 @@
+You should build fribidi once with meson to get `fribidi-config.h`.
