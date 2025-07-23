@@ -21,6 +21,8 @@ SubWindow::SubWindow(Vec2I size) {
 
     auto swap_chain_ = window->get_swap_chain(render_server->device_);
 
+    blit_ = std::make_shared<Blit>(render_server->device_, render_server->queue_, swap_chain_->get_surface_format());
+
     vector_target_ =
         render_server->device_->create_texture({size_, Pathfinder::TextureFormat::Rgba8Unorm}, "dst texture");
 }
