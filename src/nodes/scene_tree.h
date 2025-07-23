@@ -27,6 +27,8 @@ class Window;
 
 namespace revector {
 
+class SubWindow;
+
 void transform_system(Node* root);
 
 void draw_system(Node* root);
@@ -39,11 +41,11 @@ class SceneTree {
     friend class App;
 
 public:
-    explicit SceneTree();
+    explicit SceneTree(Vec2I primary_window_size);
 
     void process(double dt);
 
-    std::shared_ptr<Node> replace_root(const std::shared_ptr<Node>& new_root);
+    bool render();
 
     std::shared_ptr<Node> get_root() const;
 
@@ -56,7 +58,8 @@ public:
     std::weak_ptr<Pathfinder::Window> get_primary_window() const;
 
 private:
-    std::shared_ptr<Node> root;
+    /// Primary window
+    std::shared_ptr<SubWindow> root;
 
     bool quited = false;
 };

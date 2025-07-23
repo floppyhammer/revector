@@ -211,7 +211,7 @@ void NodeUi::apply_anchor() {
 
     Vec2F parent_size;
 
-    // If no parent or the parent is not a UI node, use the parent window's size for anchoring.
+    // If it has no parent or the parent is not a UI node, use the parent window's size for anchoring.
     if (parent && parent->is_ui_node()) {
         auto ui_parent = dynamic_cast<NodeUi *>(parent);
         parent_size = ui_parent->get_size();

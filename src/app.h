@@ -35,8 +35,6 @@ private:
     std::unique_ptr<SceneTree> tree;
 
     bool dark_mode_ = false;
-
-    std::shared_ptr<Pathfinder::Texture> vector_target_;
 };
 
 } // namespace revector

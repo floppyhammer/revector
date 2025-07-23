@@ -5,6 +5,8 @@
 
 namespace revector {
 
+class Blit;
+
 /// A sub-window besides the primary window.
 class SubWindow : public Node {
     friend class SceneTree;
@@ -12,21 +14,19 @@ class SubWindow : public Node {
 public:
     explicit SubWindow(Vec2I size);
 
+    explicit SubWindow(Vec2I size, int window_index);
+
     void update(double dt) override;
 
-    void pre_draw_children() override;
+    void pre_draw_propagation();
 
-    void post_draw_children() override;
+    void post_draw_propagation();
 
     Vec2I get_size() const;
 
     void set_visibility(bool visible) override;
 
     std::shared_ptr<Pathfinder::Window> get_raw_window() const;
-
-    // std::shared_ptr<Pathfinder::SwapChain> get_swap_chain() const {
-    //     return swap_chain_;
-    // }
 
     std::shared_ptr<Pathfinder::Texture> get_vector_target() const {
         return vector_target_;
@@ -39,11 +39,11 @@ public:
 protected:
     Vec2I size_;
 
-    uint8_t window_index_;
-    // std::shared_ptr<Pathfinder::SwapChain> swap_chain_;
-    std::shared_ptr<Pathfinder::Texture> vector_target_;
+    std::shared_ptr<Blit> blit_;
 
-    void record_commands() const;
+    uint8_t window_index_;
+
+    std::shared_ptr<Pathfinder::Texture> vector_target_;
 
 private:
     struct {

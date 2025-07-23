@@ -9,12 +9,11 @@
 
 namespace revector {
 
-SceneTree::SceneTree() {
-    // A default root.
-    auto node_ui = std::make_shared<NodeUi>();
-    node_ui->set_anchor_flag(AnchorFlag::FullRect);
+SceneTree::SceneTree(Vec2I primary_window_size) {
+    auto primary_window = std::make_shared<SubWindow>(primary_window_size, 0);
+    primary_window->name = "Primary window";
 
-    root = node_ui;
+    root = primary_window;
     root->tree_ = this;
 }
 
@@ -176,60 +175,6 @@ void propagate_draw(Node* node) {
     node->post_draw_children();
 }
 
-void draw_system(Node* root) {
-    // Collect all sub-windows.
-
-    std::vector<SubWindow*> sub_windows;
-    std::vector<PopupMenu*> popup_menus;
-
-    {
-        std::vector<Node*> nodes;
-        dfs_preorder_ltr_traversal(root, nodes);
-        for (auto& node : nodes) {
-            if (typeid(*node) == typeid(SubWindow)) {
-                auto sub_window = dynamic_cast<SubWindow*>(node);
-                sub_windows.push_back(sub_window);
-            }
-            if (typeid(*node) == typeid(PopupMenu)) {
-                auto popup_menu = dynamic_cast<PopupMenu*>(node);
-                popup_menus.push_back(popup_menu);
-            }
-        }
-    }
-
-    // Draw sub-windows.
-    for (auto& w : sub_windows) {
-        if (!w->get_visibility()) {
-            continue;
-        }
-
-        w->pre_draw_children();
-
-        // DRAW
-        propagate_draw(w);
-
-        w->post_draw_children();
-    }
-
-    VectorServer::get_singleton()->set_global_scale(
-        RenderServer::get_singleton()->window_builder_->get_window(0).lock()->get_dpi_scaling_factor());
-    propagate_draw(root);
-
-    // Draw sub-windows.
-    for (auto& m : popup_menus) {
-        if (!m->get_visibility()) {
-            continue;
-        }
-
-        m->pre_draw_children();
-
-        // DRAW
-        propagate_draw(m);
-
-        m->post_draw_children();
-    }
-}
-
 void calc_minimum_size(Node* root) {
     std::vector<Node*> descendants;
     dfs_postorder_ltr_traversal(root, descendants);
@@ -287,23 +232,64 @@ void SceneTree::process(double dt) {
             node->update(dt);
         }
     }
+}
 
-    // Draw from-back-to-front.
-    draw_system(root.get());
+bool SceneTree::render() {
+    // Collect all windows.
+    std::vector<SubWindow*> sub_windows;
+    {
+        std::vector<Node*> nodes;
+        dfs_preorder_ltr_traversal(root.get(), nodes);
+        for (auto& node : nodes) {
+            if (typeid(*node) == typeid(SubWindow)) {
+                auto sub_window = dynamic_cast<SubWindow*>(node);
+                sub_windows.push_back(sub_window);
+            }
+        }
+    }
+
+    // Draw sub-windows.
+    for (auto& w : sub_windows) {
+        if (!w->get_visibility()) {
+            continue;
+        }
+
+        // Get all pop menus that belong to this window.
+        std::vector<PopupMenu*> popup_menus;
+        {
+            std::vector<Node*> nodes;
+            dfs_preorder_ltr_traversal(w, nodes);
+            for (auto& node : nodes) {
+                if (typeid(*node) == typeid(PopupMenu)) {
+                    auto popup_menu = dynamic_cast<PopupMenu*>(node);
+                    popup_menus.push_back(popup_menu);
+                }
+            }
+        }
+
+        w->pre_draw_propagation();
+
+        // Collect renderable objects
+        propagate_draw(w);
+
+        // Draw popup menus
+        for (auto& m : popup_menus) {
+            if (!m->get_visibility()) {
+                continue;
+            }
+
+            propagate_draw(m);
+        }
+
+        // Submit render commands
+        w->post_draw_propagation();
+    }
+
+    return false;
 }
 
 void SceneTree::notify_primary_window_size_changed(Vec2I new_size) const {
     root->when_parent_size_changed(new_size.to_f32());
-}
-
-std::shared_ptr<Node> SceneTree::replace_root(const std::shared_ptr<Node>& new_root) {
-    auto old_root = root;
-    old_root->tree_ = nullptr;
-
-    root = new_root;
-    root->tree_ = this;
-
-    return old_root;
 }
 
 std::shared_ptr<Node> SceneTree::get_root() const {
@@ -319,7 +305,7 @@ bool SceneTree::has_quited() const {
 }
 
 std::weak_ptr<Pathfinder::Window> SceneTree::get_primary_window() const {
-    return RenderServer::get_singleton()->window_builder_->get_window(0);
+    return root->get_raw_window();
 }
 
 } // namespace revector
