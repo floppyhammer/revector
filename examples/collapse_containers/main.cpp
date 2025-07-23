@@ -37,7 +37,7 @@ class MyNode : public Node {
 int main() {
     App app({1280, 720}, true);
 
-    app.get_tree()->get_root()->add_child(std::make_shared<MyNode>());
+    app.get_tree_root()->add_child(std::make_shared<MyNode>());
 
     app.main_loop();
 

@@ -55,10 +55,6 @@ App::~App() {
     Logger::verbose("Cleaned up RenderServer.", "revector");
 }
 
-SceneTree* App::get_tree() const {
-    return tree.get();
-}
-
 std::shared_ptr<Node> App::get_tree_root() const {
     return tree->get_root();
 }

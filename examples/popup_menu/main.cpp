@@ -47,17 +47,17 @@ int main() {
     menu_button_top->get_popup_menu().lock()->create_item("Item 1");
     menu_button_top->get_popup_menu().lock()->create_item("Item 2");
     menu_button_top->get_popup_menu().lock()->create_item("Item 3");
-    app.get_tree()->get_root()->add_child(menu_button_top);
+    app.get_tree_root()->add_child(menu_button_top);
 
     auto menu_button_bottom = std::make_shared<MenuButton>();
     menu_button_bottom->set_position({0, 250});
     menu_button_bottom->get_popup_menu().lock()->create_item("Item 1");
     menu_button_bottom->get_popup_menu().lock()->create_item("Item 2");
     menu_button_bottom->get_popup_menu().lock()->create_item("Item 3");
-    app.get_tree()->get_root()->add_child(menu_button_bottom);
+    app.get_tree_root()->add_child(menu_button_bottom);
 
     // Free menu.
-    app.get_tree()->get_root()->add_child(std::make_shared<MyNodeUi>());
+    app.get_tree_root()->add_child(std::make_shared<MyNodeUi>());
 
     app.main_loop();
 

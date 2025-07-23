@@ -60,16 +60,8 @@ public:
 
     virtual ~Node() = default;
 
-    /// Called when entering the tree.
-    virtual void ready() {
-        if (ready_) {
-            return;
-        }
-
-        ready_ = true;
-
-        custom_ready();
-    }
+    /// Called at first time entering the tree.
+    virtual void ready();
 
     virtual void input(InputEvent &event);
 
@@ -79,6 +71,7 @@ public:
 
     virtual void draw();
 
+    /// For some special nodes (e.g. ScrollContainer).
     virtual void pre_draw_children() {
     }
 
@@ -116,9 +109,7 @@ public:
 
     void remove_all_children();
 
-    virtual bool is_ui_node() const {
-        return false;
-    }
+    virtual bool is_ui_node() const;
 
     std::string get_node_path() const;
 

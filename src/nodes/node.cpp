@@ -109,6 +109,16 @@ void dfs_postorder_rtl_traversal_skip_priority_node_and_invisible(Node *node, st
     ordered_nodes.push_back(node);
 }
 
+void Node::ready() {
+    if (ready_) {
+        return;
+    }
+
+    ready_ = true;
+
+    custom_ready();
+}
+
 void Node::input(InputEvent &event) {
     custom_input(event);
 }
@@ -198,6 +208,10 @@ void Node::remove_child(size_t index) {
 
 void Node::remove_all_children() {
     children.clear();
+}
+
+bool Node::is_ui_node() const {
+    return false;
 }
 
 void Node::set_visibility(bool visible) {
