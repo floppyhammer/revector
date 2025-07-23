@@ -42,8 +42,8 @@ endif ()
 target_include_directories(revector PUBLIC "third_party/pathfinder-cpp")
 add_subdirectory("third_party/pathfinder-cpp")
 
-target_include_directories(revector PUBLIC "third_party/harfbuzz-8.4.0/src")
-add_subdirectory("third_party/harfbuzz-8.4.0")
+target_include_directories(revector PUBLIC "third_party/harfbuzz-11.3.2/src")
+add_subdirectory("third_party/harfbuzz-11.3.2")
 
 target_include_directories(revector PUBLIC "third_party/GSL-4.0.0/include")
 add_subdirectory("third_party/GSL-4.0.0")
