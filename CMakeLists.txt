@@ -11,7 +11,7 @@ if (UNIX AND NOT APPLE AND NOT ANDROID)
     set(LINUX ON)
 endif ()
 
-option(REVECTOR_VULKAN "Use Vulkan instead of OpenGL" OFF)
+option(REVECTOR_VULKAN "Use Vulkan instead of OpenGL" ON)
 option(REVECTOR_FRIBIDI "Use fribidi instead of icu" ON)
 
 if (APPLE)
