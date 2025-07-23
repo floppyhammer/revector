@@ -58,7 +58,7 @@ add_subdirectory("third_party/zlib")
 target_include_directories(revector PRIVATE "third_party/font-kit-wrapper/include")
 target_link_directories(revector PUBLIC "third_party/font-kit-wrapper")
 
-target_link_libraries(revector PUBLIC pathfinder harfbuzz zlibstatic)
+target_link_libraries(revector PUBLIC pathfinder harfbuzz zlibstatic tbb)
 
 if (WIN32)
     target_link_libraries(revector PUBLIC font_kit_wrapper.dll.lib)

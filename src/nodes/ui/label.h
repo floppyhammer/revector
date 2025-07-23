@@ -109,10 +109,10 @@ private:
 private:
     // Raw text.
     std::string text_;
-    // Codepoint separated text.
+    // Codepoint-separated text.
     std::u32string text_u32_;
 
-    /// text_u32_ is more related to navigation, glyphs_ is more about rendering.
+    /// text_u32_ is related to navigation, glyphs_ is more about rendering.
 
     std::shared_ptr<Font> font, emoji_font;
 

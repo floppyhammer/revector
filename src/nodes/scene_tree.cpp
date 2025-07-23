@@ -1,5 +1,9 @@
 #include "scene_tree.h"
 
+#include <algorithm>
+#include <execution>
+#include <future>
+
 #include "../servers/render_server.h"
 #include "sub_window.h"
 
@@ -143,9 +147,10 @@ void transform_system(Node* root) {
         }
     }
 
-    for (auto& ui_node : orphan_ui_nodes) {
+    // There's no transform dependency between orphan UI nodes.
+    std::for_each(std::execution::par, orphan_ui_nodes.begin(), orphan_ui_nodes.end(), [](NodeUi* ui_node) {
         propagate_transform(ui_node, Vec2F{});
-    }
+    });
 }
 
 void propagate_draw(Node* node) {
@@ -257,12 +262,18 @@ void SceneTree::process(double dt) {
         }
     }
 
-    input_system(root.get(), InputServer::get_singleton()->input_queue);
+    auto input_task =
+        std::async(std::launch::async, [this] { input_system(root.get(), InputServer::get_singleton()->input_queue); });
 
-    // Run calc_minimum_size() depth-first.
-    calc_minimum_size(root.get());
+    auto calc_min_size_task = std::async(std::launch::async, [this] {
+        // Run calc_minimum_size() depth-first.
+        calc_minimum_size(root.get());
+    });
 
-    // Update global transform.
+    input_task.wait();
+    calc_min_size_task.wait();
+
+    // Update global transform for each node.
     transform_system(root.get());
 
     // Update from-back-to-front.
