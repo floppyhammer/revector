@@ -10,13 +10,11 @@ This is an experimental vector-based GUI framework.
 * Vulkan/OpenGL backend
 * High quality antialiasing
 * Multiple window support
+* HiDPI support
 * Cross-platform (Windows, Linux, macOS)
 * I18n support
 
-The development work has been mostly done on Windows, but it should be easy to make
-it run on other platforms.
-
-### How it looks
+### Examples
 
 ![Example 0](screenshot_0.png)
 
