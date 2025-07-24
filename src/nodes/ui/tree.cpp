@@ -34,7 +34,7 @@ void Tree::draw() {
     }
 
     float offset_y = 0;
-    root->propagate_draw(folding_width, 0, offset_y, get_global_position());
+    root->propagate_draw_(folding_width, 0, offset_y, get_global_position());
 }
 
 void Tree::input(InputEvent &event) {
@@ -159,7 +159,7 @@ void TreeItem::propagate_input(InputEvent &event, Vec2F global_position) {
     input(event, global_position);
 }
 
-void TreeItem::propagate_draw(float folding_width, uint32_t depth, float &offset_y, Vec2F global_position) {
+void TreeItem::propagate_draw_(float folding_width, uint32_t depth, float &offset_y, Vec2F global_position) {
     auto vector_server = VectorServer::get_singleton();
 
     float offset_x = (float)depth * folding_width;
@@ -200,13 +200,13 @@ void TreeItem::propagate_draw(float folding_width, uint32_t depth, float &offset
         node->update(0);
     }
 
-    draw_system(container.get());
+    propagate_draw(container.get());
 
     offset_y += item_height;
 
     if (!collapsed) {
         for (auto &child : children) {
-            child->propagate_draw(folding_width, depth + 1, offset_y, global_position);
+            child->propagate_draw_(folding_width, depth + 1, offset_y, global_position);
         }
     }
 }

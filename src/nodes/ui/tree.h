@@ -36,7 +36,7 @@ public:
 
     void input(InputEvent &event, Vec2F global_position);
 
-    void propagate_draw(float folding_width, uint32_t depth, float &offset_y, Vec2F global_position);
+    void propagate_draw_(float folding_width, uint32_t depth, float &offset_y, Vec2F global_position);
 
     void propagate_calc_minimum_size(float folding_width, uint32_t depth, uint32_t &max_depth, Vec2F &minimum_size);
 
