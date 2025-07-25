@@ -27,9 +27,10 @@
  * For licensing issues, contact <fribidi.license@gmail.com>.
  */
 
-#include "common.h"
-
 #include <fribidi.h>
+#include <string.h>
+
+#include "common.h"
 
 #ifdef DEBUG
 static int flag_debug = false;
