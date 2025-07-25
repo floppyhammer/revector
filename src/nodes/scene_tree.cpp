@@ -285,7 +285,7 @@ bool SceneTree::render() {
         w->post_draw_propagation();
     }
 
-    return false;
+    return root->get_raw_window()->should_close();
 }
 
 void SceneTree::notify_primary_window_size_changed(Vec2I new_size) const {
