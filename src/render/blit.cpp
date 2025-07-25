@@ -1,12 +1,11 @@
 #include "blit.h"
 
-#ifdef PATHFINDER_USE_VULKAN
-    #include "../shaders/generated/blit_frag_spv.h"
-    #include "../src/shaders/generated/blit_vert_spv.h"
-#else
-    #include "../shaders/generated/blit_frag.h"
-    #include "../shaders/generated/blit_vert.h"
-#endif
+// SPV
+#include "../shaders/generated/blit_frag_spv.h"
+#include "../src/shaders/generated/blit_vert_spv.h"
+// GLSL
+#include "../shaders/generated/blit_frag.h"
+#include "../shaders/generated/blit_vert.h"
 
 using namespace Pathfinder;
 
@@ -38,13 +37,14 @@ Blit::Blit(const std::shared_ptr<Device> &_device, const std::shared_ptr<Queue> 
 
     // Pipeline.
     {
-#ifdef PATHFINDER_USE_VULKAN
-        const auto vert_source = std::vector<char>(std::begin(blit_vert_spv), std::end(blit_vert_spv));
-        const auto frag_source = std::vector<char>(std::begin(blit_frag_spv), std::end(blit_frag_spv));
-#else
-        const auto vert_source = std::vector<char>(std::begin(blit_vert), std::end(blit_vert));
-        const auto frag_source = std::vector<char>(std::begin(blit_frag), std::end(blit_frag));
-#endif
+        std::vector<char> vert_source, frag_source;
+        if (device->get_backend_type() == BackendType::Vulkan) {
+            vert_source = std::vector<char>(std::begin(blit_vert_spv), std::end(blit_vert_spv));
+            frag_source = std::vector<char>(std::begin(blit_frag_spv), std::end(blit_frag_spv));
+        } else {
+            vert_source = std::vector<char>(std::begin(blit_vert), std::end(blit_vert));
+            frag_source = std::vector<char>(std::begin(blit_frag), std::end(blit_frag));
+        }
 
         std::vector<VertexInputAttributeDescription> attribute_descriptions;
 
