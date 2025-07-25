@@ -25,7 +25,8 @@ App::App(Vec2I primary_window_size, bool dark_mode) {
     auto render_server = RenderServer::get_singleton();
 
     // Create the main window.
-    render_server->window_builder_ = Pathfinder::WindowBuilder::new_impl(primary_window_size);
+    render_server->window_builder_ =
+        Pathfinder::WindowBuilder::new_impl(Pathfinder::BackendType::Vulkan, primary_window_size);
     auto primary_window = render_server->window_builder_->get_window(0);
 
     // Create device and queue.
