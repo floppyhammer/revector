@@ -22,4 +22,4 @@
 # git rm <path-to-submodule>
 [submodule "third_party/pathfinder-cpp"]
 	path = third_party/pathfinder-cpp
-	url = git@github.com:floppyhammer/pathfinder-cpp.git
+	url = https://github.com/floppyhammer/pathfinder-cpp.git
