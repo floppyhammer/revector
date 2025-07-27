@@ -34,13 +34,14 @@ target_compile_features(revector PUBLIC cxx_std_20)
 # Include external and third-party headers.
 target_include_directories(revector PUBLIC "third_party")
 
+# Do this before add_subdirectory
+if (REVECTOR_VULKAN)
+    set(PATHFINDER_BACKEND_VULKAN ON)
+else ()
+    set(PATHFINDER_BACKEND_VULKAN OFF)
+endif ()
 target_include_directories(revector PUBLIC "third_party/pathfinder-cpp")
 add_subdirectory("third_party/pathfinder-cpp")
-if (REVECTOR_VULKAN)
-    set(PATHFINDER_BACKEND_VULKAN ON CACHE BOOL "" FORCE)
-else ()
-    set(PATHFINDER_BACKEND_VULKAN OFF CACHE BOOL "" FORCE)
-endif ()
 
 target_include_directories(revector PUBLIC "third_party/harfbuzz-11.3.2/src")
 add_subdirectory("third_party/harfbuzz-11.3.2")
