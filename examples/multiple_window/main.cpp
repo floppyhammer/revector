@@ -25,10 +25,11 @@ class MyNode : public Node {
         label->set_text("This is a sub-window.");
         sub_window->add_child(label);
 
-        auto callback1 = [sub_window] { sub_window->set_visibility(true); };
+        auto sub_window_weak = std::weak_ptr(sub_window);
+        auto callback1 = [sub_window_weak] { sub_window_weak.lock()->set_visibility(true); };
         open_window_button->connect_signal("pressed", callback1);
 
-        auto callback2 = [sub_window] { sub_window->set_visibility(false); };
+        auto callback2 = [sub_window_weak] { sub_window_weak.lock()->set_visibility(false); };
         close_window_button->connect_signal("pressed", callback2);
     }
 };
