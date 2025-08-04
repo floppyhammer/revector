@@ -22,7 +22,7 @@ MenuButton::MenuButton() {
 
     menu->set_visibility(false);
 
-    pressed_callbacks.emplace_back([this] {
+    triggered_callbacks.emplace_back([this] {
         if (menu->get_item_count() == 0) {
             return;
         }
