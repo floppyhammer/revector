@@ -104,7 +104,7 @@ TreeItem::TreeItem() {
             collapse_button->set_icon_normal(expanded_tex);
         }
     };
-    collapse_button->connect_signal("pressed", callback);
+    collapse_button->connect_signal("triggered", callback);
 
     container = std::make_shared<HBoxContainer>();
     container->set_separation(0);

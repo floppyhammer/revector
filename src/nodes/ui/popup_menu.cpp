@@ -202,7 +202,7 @@ void PopupMenu::create_item(const std::string &text) {
         set_visibility(false);
         when_item_selected(item_index);
     };
-    new_item->connect_signal("pressed", callback);
+    new_item->connect_signal("triggered", callback);
 
     items_.push_back(new_item);
 }

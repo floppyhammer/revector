@@ -53,7 +53,7 @@ class MyNode : public Node {
                 text_edit_weak.lock()->set_text(path.value());
             }
         };
-        select_button->connect_signal("pressed", callback);
+        select_button->connect_signal("triggered", callback);
         hbox_container->add_child(select_button);
 
         auto confirm_button = std::make_shared<Button>();

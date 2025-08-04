@@ -36,7 +36,7 @@ CollapseContainer::CollapseContainer(CollapseButtonType button_type) {
     collapse_button_->set_flat(true);
     collapse_button_->set_toggle_mode(true);
     collapse_button_->connect_signal("toggled", [this](bool p_pressed) { set_collapse(!p_pressed); });
-    collapse_button_->set_pressed_no_signal(!collapsed_);
+    collapse_button_->set_toggled_no_signal(!collapsed_);
 
     add_embedded_child(collapse_button_);
 
@@ -90,7 +90,7 @@ void CollapseContainer::set_collapse(bool collapse) {
         return;
     }
     collapsed_ = collapse;
-    collapse_button_->set_pressed_no_signal(!collapse);
+    collapse_button_->set_toggled_no_signal(!collapse);
 
     when_collapsed(collapsed_);
 

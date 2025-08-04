@@ -59,20 +59,44 @@ Button::Button() {
         lerp_elapsed_ = lerp_duration_;
     });
 
+    released_callbacks.emplace_back([this]() {
+        if (hovered) {
+            target_style_box = theme_hovered;
+            active_style_box = theme_hovered;
+        } else {
+            if (pressed || toggled) {
+                target_style_box = theme_pressed;
+                active_style_box = theme_pressed;
+            } else {
+                target_style_box = theme_normal;
+                active_style_box = theme_normal;
+            }
+        }
+        lerp_elapsed_ = lerp_duration_;
+    });
+
     toggled_callbacks.emplace_back([this](bool toggled) {
         lerp_elapsed_ = lerp_duration_;
         if (toggled) {
             target_style_box = theme_pressed;
             active_style_box = theme_pressed;
         } else {
-            target_style_box = theme_normal;
-            active_style_box = theme_normal;
+            if (hovered) {
+                target_style_box = theme_hovered;
+                active_style_box = theme_hovered;
+            } else {
+                target_style_box = theme_normal;
+                active_style_box = theme_normal;
+            }
         }
     });
 
     callbacks_cursor_entered.emplace_back([this] {
         hovered = true;
         InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Hand);
+        if (toggle_mode && toggled) {
+            return;
+        }
         target_style_box = theme_hovered;
         active_style_box = theme_hovered;
         lerp_elapsed_ = lerp_duration_;
@@ -81,7 +105,8 @@ Button::Button() {
     callbacks_cursor_exited.emplace_back([this] {
         hovered = false;
         InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow);
-        if (pressed) {
+
+        if (pressed || toggled) {
             target_style_box = theme_pressed;
             lerp_elapsed_ = 0;
         } else {
@@ -104,7 +129,7 @@ void Button::ready() {
 
     ready_ = true;
 
-    if (pressed) {
+    if (toggle_mode && toggled) {
         target_style_box = theme_pressed;
         active_style_box = theme_pressed;
     } else {
@@ -130,7 +155,6 @@ void Button::input(InputEvent &event) {
                 if (!toggle_mode) {
                     pressed = false;
                 }
-                pressed_inside = false;
             } else {
                 if (RectF(global_position, global_position + size).contains_point(args.position)) {
                     consume_flag = true;
@@ -138,52 +162,52 @@ void Button::input(InputEvent &event) {
                     if (!toggle_mode) {
                         pressed = false;
                     }
-                    pressed_inside = false;
                 }
             }
         }
 
         if (event.type == InputEventType::MouseButton) {
-            auto args = event.args.mouse_button;
+            const auto args = event.args.mouse_button;
 
+            // Consumed by other UI nodes.
             if (event.consumed) {
                 if (!args.pressed) {
                     if (RectF(global_position, global_position + size).contains_point(args.position)) {
                         if (!toggle_mode) {
                             pressed = false;
-                            pressed_inside = false;
                         }
                     }
                 }
             } else {
                 if (RectF(global_position, global_position + size).contains_point(args.position)) {
-                    if (!toggle_mode) {
-                        pressed = args.pressed;
+                    // Mouse button pressed
+                    if (args.pressed) {
+                        pressed_position = args.position;
+                        pressed = true;
+                        notify_pressed();
+                    }
+                    // Mouse button released
+                    else {
+                        // Release on a pressed button
                         if (pressed) {
-                            pressed_inside = true;
-                        } else {
-                            if (pressed_inside) {
-                                notify_pressed();
-                            }
-                        }
-                    } else {
-                        if (args.pressed) {
-                            pressed_inside = true;
-                        } else {
-                            if (pressed_inside) {
-                                if (pressed) {
-                                    pressed = false;
+                            if (pressed_position.has_value() &&
+                                (args.position - pressed_position.value()).length() < 8) {
+                                if (toggle_mode) {
+                                    if (group) {
+                                        // Let group handle this event.
+                                        group->notify_toggled(this);
+                                    } else {
+                                        toggled = !toggled;
+                                        notify_toggled(toggled);
+                                    }
                                 } else {
-                                    pressed = true;
-                                    notify_pressed();
+                                    notify_triggered();
                                 }
+                            }
 
-                                if (group) {
-                                    group->notify_pressed(this);
-                                } else {
-                                    notify_toggled(pressed);
-                                }
-                            }
+                            pressed = false;
+                            pressed_position = {};
+                            notify_released();
                         }
                     }
 
@@ -233,8 +257,12 @@ void Button::draw() {
         label->set_text_style(TextStyle{default_theme->button.colors["text"]});
     }
 
-    if (pressed) {
-        if (icon_pressed_) {
+    if (icon_pressed_) {
+        if (toggle_mode) {
+            if (toggled) {
+                icon_rect->set_texture(icon_pressed_);
+            }
+        } else if (pressed) {
             icon_rect->set_texture(icon_pressed_);
         }
     }
@@ -276,15 +304,25 @@ void Button::notify_pressed() {
 }
 
 void Button::notify_released() {
-    for (auto &callback : pressed_callbacks) {
+    for (auto &callback : released_callbacks) {
         callback();
     }
 }
 
-void Button::notify_toggled(bool pressed) {
+void Button::notify_triggered() {
+    for (auto &callback : triggered_callbacks) {
+        callback();
+    }
+}
+
+void Button::notify_toggled(bool toggled) {
+    if (!toggle_mode) {
+        return;
+    }
+
     for (auto &callback : toggled_callbacks) {
         try {
-            callback.operator()<bool>(std::move(pressed));
+            callback.operator()<bool>(std::move(toggled));
         } catch (std::bad_any_cast &) {
             Logger::error("Mismatched signal argument types!", "revector");
         }
@@ -302,6 +340,9 @@ void Button::connect_signal(const std::string &signal, const AnyCallable<void> &
     }
     if (signal == "released") {
         released_callbacks.push_back(callback);
+    }
+    if (signal == "triggered") {
+        triggered_callbacks.push_back(callback);
     }
     if (signal == "toggled") {
         toggled_callbacks.push_back(callback);
@@ -344,36 +385,35 @@ void Button::set_toggle_mode(bool enable) {
     toggle_mode = enable;
 }
 
-void Button::set_pressed(bool p_pressed) {
-    if (disabled_) {
+void Button::set_toggled(bool p_toggled) {
+    if (disabled_ || !toggle_mode) {
         return;
     }
 
-    if (!pressed && p_pressed) {
-        notify_pressed();
-        if (toggle_mode) {
-            notify_toggled(true);
-        }
+    if (toggled == p_toggled) {
+        return;
     }
-    if (pressed && !p_pressed) {
-        if (toggle_mode) {
-            notify_toggled(false);
-        }
-    }
-    pressed = p_pressed;
+
+    notify_toggled(p_toggled);
+    toggled = p_toggled;
+}
+
+void Button::trigger() {
+    notify_triggered();
 }
 
 void Button::set_animated(bool animated) {
     animated_ = animated;
 }
 
-void ButtonGroup::notify_pressed(Button *button) {
+void ToggleButtonGroup::notify_toggled(const Button *toggled_button) {
+    // Un-toggle other buttons.
     for (auto &b : buttons) {
-        b.lock()->set_pressed(b.lock().get() == button);
+        b.lock()->set_toggled(b.lock().get() == toggled_button);
     }
 }
 
-void ButtonGroup::add_button(const std::weak_ptr<Button> &new_button) {
+void ToggleButtonGroup::add_button(const std::weak_ptr<Button> &new_button) {
     new_button.lock()->group = this;
     buttons.push_back(new_button);
 }

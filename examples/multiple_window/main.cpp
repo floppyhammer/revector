@@ -27,10 +27,10 @@ class MyNode : public Node {
 
         auto sub_window_weak = std::weak_ptr(sub_window);
         auto callback1 = [sub_window_weak] { sub_window_weak.lock()->set_visibility(true); };
-        open_window_button->connect_signal("pressed", callback1);
+        open_window_button->connect_signal("triggered", callback1);
 
         auto callback2 = [sub_window_weak] { sub_window_weak.lock()->set_visibility(false); };
-        close_window_button->connect_signal("pressed", callback2);
+        close_window_button->connect_signal("triggered", callback2);
     }
 };
 

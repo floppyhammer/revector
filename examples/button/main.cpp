@@ -19,6 +19,9 @@ class MyNode : public Node {
             auto button = std::make_shared<Button>();
             button->container_sizing.flag_h = ContainerSizingFlag::ShrinkStart;
             vbox_container->add_child(button);
+
+            auto callback = []() { Logger::info("Button triggered"); };
+            button->connect_signal("triggered", callback);
         }
 
         {
@@ -33,6 +36,9 @@ class MyNode : public Node {
             auto check_button = std::make_shared<CheckButton>();
             check_button->container_sizing.flag_h = ContainerSizingFlag::ShrinkStart;
             vbox_container->add_child(check_button);
+
+            auto callback = [](bool toggled) { Logger::info("Button toggled"); };
+            check_button->connect_signal("toggled", callback);
         }
     }
 };

@@ -11,10 +11,10 @@
 
 namespace revector {
 
-class ButtonGroup;
+class ToggleButtonGroup;
 
 class Button : public NodeUi {
-    friend class ButtonGroup;
+    friend class ToggleButtonGroup;
 
 public:
     Button();
@@ -52,15 +52,21 @@ public:
 
     void set_toggle_mode(bool enable);
 
-    void set_pressed(bool p_pressed);
+    void set_toggled(bool p_toggled);
 
-    bool get_pressed() const {
-        return pressed;
+    bool get_toggled() const {
+        return toggled;
     }
 
+    void trigger();
+
     /// Manual setting, no signal.
-    void set_pressed_no_signal(bool new_pressed) {
-        pressed = new_pressed;
+    void set_toggled_no_signal(bool new_toggled) {
+        if (!toggle_mode) {
+            return;
+        }
+
+        toggled = new_toggled;
     }
 
     void set_disabled(bool disabled) {
@@ -71,7 +77,7 @@ public:
 
     void set_animated(bool animated);
 
-    ButtonGroup *group = nullptr;
+    ToggleButtonGroup *group = nullptr;
 
     // Styles.
     StyleBox theme_normal;
@@ -82,16 +88,12 @@ public:
     StyleBox target_style_box;
 
 protected:
-    /**
-     * Pressed == ture && hovered == true: Normal buttons
-     * Pressed == ture && hovered == false: Toggled buttons
-     */
     bool pressed = false;
+    std::optional<Vec2F> pressed_position;
     bool hovered = false;
 
-    bool pressed_inside = false;
-
     bool toggle_mode = false;
+    bool toggled = false;
 
     bool icon_expand_ = false;
 
@@ -114,25 +116,31 @@ protected:
     std::shared_ptr<Image> icon_pressed_;
 
     // Callbacks.
-    std::vector<AnyCallable<void>> hovered_callbacks;  // Cursor entered
-    std::vector<AnyCallable<void>> pressed_callbacks;  // Button is down
-    std::vector<AnyCallable<void>> released_callbacks; // Button is up
-    std::vector<AnyCallable<void>> toggled_callbacks;  // For toggle mode only
+    std::vector<AnyCallable<void>> hovered_callbacks;   // Cursor entered
+    std::vector<AnyCallable<void>> pressed_callbacks;   // Button is down
+    std::vector<AnyCallable<void>> released_callbacks;  // Button is up
+    std::vector<AnyCallable<void>> triggered_callbacks; // Button pressed then released
+    std::vector<AnyCallable<void>> toggled_callbacks;   // For toggle mode only
 
     void notify_pressed();
 
     void notify_released();
 
-    void notify_toggled(bool pressed);
+    void notify_triggered();
+
+    void notify_toggled(bool toggled);
 };
 
-class ButtonGroup {
+class ToggleButtonGroup {
 public:
     void add_button(const std::weak_ptr<Button> &new_button);
 
-    void notify_pressed(Button *pressed);
+    void notify_toggled(const Button *toggled_button);
 
     std::vector<std::weak_ptr<Button>> buttons;
+
+    bool multi_selection = false;
+    uint max_selection = 0;
 };
 
 } // namespace revector

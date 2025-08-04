@@ -21,7 +21,7 @@ TabContainer::TabContainer() {
     button_container = std::make_shared<HBoxContainer>();
     button_scroll_container->add_child(button_container);
 
-    tab_button_group = std::make_shared<ButtonGroup>();
+    tab_button_group = std::make_shared<ToggleButtonGroup>();
 }
 
 void TabContainer::adjust_layout() {
@@ -77,7 +77,7 @@ std::optional<uint32_t> TabContainer::get_current_tab() const {
 
 void TabContainer::set_current_tab(uint32_t index) {
     current_tab = index;
-    tab_buttons[index]->set_pressed(true);
+    tab_buttons[index]->set_toggled(true);
 }
 
 void TabContainer::draw() {
@@ -112,8 +112,12 @@ void TabContainer::add_tab_button() {
 
     tab_button_group->add_button(button);
 
-    auto callback = [this, button_idx] { current_tab = button_idx; };
-    button->connect_signal("pressed", callback);
+    auto callback = [this, button_idx](const bool toggled) {
+        if (toggled) {
+            current_tab = button_idx;
+        }
+    };
+    button->connect_signal("toggled", callback);
     button->set_toggle_mode(true);
 
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
