@@ -140,7 +140,7 @@ public:
     std::vector<std::weak_ptr<Button>> buttons;
 
     bool multi_selection = false;
-    uint max_selection = 0;
+    uint32_t max_selection = 0;
 };
 
 } // namespace revector
