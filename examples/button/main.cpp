@@ -9,6 +9,8 @@ using Pathfinder::Vec2;
 using Pathfinder::Vec3;
 
 class MyNode : public Node {
+    std::shared_ptr<ToggleButtonGroup> button_group;
+
     void custom_ready() override {
         auto vbox_container = std::make_shared<VBoxContainer>();
         vbox_container->set_separation(8);
@@ -39,6 +41,26 @@ class MyNode : public Node {
 
             auto callback = [](bool toggled) { Logger::info("Button toggled"); };
             check_button->connect_signal("toggled", callback);
+        }
+
+        {
+            auto container_group = std::make_shared<VBoxContainer>();
+            container_group->set_separation(8);
+            container_group->set_position({300, 100});
+            add_child(container_group);
+
+            auto label = std::make_shared<Label>();
+            label->set_text("Toggle Button Group");
+            container_group->add_child(label);
+
+            button_group = std::make_shared<ToggleButtonGroup>();
+
+            for (int i = 0; i < 3; ++i) {
+                auto check_button = std::make_shared<RadioButton>();
+                check_button->container_sizing.flag_h = ContainerSizingFlag::ShrinkStart;
+                container_group->add_child(check_button);
+                button_group->add_button(check_button);
+            }
         }
     }
 };

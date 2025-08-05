@@ -94,9 +94,6 @@ Button::Button() {
     callbacks_cursor_entered.emplace_back([this] {
         hovered = true;
         InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Hand);
-        if (toggle_mode && toggled) {
-            return;
-        }
         target_style_box = theme_hovered;
         active_style_box = theme_hovered;
         lerp_elapsed_ = lerp_duration_;

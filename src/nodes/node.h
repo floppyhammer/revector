@@ -28,10 +28,10 @@ enum class NodeType {
     CollapseContainer,
 
     Button,
-    MenuButton,   // todo
+    MenuButton,
     OptionButton, // todo
     CheckButton,
-    RadioButton, // todo
+    RadioButton,
 
     Label,
     TextEdit,
