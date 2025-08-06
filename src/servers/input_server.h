@@ -113,8 +113,8 @@ public:
 
     void clear_events();
 
-    std::string get_clipboard(uint8_t window_index);
-    void set_clipboard(uint8_t window_index, std::string text);
+    std::string get_clipboard();
+    void set_clipboard(const std::string &text);
 
     Vec2F cursor_position;
     Vec2F last_cursor_position;
@@ -134,6 +134,9 @@ public:
 private:
     GLFWcursor *arrow_cursor, *ibeam_cursor, *crosshair_cursor, *hand_cursor, *resize_cursor_h, *resize_cursor_v;
     GLFWcursor *resize_tlbr_cursor, *resize_trbl_cursor;
+
+    CursorShape target_cursor_shape = CursorShape::Arrow;
+    CursorShape current_cursor_shape = CursorShape::Arrow;
 
     std::set<KeyCode> keys_pressed;
 };

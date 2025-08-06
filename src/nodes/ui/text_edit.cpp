@@ -206,14 +206,14 @@ void TextEdit::input(InputEvent &event) {
                     auto start_index = std::min(selection_start_index, current_caret_index);
                     auto count = std::abs((int)selection_start_index - (int)current_caret_index);
                     std::string selected_text = label->get_sub_text(start_index, count);
-                    input_server->set_clipboard(get_window_index(), selected_text.c_str());
+                    input_server->set_clipboard(selected_text.c_str());
                 }
 
                 if (key_args.key == KeyCode::V && input_server->is_key_pressed(KeyCode::LeftControl)) {
                     if (selection_start_index != current_caret_index) {
                         delete_selection();
                     }
-                    auto clipboard_text = input_server->get_clipboard(get_window_index());
+                    auto clipboard_text = input_server->get_clipboard();
 
                     if (numbers_only) {
                         clipboard_text = keep_numbers(clipboard_text);
@@ -230,7 +230,7 @@ void TextEdit::input(InputEvent &event) {
                     auto start_index = std::min(selection_start_index, current_caret_index);
                     auto count = std::abs((int)selection_start_index - (int)current_caret_index);
                     std::string selected_text = label->get_sub_text(start_index, count);
-                    input_server->set_clipboard(get_window_index(), selected_text.c_str());
+                    input_server->set_clipboard(selected_text.c_str());
                     delete_selection();
                 }
             }

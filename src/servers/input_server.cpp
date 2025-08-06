@@ -190,19 +190,13 @@ void InputServer::clear_events() {
     input_queue.clear();
 }
 
-std::string InputServer::get_clipboard(uint8_t window_index) {
-    auto render_server = RenderServer::get_singleton();
-    auto window = (GLFWwindow *)render_server->window_builder_->get_window(window_index).lock()->get_glfw_handle();
-
-    auto chars = glfwGetClipboardString(window);
+std::string InputServer::get_clipboard() {
+    auto chars = glfwGetClipboardString(nullptr);
     return std::string(chars);
 }
 
-void InputServer::set_clipboard(uint8_t window_index, std::string text) {
-    auto render_server = RenderServer::get_singleton();
-    auto window = (GLFWwindow *)render_server->window_builder_->get_window(window_index).lock()->get_glfw_handle();
-
-    glfwSetClipboardString(window, text.c_str());
+void InputServer::set_clipboard(const std::string &text) {
+    glfwSetClipboardString(nullptr, text.c_str());
 }
 
 void InputServer::set_cursor(uint8_t window_index, CursorShape shape) {
