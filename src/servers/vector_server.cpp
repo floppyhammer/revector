@@ -157,11 +157,13 @@ void VectorServer::draw_render_image(RenderImage &render_image, Transform2 trans
 }
 
 void VectorServer::draw_style_box(const StyleBox &style_box, Vec2F position, Vec2F size, float alpha) {
-    float border_offset = style_box.border_width * 0.5;
-    position.x += border_offset;
-    position.y += border_offset;
-    size.x -= border_offset;
-    size.y -= border_offset;
+    if (style_box.border_width > 0) {
+        const float border_offset = style_box.border_width * 0.5f;
+        position.x += border_offset;
+        position.y += border_offset;
+        size.x -= border_offset;
+        size.y -= border_offset;
+    }
 
     auto path = Pathfinder::Path2d();
     if (style_box.corner_radii.has_value()) {
@@ -175,9 +177,9 @@ void VectorServer::draw_style_box(const StyleBox &style_box, Vec2F position, Vec
     canvas->set_shadow_color(style_box.shadow_color);
     canvas->set_shadow_blur(style_box.shadow_size);
 
-    auto dpi_scaling_xform = Pathfinder::Transform2::from_scale(Vec2F(global_scale_, global_scale_));
+    const auto dpi_scaling_xform = Pathfinder::Transform2::from_scale(Vec2F(global_scale_, global_scale_));
 
-    auto transform = Pathfinder::Transform2::from_translation(position);
+    const auto transform = Pathfinder::Transform2::from_translation(position);
     canvas->set_transform(dpi_scaling_xform * global_transform_offset * transform);
 
     canvas->set_fill_paint(Pathfinder::Paint::from_color(style_box.bg_color.apply_alpha(alpha)));
