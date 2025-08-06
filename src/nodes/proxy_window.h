@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "../common/geometry.h"
 #include "node.h"
 
@@ -7,14 +9,11 @@ namespace revector {
 
 class Blit;
 
-/// A sub-window besides the primary window.
-class SubWindow : public Node {
+class ProxyWindow : public Node {
     friend class SceneTree;
 
 public:
-    explicit SubWindow(Vec2I size);
-
-    explicit SubWindow(Vec2I size, int window_index);
+    ProxyWindow(Vec2I size, int window_index);
 
     void update(double dt) override;
 

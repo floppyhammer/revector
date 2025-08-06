@@ -5,12 +5,12 @@
 #include <future>
 
 #include "../servers/render_server.h"
-#include "sub_window.h"
+#include "proxy_window.h"
 
 namespace revector {
 
 SceneTree::SceneTree(Vec2I primary_window_size) {
-    auto primary_window = std::make_shared<SubWindow>(primary_window_size, 0);
+    auto primary_window = std::make_shared<ProxyWindow>(primary_window_size, 0);
     primary_window->name = "Primary window";
 
     root = primary_window;
@@ -23,7 +23,7 @@ void propagate_input(Node* node, InputEvent& event) {
     }
 
     for (auto& child : node->get_all_children_reversed()) {
-        if (typeid(*child) == typeid(SubWindow) || !node->get_visibility()) {
+        if (typeid(*child) == typeid(ProxyWindow) || !node->get_visibility()) {
             continue;
         }
 
@@ -70,7 +70,7 @@ void input_system(Node* root, std::vector<InputEvent>& input_queue) {
         dfs_postorder_rtl_traversal(root, nodes);
 
         for (auto& node : nodes) {
-            if (typeid(*node) == typeid(SubWindow) || typeid(*node) == typeid(PopupMenu)) {
+            if (typeid(*node) == typeid(ProxyWindow) || typeid(*node) == typeid(PopupMenu)) {
                 priority_nodes.push_back(node);
             }
         }
@@ -161,8 +161,8 @@ void propagate_draw(Node* node) {
         if (!node->get_visibility()) {
             continue;
         }
-        // Don't propagate to SubWindows/PopupMenus as we'll handle them differently.
-        if (typeid(*child) == typeid(SubWindow)) {
+        // Don't propagate to ProxyWindows/PopupMenus as we'll handle them differently.
+        if (typeid(*child) == typeid(ProxyWindow)) {
             continue;
         }
         if (typeid(*child) == typeid(PopupMenu)) {
@@ -234,22 +234,22 @@ void SceneTree::process(double dt) {
     }
 }
 
-bool SceneTree::render() {
+bool SceneTree::render() const {
     // Collect all windows.
-    std::vector<SubWindow*> sub_windows;
+    std::vector<ProxyWindow*> sub_windows;
     {
         std::vector<Node*> nodes;
         dfs_preorder_ltr_traversal(root.get(), nodes);
         for (auto& node : nodes) {
-            if (typeid(*node) == typeid(SubWindow)) {
-                auto sub_window = dynamic_cast<SubWindow*>(node);
+            if (typeid(*node) == typeid(ProxyWindow)) {
+                auto sub_window = dynamic_cast<ProxyWindow*>(node);
                 sub_windows.push_back(sub_window);
             }
         }
     }
 
     // Draw sub-windows.
-    for (auto& w : sub_windows) {
+    for (const auto& w : sub_windows) {
         if (!w->get_visibility()) {
             continue;
         }
@@ -273,7 +273,7 @@ bool SceneTree::render() {
         propagate_draw(w);
 
         // Draw popup menus
-        for (auto& m : popup_menus) {
+        for (const auto& m : popup_menus) {
             if (!m->get_visibility()) {
                 continue;
             }

@@ -23,7 +23,7 @@ public:
 
     void main_loop();
 
-    std::shared_ptr<Node> get_tree_root() const;
+    [[nodiscard]] std::shared_ptr<Node> get_tree_root() const;
 
     void set_window_title(const std::string& title);
 

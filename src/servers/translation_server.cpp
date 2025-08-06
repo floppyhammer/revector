@@ -22,7 +22,7 @@ std::string TranslationServer::get_translation(std::string tag) {
     const auto& locale_map = db_[current_locale_];
 
     // Fallback
-    if (locale_map.find(tag) == locale_map.end()) {
+    if (!locale_map.contains(tag)) {
         return tag;
     }
 

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "sub_window.h"
+#include "proxy_window.h"
 
 namespace revector {
 

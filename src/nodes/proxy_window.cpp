@@ -1,4 +1,4 @@
-#include "sub_window.h"
+#include "proxy_window.h"
 
 #include "../common/geometry.h"
 #include "../servers/render_server.h"
@@ -6,13 +6,18 @@
 
 namespace revector {
 
-SubWindow::SubWindow(Vec2I size) {
+ProxyWindow::ProxyWindow(const Vec2I size, const int window_index) {
     type = NodeType::Window;
 
     size_ = size;
 
     auto render_server = RenderServer::get_singleton();
-    window_index_ = render_server->window_builder_->create_window(size_, "SubWindow");
+
+    if (window_index > -1) {
+        window_index_ = window_index;
+    } else {
+        window_index_ = render_server->window_builder_->create_window(size_, "Window");
+    }
 
     auto window = render_server->window_builder_->get_window(window_index_).lock();
 
@@ -27,38 +32,11 @@ SubWindow::SubWindow(Vec2I size) {
         render_server->device_->create_texture({size_, Pathfinder::TextureFormat::Rgba8Unorm}, "dst texture");
 }
 
-SubWindow::SubWindow(Vec2I size, int window_index) {
-    type = NodeType::Window;
-
-    size_ = size;
-
-    auto render_server = RenderServer::get_singleton();
-    window_index_ = window_index;
-
-    auto window = render_server->window_builder_->get_window(window_index).lock();
-
-    auto input_server = InputServer::get_singleton();
-    input_server->initialize_window_callbacks(window_index_);
-
-    auto swap_chain_ = window->get_swap_chain(render_server->device_);
-
-    blit_ = std::make_shared<Blit>(render_server->device_, render_server->queue_, swap_chain_->get_surface_format());
-
-    vector_target_ =
-        render_server->device_->create_texture({size_, Pathfinder::TextureFormat::Rgba8Unorm}, "dst texture");
-}
-
-Vec2I SubWindow::get_size() const {
+Vec2I ProxyWindow::get_size() const {
     return size_;
 }
 
-void SubWindow::update(double dt) {
-    // if (window_->get_resize_flag()) {
-    //     // auto new_size = Vec2I(window_->get_size(), window->framebuffer_height);
-    //     //        when_window_size_changed(new_size);
-    //     //        VectorServer::get_singleton()->get_canvas()->set_new_dst_texture(new_size);
-    // }
-
+void ProxyWindow::update(double dt) {
     auto render_server = RenderServer::get_singleton();
     auto window = render_server->window_builder_->get_window(window_index_).lock();
 
@@ -70,7 +48,7 @@ void SubWindow::update(double dt) {
     }
 }
 
-void SubWindow::pre_draw_propagation() {
+void ProxyWindow::pre_draw_propagation() {
     if (!visible_) {
         return;
     }
@@ -104,7 +82,7 @@ void SubWindow::pre_draw_propagation() {
     // temp_draw_data.previous_scene = vector_server->get_canvas()->take_scene();
 }
 
-void SubWindow::post_draw_propagation() {
+void ProxyWindow::post_draw_propagation() {
     auto render_server = RenderServer::get_singleton();
     auto vector_server = VectorServer::get_singleton();
 
@@ -143,7 +121,7 @@ void SubWindow::post_draw_propagation() {
     swap_chain_->present();
 }
 
-void SubWindow::set_visibility(bool visible) {
+void ProxyWindow::set_visibility(bool visible) {
     if (visible_ == visible) {
         return;
     }
@@ -151,7 +129,7 @@ void SubWindow::set_visibility(bool visible) {
     visible_ = visible;
 }
 
-std::shared_ptr<Pathfinder::Window> SubWindow::get_raw_window() const {
+std::shared_ptr<Pathfinder::Window> ProxyWindow::get_raw_window() const {
     auto render_server = RenderServer::get_singleton();
 
     auto window = render_server->window_builder_->get_window(window_index_).lock();

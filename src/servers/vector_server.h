@@ -11,9 +11,7 @@
 
 namespace revector {
 
-/**
- * All visible shapes will be collected by the vector server and drawn at once.
- */
+/// All visible shapes will be collected by the vector server then sent to the render thread to be drawn at once.
 class VectorServer final {
 public:
     static VectorServer *get_singleton() {

@@ -2,7 +2,7 @@
 #include <random>
 
 #include "app.h"
-#include "nodes/sub_window.h"
+#include "nodes/proxy_window.h"
 
 using namespace revector;
 
@@ -18,7 +18,7 @@ class MyNode : public Node {
 
         add_child(container);
 
-        auto sub_window = std::make_shared<SubWindow>(Vec2I{480, 320});
+        auto sub_window = std::make_shared<ProxyWindow>(Vec2I{480, 320}, -1);
         add_child(sub_window);
 
         auto label = std::make_shared<Label>();

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <thread>
+
 #include "file_dialog.h"
 #include "node.h"
 #include "timer.h"
@@ -28,7 +30,7 @@ class Window;
 
 namespace revector {
 
-class SubWindow;
+class ProxyWindow;
 
 void transform_system(Node* root);
 
@@ -46,7 +48,7 @@ public:
 
     void process(double dt);
 
-    bool render();
+    bool render() const;
 
     std::shared_ptr<Node> get_root() const;
 
@@ -60,9 +62,12 @@ public:
 
 private:
     /// Primary window
-    std::shared_ptr<SubWindow> root;
+    std::shared_ptr<ProxyWindow> root;
 
     bool quited = false;
+
+    // todo
+    std::thread render_thread;
 };
 
 } // namespace revector

@@ -63,7 +63,7 @@ class MarginContainer;
 //     StyleBox theme_hovered;
 // };
 
-// TODO: we should make it flexible to change a popup menu's parent from a NodeUi to a SubWindow,
+// TODO: we should make it flexible to change a popup menu's parent from a NodeUi to a ProxyWindow,
 // so we can have intuitive windowed popup support.
 class PopupMenu : public NodeUi {
 public:

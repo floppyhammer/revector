@@ -11,7 +11,7 @@ class TextServer {
 public:
     void load_font_from_file(const std::string& file_path);
 
-    void load_font_from_momery(const std::vector<char>& bytes);
+    void load_font_from_memory(const std::vector<char>& bytes);
 
     std::shared_ptr<std::vector<char>> get_font(std::string font_id);
 

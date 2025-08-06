@@ -1,7 +1,5 @@
 #include "vector_server.h"
 
-#include "debug_server.h"
-
 namespace revector {
 
 constexpr float STROKE_WIDTH_FOR_PSEUDO_BOLD_TEXT = 1.0;
@@ -17,8 +15,8 @@ void VectorServer::cleanup() {
     canvas.reset();
 }
 
-void VectorServer::set_canvas_size(Vec2I new_size) {
-    auto new_view_box = RectI({}, new_size).to_f32();
+void VectorServer::set_canvas_size(const Vec2I new_size) {
+    const auto new_view_box = RectI({}, new_size).to_f32();
     canvas->get_scene()->set_bounds(new_view_box);
     canvas->get_scene()->set_view_box(new_view_box);
 }

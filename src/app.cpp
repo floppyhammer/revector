@@ -13,7 +13,7 @@
 
 namespace revector {
 
-App::App(Vec2I primary_window_size, bool dark_mode) {
+App::App(Vec2I primary_window_size, const bool dark_mode) {
     // Set logger level.
     Logger::set_default_level(Logger::Level::Silence);
     Logger::set_module_level("revector", Logger::Level::Warn);
@@ -24,17 +24,15 @@ App::App(Vec2I primary_window_size, bool dark_mode) {
 
     auto render_server = RenderServer::get_singleton();
 
+    auto window_builder = Pathfinder::WindowBuilder::new_impl(Pathfinder::BackendType::Vulkan, primary_window_size);
+    render_server->window_builder_ = window_builder;
+
     // Create the main window.
-    render_server->window_builder_ =
-        Pathfinder::WindowBuilder::new_impl(Pathfinder::BackendType::Vulkan, primary_window_size);
     auto primary_window = render_server->window_builder_->get_window(0);
 
     // Create device and queue.
-    render_server->device_ = render_server->window_builder_->request_device();
-    render_server->queue_ = render_server->window_builder_->create_queue();
-
-    // Create swap chains for windows.
-    auto primary_swap_chain = primary_window.lock()->get_swap_chain(render_server->device_);
+    render_server->device_ = window_builder->request_device();
+    render_server->queue_ = window_builder->create_queue();
 
     auto vector_server = VectorServer::get_singleton();
     vector_server->init(primary_window.lock()->get_physical_size(),
@@ -73,9 +71,8 @@ void App::set_fullscreen(bool fullscreen) {
 }
 
 void App::main_loop() {
-    auto render_server = RenderServer::get_singleton();
-
     bool closing_app = false;
+
     while (!closing_app) {
         InputServer::get_singleton()->clear_events();
         RenderServer::get_singleton()->window_builder_->poll_events();

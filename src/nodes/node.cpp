@@ -4,7 +4,7 @@
 #include <string>
 
 #include "../servers/render_server.h"
-#include "sub_window.h"
+#include "proxy_window.h"
 
 namespace revector {
 
@@ -95,8 +95,8 @@ void dfs_postorder_rtl_traversal_skip_priority_node_and_invisible(Node *node, st
     if (node == nullptr || !node->get_visibility()) {
         return;
     }
-    // Skip SubWindow and all its children.
-    if (typeid(*node) == typeid(SubWindow)) {
+    // Skip ProxyWindow and all its children.
+    if (typeid(*node) == typeid(ProxyWindow)) {
         return;
     }
 
@@ -232,7 +232,7 @@ bool Node::get_global_visibility() const {
 
 uint8_t Node::get_window_index() const {
     if (type == NodeType::Window) {
-        auto sub_window_node = (SubWindow *)this;
+        auto sub_window_node = (ProxyWindow *)this;
         return sub_window_node->get_raw_window()->window_index;
     }
 

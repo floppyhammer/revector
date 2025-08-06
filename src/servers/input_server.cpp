@@ -5,7 +5,7 @@
 #include <codecvt>
 #include <locale>
 
-#include "../nodes/sub_window.h"
+#include "../nodes/proxy_window.h"
 #include "render_server.h"
 
 namespace revector {
