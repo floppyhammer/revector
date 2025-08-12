@@ -115,7 +115,7 @@ void VectorServer::draw_path(VectorPath &vector_path, Transform2 transform) {
     canvas->restore_state();
 }
 
-void VectorServer::draw_raster_image(RasterImage &image, Transform2 transform) {
+void VectorServer::draw_raster_image(const RasterImage &image, const Transform2 &transform) {
     canvas->save_state();
 
     auto dpi_scaling_xform = Pathfinder::Transform2::from_scale(Vec2F(global_scale_, global_scale_));

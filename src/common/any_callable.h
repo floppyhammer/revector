@@ -2,9 +2,6 @@
 
 #include <any>
 #include <functional>
-#include <iostream>
-#include <map>
-#include <string>
 
 namespace revector {
 
@@ -21,7 +18,8 @@ struct AnyCallable {
     Ret operator()(Args&&... args) {
         return std::invoke(std::any_cast<std::function<Ret(Args...)>>(m_any), std::forward<Args>(args)...);
     }
+
     std::any m_any;
 };
 
-}
+} // namespace revector

@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <memory>
 
-#include "common/load_file.h"
 #include "resources/default_resource.h"
 #include "resources/resource_manager.h"
 #include "servers/engine.h"

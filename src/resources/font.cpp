@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 
-#include "../common/load_file.h"
 #include "../common/utils.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION

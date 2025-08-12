@@ -14,7 +14,7 @@ void Engine::tick() {
     static auto start_time = std::chrono::high_resolution_clock::now();
     auto current_time = std::chrono::high_resolution_clock::now();
 
-    auto new_elapsed = std::chrono::duration<double, std::chrono::seconds::period>(current_time - start_time).count();
+    auto new_elapsed = std::chrono::duration<double>(current_time - start_time).count();
 
     dt = new_elapsed - elapsed;
 

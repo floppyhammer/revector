@@ -11,7 +11,7 @@
 
 namespace revector {
 
-/// All visible shapes will be collected by the vector server then sent to the render thread to be drawn at once.
+/// All visible shapes will be collected by the vector server and drawn at once.
 class VectorServer final {
 public:
     static VectorServer *get_singleton() {
@@ -42,13 +42,11 @@ public:
 
     void draw_path(VectorPath &vector_path, Transform2 transform);
 
-    void draw_raster_image(RasterImage &image, Transform2 transform);
+    void draw_raster_image(const RasterImage &image, const Transform2 &transform);
 
     void draw_vector_image(VectorImage &image, Transform2 transform);
 
     void draw_render_image(RenderImage &image, Transform2 transform);
-
-    std::shared_ptr<Pathfinder::Texture> get_texture_by_render_target_id(Pathfinder::RenderTargetId id);
 
     void draw_style_box(const StyleBox &style_box, Vec2F position, Vec2F size, float alpha = 1.0f);
 
@@ -77,11 +75,9 @@ public:
     void set_global_scale(float new_scale);
 
     // Only used with ScrollContainer.
-    Transform2 global_transform_offset;
+    Transform2 global_transform_offset{};
 
 private:
-    void reset_render_layers();
-
     // Never expose this.
     std::shared_ptr<Pathfinder::Canvas> canvas;
 
