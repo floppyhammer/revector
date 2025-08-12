@@ -14,8 +14,8 @@ namespace revector {
 
 App::App(Vec2I primary_window_size, const bool dark_mode) {
     // Set logger level.
-    Logger::set_default_level(Logger::Level::Silence);
-    Logger::set_module_level("revector", Logger::Level::Warn);
+    Logger::set_global_level(Logger::Level::Info);
+    Logger::set_module_level("revector", Logger::Level::Info);
 
     dark_mode_ = dark_mode;
 
