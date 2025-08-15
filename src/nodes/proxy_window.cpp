@@ -116,7 +116,7 @@ void ProxyWindow::post_draw_propagation() {
         encoder->end_render_pass();
     }
 
-    render_server->queue_->submit(encoder, swap_chain_);
+    swap_chain_->submit(encoder);
 
     swap_chain_->present();
 }
