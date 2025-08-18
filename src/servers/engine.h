@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <map>
 
 namespace revector {
 
@@ -25,9 +26,9 @@ public:
 
     double get_elapsed() const;
 
-    float get_fps() const;
+    float get_fps();
 
-    int get_fps_int() const;
+    int get_fps_int();
 
 private:
 #if defined(_WIN32) || defined(__APPLE__)
@@ -36,7 +37,9 @@ private:
     std::chrono::time_point<std::chrono::system_clock> last_time_updated_fps;
 #endif
 
-    float fps = 0;
+    std::map<int64_t, float> frametimes;
+    int64_t fps_average_window = 1000000000; // ns
+
     double elapsed = 0;
     double dt = 0;
 };
