@@ -61,12 +61,10 @@ void ProxyWindow::pre_draw_propagation() {
     // Set DPI.
     vector_server->set_global_scale(window->get_dpi_scaling_factor());
 
-    if (window->get_physical_size() != vector_target_->get_size()) {
-        if (!window->get_physical_size().is_any_zero()) {
-            std::ostringstream ss;
-            ss << "Vector target of the primary window resized to " << vector_target_->get_size();
-            Logger::info(ss.str(), "revector");
+    auto physical_size = window->get_physical_size();
 
+    if (physical_size != vector_target_->get_size()) {
+        if (!physical_size.is_any_zero()) {
             // Texture & canvas should use the physical size.
             auto physical_size = window->get_physical_size();
 
@@ -74,6 +72,10 @@ void ProxyWindow::pre_draw_propagation() {
                 {physical_size, Pathfinder::TextureFormat::Rgba8Unorm}, "dst texture");
 
             vector_server->set_canvas_size(physical_size);
+
+            std::ostringstream ss;
+            ss << "Vector target of the primary window resized to " << physical_size;
+            Logger::info(ss.str(), "revector");
         }
     }
 
