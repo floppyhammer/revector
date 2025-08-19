@@ -86,29 +86,8 @@ void input_system(Node* root, std::vector<InputEvent>& input_queue) {
                 continue;
             }
 
-            // if (p_node->get_node_type() == NodeType::PopupMenu) {
-            //     // if
-            // }
-            //
-            // std::vector<Node*> subnodes;
-            // dfs_postorder_rtl_traversal_skip_priority_node_and_invisible(p_node, subnodes);
-            //
-            // for (auto& node : subnodes) {
-            //     node->input(event);
-            // }
-
             propagate_input(p_node, event);
         }
-    }
-
-    // std::vector<Node*> subnodes;
-    // dfs_postorder_rtl_traversal_skip_priority_node_and_invisible(root, subnodes);
-
-    for (auto& event : input_queue) {
-        if (event.window_index != 0) {
-            continue;
-        }
-        propagate_input(root, event);
     }
 }
 
