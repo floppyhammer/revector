@@ -27,6 +27,8 @@ public:
 
     void set_separation(float new_separation);
 
+    void set_split_ratio(float new_ratio);
+
 private:
     void when_grabber_moved();
 
@@ -34,12 +36,12 @@ private:
 
     Vec2F size_before_collapse_;
 
-    ColorU theme_color_ = {};
+    bool cursor_in_ = false;
 
-    float grabber_pos_ = 0;
+    float split_ratio_ = 0.5;
     std::optional<Vec2F> grabber_pressed_pos_;
     Vec2F grabber_pressed_offset;
-    float grabber_size_ = 12;
+    float grabber_size_ = 8;
 
     std::optional<StyleBox> theme_title_bar_;
     std::optional<StyleBox> theme_panel_;
