@@ -122,6 +122,14 @@ void SplitContainer::input(InputEvent &event) {
         if (grabber_pressed_pos_.has_value()) {
             grabber_pos_ = (args.position.x) - global_position.x - grabber_pressed_offset.x;
         }
+
+        if (!event.consumed) {
+            if (RectF(global_position + Vec2F(grabber_pos_, 0),
+                      global_position + Vec2F(grabber_pos_, 0) + Vec2F(grabber_size_, size.y))
+                    .contains_point(args.position)) {
+                InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::ResizeH);
+            }
+        }
     }
 
     if (event.type == InputEventType::MouseButton) {
@@ -136,8 +144,8 @@ void SplitContainer::input(InputEvent &event) {
         // Consumed by other UI nodes.
         if (!event.consumed) {
             if (args.pressed) {
-                if (RectF(global_position + Vec2F(grabber_pos_ + grabber_margin, 0),
-                          global_position + Vec2F(grabber_pos_, 0) + Vec2F(grabber_size_ - grabber_margin, size.y))
+                if (RectF(global_position + Vec2F(grabber_pos_, 0),
+                          global_position + Vec2F(grabber_pos_, 0) + Vec2F(grabber_size_, size.y))
                         .contains_point(args.position)) {
                     grabber_pressed_pos_ = args.position;
                     grabber_pressed_offset = args.position - global_position - Vec2F(grabber_pos_, 0);
@@ -169,6 +177,10 @@ void SplitContainer::draw() {
 
         vector_server->draw_line(start, end, 2, ColorU::white());
     }
+}
+
+void SplitContainer::set_separation(float new_separation) {
+    grabber_size_ = new_separation;
 }
 
 } // namespace revector

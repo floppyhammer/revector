@@ -25,6 +25,8 @@ public:
 
     void connect_signal(const std::string &signal, const AnyCallable<void> &callback) override;
 
+    void set_separation(float new_separation);
+
 private:
     void when_grabber_moved();
 
@@ -38,7 +40,6 @@ private:
     std::optional<Vec2F> grabber_pressed_pos_;
     Vec2F grabber_pressed_offset;
     float grabber_size_ = 12;
-    float grabber_margin = 1; // Leave deadzone for cursor
 
     std::optional<StyleBox> theme_title_bar_;
     std::optional<StyleBox> theme_panel_;
