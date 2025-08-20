@@ -48,6 +48,8 @@ void VectorServer::draw_line(Vec2F start, Vec2F end, float width, ColorU color) 
     Pathfinder::Path2d path;
     path.add_line({start.x, start.y}, {end.x, end.y});
 
+    canvas->set_transform(Pathfinder::Transform2::from_scale(Vec2F(global_scale_, global_scale_)));
+
     canvas->set_stroke_paint(Pathfinder::Paint::from_color(color));
     canvas->set_line_width(width);
     // canvas->set_line_cap(Pathfinder::LineCap::Round);

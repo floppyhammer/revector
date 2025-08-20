@@ -12,6 +12,7 @@
 #include "ui/container/grid_container.h"
 #include "ui/container/margin_container.h"
 #include "ui/container/scroll_container.h"
+#include "ui/container/split_container.h"
 #include "ui/container/tab_container.h"
 #include "ui/label.h"
 #include "ui/menu_button.h"

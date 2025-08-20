@@ -26,6 +26,7 @@ enum class NodeType {
     ScrollContainer,
     TabContainer,
     CollapseContainer,
+    SplitContainer,
 
     Button,
     MenuButton,
