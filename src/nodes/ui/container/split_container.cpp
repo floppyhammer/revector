@@ -31,9 +31,9 @@ void SplitContainer::adjust_layout() {
 
             if (valid_count == 0) {
                 split_to_right_length =
-                    std::max(size.x - child_min_size.x + grabber_size_ * 0.5f, split_to_right_length);
+                    std::min(size.x - (child_min_size.x + grabber_size_ * 0.5f), split_to_right_length);
             } else {
-                split_to_right_length = std::min(child_min_size.x + grabber_size_ * 0.5f, split_to_right_length);
+                split_to_right_length = std::max(child_min_size.x + grabber_size_ * 0.5f, split_to_right_length);
             }
 
             valid_count++;
