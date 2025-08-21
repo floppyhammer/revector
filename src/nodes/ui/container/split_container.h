@@ -38,7 +38,9 @@ private:
 
     bool cursor_in_ = false;
 
-    float split_ratio_ = 0.5;
+    bool splitting_enabled_ = true;
+
+    float split_to_right_length = 200;
     std::optional<Vec2F> grabber_pressed_pos_;
     Vec2F grabber_pressed_offset;
     float grabber_size_ = 8;

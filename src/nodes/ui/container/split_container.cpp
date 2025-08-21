@@ -18,49 +18,63 @@ SplitContainer::SplitContainer() {
 
 void SplitContainer::adjust_layout() {
     // Calculate grabber position first.
-    for (int child_idx = 0; child_idx < children.size(); child_idx++) {
-        auto child = children[child_idx];
+    int valid_count = 0;
 
-        if (child_idx > 1) {
+    for (const auto &child : children) {
+        if (valid_count > 1) {
             break;
         }
 
-        if (child->is_ui_node()) {
+        if (child->is_ui_node() && child->get_visibility()) {
             auto cast_child = dynamic_cast<NodeUi *>(child.get());
             auto child_min_size = cast_child->get_effective_minimum_size();
 
-            if (child_idx == 0) {
-                split_ratio_ = std::max(child_min_size.x / size.x, split_ratio_);
+            if (valid_count == 0) {
+                split_to_right_length =
+                    std::max(size.x - child_min_size.x + grabber_size_ * 0.5f, split_to_right_length);
             } else {
-                split_ratio_ = std::min((size.x - child_min_size.x - grabber_size_) / size.x, split_ratio_);
+                split_to_right_length = std::min(child_min_size.x + grabber_size_ * 0.5f, split_to_right_length);
             }
+
+            valid_count++;
         }
     }
 
-    // Adjust child size.
-    for (int child_idx = 0; child_idx < children.size(); child_idx++) {
-        auto child = children[child_idx];
+    splitting_enabled_ = valid_count == 2;
 
-        if (child_idx > 1) {
+    float effective_grabber_size = grabber_size_;
+
+    if (!splitting_enabled_) {
+        split_to_right_length = 0;
+        effective_grabber_size = 0;
+    }
+
+    // Adjust child size.
+    valid_count = 0;
+
+    for (const auto &child : children) {
+        if (valid_count > 1) {
             break;
         }
 
-        if (child->is_ui_node()) {
+        if (child->is_ui_node() && child->get_visibility()) {
             auto cast_child = dynamic_cast<NodeUi *>(child.get());
 
-            float grabber_pos = split_ratio_ * size.x;
+            float grabber_left_edge_pos = size.x - split_to_right_length - effective_grabber_size * 0.5;
 
             Vec2F child_size;
             Vec2F child_pos;
-            if (child_idx == 0) {
-                child_size = {grabber_pos, size.y};
+            if (valid_count == 0) {
+                child_size = {grabber_left_edge_pos, size.y};
                 child_pos = {0, 0};
             } else {
-                child_size = {size.x - grabber_pos - grabber_size_, size.y};
-                child_pos = {grabber_pos + grabber_size_, 0};
+                child_size = {size.x - grabber_left_edge_pos - grabber_size_, size.y};
+                child_pos = {grabber_left_edge_pos + grabber_size_, 0};
             }
             cast_child->set_position(child_pos);
             cast_child->set_size(child_size);
+
+            valid_count++;
         }
     }
 }
@@ -89,7 +103,7 @@ void SplitContainer::calc_minimum_size() {
     int valid_count = 0;
 
     for (const auto &child : children) {
-        if (child->is_ui_node() && valid_count < 2) {
+        if (child->is_ui_node() && child->get_visibility() && valid_count < 2) {
             auto cast_child = dynamic_cast<NodeUi *>(child.get());
             auto child_min_size = cast_child->get_effective_minimum_size();
             min_size += child_min_size;
@@ -112,55 +126,58 @@ void SplitContainer::input(InputEvent &event) {
 
     bool consume_flag = false;
 
-    float grabber_pos = split_ratio_ * size.x;
+    if (splitting_enabled_) {
+        float grabber_left_edge_pos = size.x - split_to_right_length - grabber_size_ * 0.5f;
 
-    if (event.type == InputEventType::MouseMotion) {
-        auto args = event.args.mouse_motion;
+        if (event.type == InputEventType::MouseMotion) {
+            auto args = event.args.mouse_motion;
 
-        if (!event.consumed) {
-            if (RectF(global_position + Vec2F(grabber_pos, 0),
-                      global_position + Vec2F(grabber_pos, 0) + Vec2F(grabber_size_, size.y))
-                    .contains_point(args.position)) {
-                cursor_in_ = true;
-                InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::ResizeH);
+            if (!event.consumed) {
+                if (RectF(global_position + Vec2F(grabber_left_edge_pos, 0),
+                          global_position + Vec2F(grabber_left_edge_pos, 0) + Vec2F(grabber_size_, size.y))
+                        .contains_point(args.position)) {
+                    cursor_in_ = true;
+                    InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::ResizeH);
+                } else {
+                    if (cursor_in_) {
+                        InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow);
+                    }
+                    cursor_in_ = false;
+                }
             } else {
                 if (cursor_in_) {
                     InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow);
                 }
                 cursor_in_ = false;
             }
-        } else {
-            if (cursor_in_) {
-                InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow);
-            }
-            cursor_in_ = false;
-        }
 
-        if (grabber_pressed_pos_.has_value()) {
-            split_ratio_ = (args.position.x - global_position.x - grabber_pressed_offset.x) / size.x;
-        }
-    }
-
-    if (event.type == InputEventType::MouseButton) {
-        const auto args = event.args.mouse_button;
-
-        if (!args.pressed) {
             if (grabber_pressed_pos_.has_value()) {
-                grabber_pressed_pos_ = {};
+                split_to_right_length =
+                    size.x - (args.position.x - global_position.x - grabber_pressed_offset.x + grabber_size_ * 0.5f);
             }
         }
 
-        // Consumed by other UI nodes.
-        if (!event.consumed) {
-            if (args.pressed) {
-                if (RectF(global_position + Vec2F(grabber_pos, 0),
-                          global_position + Vec2F(grabber_pos, 0) + Vec2F(grabber_size_, size.y))
-                        .contains_point(args.position)) {
-                    grabber_pressed_pos_ = args.position;
-                    grabber_pressed_offset = args.position - global_position - Vec2F(grabber_pos, 0);
+        if (event.type == InputEventType::MouseButton) {
+            const auto args = event.args.mouse_button;
+
+            if (!args.pressed) {
+                if (grabber_pressed_pos_.has_value()) {
+                    grabber_pressed_pos_ = {};
                 }
             }
-            consume_flag = true;
+
+            // Consumed by other UI nodes.
+            if (!event.consumed) {
+                if (args.pressed) {
+                    if (RectF(global_position + Vec2F(grabber_left_edge_pos, 0),
+                              global_position + Vec2F(grabber_left_edge_pos, 0) + Vec2F(grabber_size_, size.y))
+                            .contains_point(args.position)) {
+                        grabber_pressed_pos_ = args.position;
+                        grabber_pressed_offset = args.position - global_position - Vec2F(grabber_left_edge_pos, 0);
+                    }
+                }
+                consume_flag = true;
+            }
         }
     }
 
@@ -180,13 +197,15 @@ void SplitContainer::draw() {
 
     const auto global_position = get_global_position();
 
-    float grabber_pos = split_ratio_ * size.x;
+    if (splitting_enabled_) {
+        float grabber_left_edge_pos = size.x - split_to_right_length - grabber_size_ * 0.5f;
 
-    if (grabber_pressed_pos_.has_value()) {
-        const auto start = global_position + Vec2F(grabber_pos + grabber_size_ * 0.5, size.y * 0.25);
-        const auto end = start + Vec2F(0, size.y * 0.5);
+        if (grabber_pressed_pos_.has_value()) {
+            const auto start = global_position + Vec2F(grabber_left_edge_pos + grabber_size_ * 0.5, size.y * 0.25);
+            const auto end = start + Vec2F(0, size.y * 0.5);
 
-        vector_server->draw_line(start, end, 2, ColorU::white());
+            vector_server->draw_line(start, end, 2, ColorU::white());
+        }
     }
 }
 
@@ -195,7 +214,7 @@ void SplitContainer::set_separation(float new_separation) {
 }
 
 void SplitContainer::set_split_ratio(float new_ratio) {
-    split_ratio_ = new_ratio;
+    split_to_right_length = (1.0f - new_ratio) * size.x;
 }
 
 } // namespace revector
