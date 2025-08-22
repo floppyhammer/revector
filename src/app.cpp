@@ -12,7 +12,7 @@
 
 namespace revector {
 
-App::App(Vec2I primary_window_size, const bool dark_mode) {
+App::App(Vec2I primary_window_size, const bool dark_mode, bool use_vulkan) {
     // Set logger level.
     Logger::set_global_level(Logger::Level::Info);
     Logger::set_module_level("revector", Logger::Level::Info);
@@ -23,7 +23,8 @@ App::App(Vec2I primary_window_size, const bool dark_mode) {
 
     auto render_server = RenderServer::get_singleton();
 
-    auto window_builder = Pathfinder::WindowBuilder::new_impl(Pathfinder::BackendType::Vulkan, primary_window_size);
+    auto window_builder = Pathfinder::WindowBuilder::new_impl(
+        use_vulkan ? Pathfinder::BackendType::Vulkan : Pathfinder::BackendType::Opengl, primary_window_size);
     render_server->window_builder_ = window_builder;
 
     // Create the main window.
