@@ -281,7 +281,7 @@ void ScrollContainer::post_draw_children() {
     float dpi_scale = RenderServer::get_singleton()->window_builder_->get_dpi_scaling_factor(get_window_index());
 
     auto dst_rect = RectF(global_pos * dpi_scale, (global_pos + size) * dpi_scale);
-    vector_server->get_canvas()->draw_render_target(temp_draw_data.render_target_id, dst_rect);
+    canvas->draw_render_target(temp_draw_data.render_target_id, dst_rect);
 
     vector_server->global_transform_offset = Transform2();
     draw_scroll_bar();
