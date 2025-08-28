@@ -23,6 +23,10 @@ CollapseContainer::CollapseContainer(CollapseButtonType button_type) {
     switch (button_type) {
         case CollapseButtonType::Check: {
             collapse_button_ = std::make_shared<CheckButton>();
+            collapse_button_->set_icon_normal(
+                std::make_shared<VectorImage>(get_asset_dir("icons/toggle_off.svg"), true));
+            collapse_button_->set_icon_pressed(
+                std::make_shared<VectorImage>(get_asset_dir("icons/toggle_on.svg"), true));
         } break;
         default: {
             collapse_button_ = std::make_shared<Button>();
@@ -30,8 +34,6 @@ CollapseContainer::CollapseContainer(CollapseButtonType button_type) {
     }
 
     collapse_button_->set_custom_minimum_size({0, title_bar_height_});
-    // collapse_button_->set_icon_normal(std::make_shared<VectorImage>("assets/icons/ArrowDown.svg"));
-    // collapse_button_->set_icon_pressed(std::make_shared<VectorImage>("assets/icons/ArrowRight.svg"));
     collapse_button_->set_text("Collapsing Container");
     collapse_button_->set_flat(true);
     collapse_button_->set_toggle_mode(true);

@@ -13,8 +13,8 @@ CheckButton::CheckButton() {
 
     theme_pressed = theme_normal;
 
-    icon_normal_ = ResourceManager::get_singleton()->load<VectorImage>(get_asset_dir("icons/CheckBox_Unchecked.svg"));
-    icon_pressed_ = ResourceManager::get_singleton()->load<VectorImage>(get_asset_dir("icons/CheckBox_Checked.svg"));
+    icon_normal_ = std::make_shared<VectorImage>(get_asset_dir("icons/CheckBox_Unchecked.svg"), true);
+    icon_pressed_ = std::make_shared<VectorImage>(get_asset_dir("icons/CheckBox_Checked.svg"), true);
 }
 
 } // namespace revector

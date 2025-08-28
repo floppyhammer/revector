@@ -147,7 +147,7 @@ public:
 
             {
                 auto style_box = StyleBox();
-                style_box.bg_color = ColorU(100, 100, 100);
+                style_box.bg_color = theme->accent_color;
                 style_box.border_width = 0;
                 theme->popup_menu.styles["item_hovered"] = style_box;
             }
@@ -173,7 +173,7 @@ public:
             }
 
             theme->text_edit.caret.color = ColorU(200, 200, 200);
-            theme->text_edit.caret.width = 2;
+            theme->text_edit.caret.width = 1.5;
 
             {
                 auto style_box = StyleBox();
@@ -207,7 +207,7 @@ public:
 
         {
             auto style_box = StyleBox();
-            style_box.bg_color = ColorU(200, 200, 200);
+            style_box.bg_color = ColorU(210, 210, 210);
             style_box.border_color = theme->accent_color;
             style_box.border_width = 2;
             style_box.corner_radius = 8;
@@ -324,7 +324,7 @@ public:
             }
 
             theme->text_edit.caret.color = ColorU(55, 55, 55);
-            theme->text_edit.caret.width = 2;
+            theme->text_edit.caret.width = 1.5;
 
             {
                 auto style_box = StyleBox();
@@ -355,7 +355,7 @@ public:
 
             {
                 auto style_box = StyleBox();
-                style_box.bg_color = ColorU(188, 188, 188);
+                style_box.bg_color = theme->accent_color;
                 style_box.border_width = 0;
                 theme->popup_menu.styles["item_hovered"] = style_box;
             }
@@ -372,7 +372,7 @@ public:
 
     uint32_t font_size = 24;
 
-    ColorU accent_color = ColorU(214, 93, 51);
+    ColorU accent_color = ColorU(90, 170, 255);
 
     struct {
         std::map<std::string, float> constants;

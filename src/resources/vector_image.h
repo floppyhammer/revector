@@ -24,8 +24,8 @@ class VectorImage : public Image {
 public:
     explicit VectorImage(Vec2I _size);
 
-    /// Create from a SVG file.
-    explicit VectorImage(const std::string &path);
+    /// Create from an SVG file.
+    VectorImage(const std::string &path, bool override_with_accent_color = false);
 
     /// Create empty with a specific size.
     static std::shared_ptr<VectorImage> from_empty(Vec2I _size);

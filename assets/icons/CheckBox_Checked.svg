@@ -38,10 +38,10 @@
      fill="#699ce8"
      rx="2.33"
      id="rect1"
-     style="stroke:#d65d33;stroke-opacity:1;fill:none;stroke-width:2;stroke-dasharray:none" />
+     style="stroke:#000000;stroke-opacity:1;fill:none;stroke-width:2;stroke-dasharray:none" />
   <path
      fill="#fff"
      d="M11.5 3.734 5.89 9.346 4.185 7.665l-1.5 1.499 3.204 3.18L13 5.235z"
      id="path1"
-     style="stroke:none;stroke-opacity:1;fill:#d65d33;fill-opacity:1" />
+     style="stroke:none;stroke-opacity:1;fill:#000000;fill-opacity:1" />
 </svg>

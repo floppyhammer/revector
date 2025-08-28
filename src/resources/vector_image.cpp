@@ -6,6 +6,7 @@
 
 #include "../common/utils.h"
 #include "../servers/vector_server.h"
+#include "default_resource.h"
 
 namespace revector {
 
@@ -21,10 +22,10 @@ std::shared_ptr<VectorImage> VectorImage::from_empty(Vec2I _size) {
     return texture;
 }
 
-VectorImage::VectorImage(const std::string &path) : Image(path) {
+VectorImage::VectorImage(const std::string &path, bool override_with_accent_color) : Image(path) {
     type = ImageType::Vector;
 
-    svg_scene = VectorServer::get_singleton()->load_svg(path);
+    svg_scene = VectorServer::get_singleton()->load_svg(path, override_with_accent_color);
 
     size = svg_scene->get_size().to_i32();
 }

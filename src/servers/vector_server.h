@@ -66,7 +66,7 @@ public:
                      const RectF &clip_box,
                      float alpha = 1.0f);
 
-    std::shared_ptr<Pathfinder::SvgScene> load_svg(const std::string &path);
+    std::shared_ptr<Pathfinder::SvgScene> load_svg(const std::string &path, bool override_with_accent_color = false);
 
     std::shared_ptr<Pathfinder::Canvas> get_canvas() const;
 

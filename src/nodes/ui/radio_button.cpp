@@ -13,8 +13,8 @@ RadioButton::RadioButton() {
 
     theme_pressed = theme_normal;
 
-    icon_normal_ = ResourceManager::get_singleton()->load<VectorImage>(get_asset_dir("icons/GuiRadioUnchecked.svg"));
-    icon_pressed_ = ResourceManager::get_singleton()->load<VectorImage>(get_asset_dir("icons/GuiRadioChecked.svg"));
+    icon_normal_ = std::make_shared<VectorImage>(get_asset_dir("icons/GuiRadioUnchecked.svg"), true);
+    icon_pressed_ = std::make_shared<VectorImage>(get_asset_dir("icons/GuiRadioChecked.svg"), true);
 }
 
 } // namespace revector

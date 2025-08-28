@@ -1,5 +1,7 @@
 #include "vector_server.h"
 
+#include "../resources/default_resource.h"
+
 namespace revector {
 
 constexpr float STROKE_WIDTH_FOR_PSEUDO_BOLD_TEXT = 1.0;
@@ -336,8 +338,22 @@ void VectorServer::draw_glyphs(std::vector<Glyph> &glyphs,
     canvas->restore_state();
 }
 
-std::shared_ptr<Pathfinder::SvgScene> VectorServer::load_svg(const std::string &path) {
+std::string replace_all(std::string str, const std::string &from, const std::string &to) {
+    size_t pos = 0;
+    while ((pos = str.find(from, pos)) != std::string::npos) {
+        str.replace(pos, from.length(), to);
+        pos += to.length(); // Advance position to avoid re-finding the newly inserted 'to' string
+    }
+    return str;
+}
+
+std::shared_ptr<Pathfinder::SvgScene> VectorServer::load_svg(const std::string &path, bool override_with_accent_color) {
     auto bytes = Pathfinder::load_file_as_string(path);
+
+    if (override_with_accent_color) {
+        auto default_theme = DefaultResource::get_singleton()->get_default_theme();
+        bytes = replace_all(bytes, "#000000", default_theme->accent_color.to_hex());
+    }
 
     auto svg_scene = std::make_shared<Pathfinder::SvgScene>(bytes, *canvas);
 
