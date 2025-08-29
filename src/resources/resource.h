@@ -6,20 +6,6 @@
 
 namespace revector {
 
-class Resource {
-public:
-    Resource() = default;
-
-    explicit Resource(const std::string &path) {
-        name = path;
-    }
-
-    virtual ~Resource() = default;
-
-    // Name for debugging reason.
-    std::string name{};
-};
-
 static std::string get_asset_dir(const std::string &relative_path) {
     // AppImage specific.
     auto app_dir = getenv("APPDIR");

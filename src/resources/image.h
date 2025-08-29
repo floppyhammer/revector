@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../common/geometry.h"
-#include "resource.h"
 
 namespace revector {
 
@@ -12,13 +11,9 @@ enum class ImageType {
     Max,
 };
 
-class Image : public Resource {
+class Image {
 public:
-    Image(Vec2I size_) {
-        size = size_;
-    }
-
-    explicit Image(const std::string &path);
+    Image() = default;
 
     Vec2I get_size();
 

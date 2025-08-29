@@ -168,7 +168,7 @@ std::shared_ptr<Font> Font::from_memory(const std::vector<char> &bytes) {
     auto font = std::make_shared<Font>();
     font->font_data = bytes;
 
-    auto byte_size = font->font_data.size() * sizeof(unsigned char);
+    const auto byte_size = font->font_data.size() * sizeof(unsigned char);
 
     font->stbtt_buffer = static_cast<unsigned char *>(malloc(byte_size));
     memcpy(font->stbtt_buffer, font->font_data.data(), byte_size);

@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "resources/default_resource.h"
-#include "resources/resource_manager.h"
 #include "servers/engine.h"
 #include "servers/input_server.h"
 #include "servers/render_server.h"
