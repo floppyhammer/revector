@@ -30,13 +30,13 @@ float remove_elements_less_than(std::map<int64_t, float>& my_map, const int64_t 
 }
 
 Engine::Engine() {
-    last_time_updated_fps = std::chrono::high_resolution_clock::now();
+    last_time_updated_fps = std::chrono::steady_clock::now();
 }
 
 void Engine::tick() {
-    static auto start_time = std::chrono::high_resolution_clock::now();
+    static auto start_time = std::chrono::steady_clock::now();
 
-    auto current_time = std::chrono::high_resolution_clock::now();
+    auto current_time = std::chrono::steady_clock::now();
 
     auto new_elapsed = std::chrono::duration<double>(current_time - start_time).count();
 
@@ -65,7 +65,7 @@ double Engine::get_elapsed() const {
 }
 
 float Engine::get_fps() {
-    auto current_time = std::chrono::high_resolution_clock::now();
+    auto current_time = std::chrono::steady_clock::now();
     int64_t nanoseconds = current_time.time_since_epoch().count();
 
     float average = remove_elements_less_than(frametimes, nanoseconds - fps_average_window);
