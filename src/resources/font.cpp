@@ -154,43 +154,41 @@ struct HarfBuzzData {
     }
 };
 
-Font::Font(const std::string &path) : Resource(path) {
-    font_data = Pathfinder::load_file_as_bytes(path.c_str());
+std::shared_ptr<Font> Font::from_file(const std::string &path) {
+    auto bytes = Pathfinder::load_file_as_bytes(path);
 
-    auto byte_size = font_data.size() * sizeof(unsigned char);
-    assert(byte_size != 0);
-
-    stbtt_buffer = static_cast<unsigned char *>(malloc(byte_size));
-    memcpy(stbtt_buffer, font_data.data(), byte_size);
-
-    // Prepare font info.
-    stbtt_info = new stbtt_fontinfo;
-    if (!stbtt_InitFont(stbtt_info, stbtt_buffer, 0)) {
-        Logger::error("Failed to prepare font info!", "revector");
-    }
-
-    harfbuzz_data = std::make_shared<HarfBuzzData>(font_data);
+    return from_memory(bytes);
 }
 
-Font::Font(const std::vector<char> &bytes) {
-    font_data = bytes;
-
-    auto byte_size = font_data.size() * sizeof(unsigned char);
-
-    stbtt_buffer = static_cast<unsigned char *>(malloc(byte_size));
-    memcpy(stbtt_buffer, font_data.data(), byte_size);
-
-    // Prepare font info.
-    stbtt_info = new stbtt_fontinfo;
-    if (!stbtt_InitFont(stbtt_info, stbtt_buffer, 0)) {
-        Logger::error("Failed to prepare font info!", "revector");
+std::shared_ptr<Font> Font::from_memory(const std::vector<char> &bytes) {
+    if (bytes.empty()) {
+        return nullptr;
     }
 
-    harfbuzz_data = std::make_shared<HarfBuzzData>(font_data);
+    auto font = std::make_shared<Font>();
+    font->font_data = bytes;
+
+    const auto byte_size = font->font_data.size() * sizeof(unsigned char);
+
+    font->stbtt_buffer = static_cast<unsigned char *>(malloc(byte_size));
+    memcpy(font->stbtt_buffer, font->font_data.data(), byte_size);
+
+    // Prepare font info.
+    font->stbtt_info = new stbtt_fontinfo;
+    if (!stbtt_InitFont(font->stbtt_info, font->stbtt_buffer, 0)) {
+        Logger::error("Failed to prepare font info!", "revector");
+        return nullptr;
+    }
+
+    font->harfbuzz_data = std::make_shared<HarfBuzzData>(font->font_data);
+
+    return font;
 }
 
 Font::~Font() {
-    free(stbtt_buffer);
+    if (stbtt_buffer) {
+        free(stbtt_buffer);
+    }
 
     delete stbtt_info;
 }

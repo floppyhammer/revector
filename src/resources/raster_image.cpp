@@ -11,11 +11,12 @@
 
 namespace revector {
 
-RasterImage::RasterImage(Vec2I size_) : Image(size_) {
+RasterImage::RasterImage(Vec2I size_) {
     type = ImageType::Raster;
+    size = size_;
 }
 
-RasterImage::RasterImage(const std::string &path) : Image(path) {
+RasterImage::RasterImage(const std::string &path) {
     type = ImageType::Raster;
 
     // The STBI_rgb_alpha value forces the image to be loaded with an alpha channel,

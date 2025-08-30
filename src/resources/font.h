@@ -159,13 +159,15 @@ struct Line {
 struct HarfBuzzData;
 
 // A font is pointsize-carefree.
-class Font : public Resource {
+class Font {
 public:
-    explicit Font(const std::string &path);
+    Font() = default;
 
-    explicit Font(const std::vector<char> &bytes);
+    static std::shared_ptr<Font> from_file(const std::string &path);
 
-    ~Font() override;
+    static std::shared_ptr<Font> from_memory(const std::vector<char> &bytes);
+
+    ~Font();
 
     bool is_valid() const;
 

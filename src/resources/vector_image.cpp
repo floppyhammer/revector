@@ -10,7 +10,8 @@
 
 namespace revector {
 
-VectorImage::VectorImage(Vec2I size_) : Image(size_) {
+VectorImage::VectorImage(Vec2I size_) {
+    size = size_;
     type = ImageType::Vector;
 }
 
@@ -22,7 +23,7 @@ std::shared_ptr<VectorImage> VectorImage::from_empty(Vec2I _size) {
     return texture;
 }
 
-VectorImage::VectorImage(const std::string &path, bool override_with_accent_color) : Image(path) {
+VectorImage::VectorImage(const std::string &path, bool override_with_accent_color) {
     type = ImageType::Vector;
 
     svg_scene = VectorServer::get_singleton()->load_svg(path, override_with_accent_color);
