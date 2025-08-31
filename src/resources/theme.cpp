@@ -18,6 +18,10 @@ void Theme::load_system_font() {
         "SimSun",
         "SimHei",
     };
+#elif defined(__APPLE__)
+    std::array<const char*, 1> font_priority{
+        "PingFang SC",
+    };
 #else
     std::array<const char*, 3> font_priority{
         "Droid Sans Fallback",

@@ -63,6 +63,8 @@ target_link_libraries(revector PUBLIC pathfinder harfbuzz zlibstatic)
 
 if (WIN32)
     target_link_libraries(revector PUBLIC font_kit_wrapper.dll.lib)
+elseif (APPLE)
+    target_link_libraries(revector PUBLIC font_kit_wrapper.dylib)
 elseif (LINUX)
     target_link_libraries(revector PUBLIC font_kit_wrapper.so tbb)
 endif ()
