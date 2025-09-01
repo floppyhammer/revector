@@ -18,11 +18,20 @@ if (APPLE)
     set(REVECTOR_FRIBIDI ON)
 endif ()
 
-file(GLOB_RECURSE REVECTOR_SOURCE_FILES CONFIGURE_DEPENDS
+file(GLOB_RECURSE REVECTOR_SRC_FILES CONFIGURE_DEPENDS
         src/*.cpp
-        third_party/tinyfiledialogs/tinyfiledialogs.c)
+        third_party/tinyfiledialogs/tinyfiledialogs.c
+)
 
-add_library(revector STATIC ${REVECTOR_SOURCE_FILES})
+if (APPLE)
+    file(GLOB_RECURSE REVECTOR_SRC_FILES_APPLE CONFIGURE_DEPENDS
+            src/*.mm
+    )
+
+    file(GLOB REVECTOR_SRC_FILES ${REVECTOR_SRC_FILES} ${REVECTOR_SRC_FILES_APPLE})
+endif ()
+
+add_library(revector STATIC ${REVECTOR_SRC_FILES})
 
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
