@@ -42,7 +42,7 @@ CollapseContainer::CollapseContainer(CollapseButtonType button_type) {
 
     add_embedded_child(collapse_button_);
 
-    container_sizing.expand_h = true;
+    container_sizing.flag_h = ContainerSizingFlag::Fill;
 }
 
 void CollapseContainer::adjust_layout() {

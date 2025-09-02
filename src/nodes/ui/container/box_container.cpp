@@ -16,11 +16,11 @@ void BoxContainer::adjust_layout() {
     // In the first loop, we need to do some calculation.
     for (auto &ui_child : ui_children) {
         if (horizontal) {
-            if (ui_child->container_sizing.expand_h) {
+            if (ui_child->container_sizing.expand_h()) {
                 expanding_children.push_back(ui_child);
             }
         } else {
-            if (ui_child->container_sizing.expand_v) {
+            if (ui_child->container_sizing.expand_v()) {
                 expanding_children.push_back(ui_child);
             }
         }
@@ -66,6 +66,7 @@ void BoxContainer::adjust_layout() {
 
             // Handle horizontal sizing.
             switch (ui_child->container_sizing.flag_h) {
+                case ContainerSizingFlag::NoExpand:
                 case ContainerSizingFlag::Fill: {
                     real_space = occupied_space;
                     pos_x = pos_shift;
@@ -83,6 +84,7 @@ void BoxContainer::adjust_layout() {
 
             // Handle vertical sizing.
             switch (ui_child->container_sizing.flag_v) {
+                case ContainerSizingFlag::NoExpand:
                 case ContainerSizingFlag::Fill: {
                     height = size.y;
                     pos_y = 0;
@@ -103,13 +105,16 @@ void BoxContainer::adjust_layout() {
 
             ui_child->set_position({pos_x, pos_y});
             ui_child->set_size({real_space, height});
-        } else {
+        }
+        // Vertical
+        else {
             float pos_x = 0;
             float pos_y = 0;
             float width = 0;
 
             // Handle vertical sizing.
             switch (ui_child->container_sizing.flag_v) {
+                case ContainerSizingFlag::NoExpand:
                 case ContainerSizingFlag::Fill: {
                     real_space = occupied_space;
                     pos_y = pos_shift;
@@ -127,6 +132,7 @@ void BoxContainer::adjust_layout() {
 
             // Handle horizontal sizing.
             switch (ui_child->container_sizing.flag_h) {
+                case ContainerSizingFlag::NoExpand:
                 case ContainerSizingFlag::Fill: {
                     width = size.x;
                     pos_x = 0;

@@ -78,7 +78,6 @@ void Tree::calc_minimum_size() {
 
 TreeItem::TreeItem() {
     label = std::make_shared<Label>();
-    label->container_sizing.expand_v = true;
     label->container_sizing.flag_v = ContainerSizingFlag::Fill;
     label->set_vertical_alignment(Alignment::Center);
 
@@ -112,7 +111,6 @@ TreeItem::TreeItem() {
     container->add_child(icon);
     container->add_child(label);
 
-    collapse_button->container_sizing.expand_v = true;
     collapse_button->container_sizing.flag_v = ContainerSizingFlag::Fill;
 
     theme_selected.bg_color = ColorU(100, 100, 100, 150);

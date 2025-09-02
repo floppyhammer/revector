@@ -46,23 +46,32 @@ enum class AnchorFlag {
     Max,
 };
 
+/// Sizing space: the space in which a UI node can adjust its position and size.
+
 enum class ContainerSizingFlag {
-    Fill,         // Occupy the full space in the grow direction.
-    ShrinkStart,  // Shrink to the minimum size at the start in the grow direction.
-    ShrinkCenter, // Shrink to the minimum size at the center in the grow direction.
-    ShrinkEnd,    // Shrink to the minimum size at the end in the grow direction.
+    // Not expanding the sizing space in a direction. The sizing space is the minimum size of the UI node.
+    NoExpand,
+    // Sizing space is expanded
+    Fill,         // Occupy the full space in the sizing space.
+    ShrinkStart,  // Shrink to the minimum size at the start in the sizing space.
+    ShrinkCenter, // Shrink to the minimum size at the center in the sizing space.
+    ShrinkEnd,    // Shrink to the minimum size at the end in the sizing space.
 };
 
 /// How a parent container organizes this UI node.
 struct ContainerSizing {
-    // Control how the size changes in the horizontal direction.
-    ContainerSizingFlag flag_h = ContainerSizingFlag::Fill;
-    // Expand position in the horizontal direction, but not changing size.
-    bool expand_h = false;
-    // Control how the size changes in the vertical direction.
-    ContainerSizingFlag flag_v = ContainerSizingFlag::Fill;
-    // Expand position in the vertical direction, but not changing size.
-    bool expand_v = false;
+    /// Control how the position & size changes in the horizontal sizing space.
+    ContainerSizingFlag flag_h = ContainerSizingFlag::NoExpand;
+    /// Control how the position & size changes in the vertical sizing space.
+    ContainerSizingFlag flag_v = ContainerSizingFlag::NoExpand;
+
+    bool expand_h() const {
+        return flag_h != ContainerSizingFlag::NoExpand;
+    }
+
+    bool expand_v() const {
+        return flag_v != ContainerSizingFlag::NoExpand;
+    }
 };
 
 class NodeUi : public Node {
@@ -145,7 +154,7 @@ public:
 
 protected:
     Vec2F position{0};
-    Vec2F size{1, 1};
+    Vec2F size{16, 16};
     Vec2F scale{1};
     Vec2F pivot_offset{0}; // Top-left as the default pivot.
     float rotation = 0;

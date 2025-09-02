@@ -29,7 +29,6 @@ Button::Button() {
     label->set_vertical_alignment(Alignment::Center);
     label->set_text_style(TextStyle{default_theme->button.colors["text"]});
     label->theme_background = StyleBox::from_empty();
-    label->container_sizing.expand_h = true;
     label->container_sizing.flag_h = ContainerSizingFlag::Fill;
 
     icon_rect = std::make_shared<TextureRect>();
@@ -370,10 +369,9 @@ void Button::set_icon_pressed(const std::shared_ptr<Image> &icon) {
 
 void Button::set_icon_expand(bool enable) {
     if (enable) {
-        icon_rect->container_sizing.expand_h = true;
         icon_rect->container_sizing.flag_h = ContainerSizingFlag::Fill;
     } else {
-        icon_rect->container_sizing.expand_h = false;
+        icon_rect->container_sizing.flag_h = ContainerSizingFlag::NoExpand;
     }
 }
 

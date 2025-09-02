@@ -48,7 +48,6 @@ class MyNode : public Node {
                 false,
             });
             label->set_text(text);
-            label->container_sizing.expand_h = true;
             label->container_sizing.flag_h = ContainerSizingFlag::Fill;
             // label->set_font(font);
             label->set_font_size(32);
@@ -70,7 +69,6 @@ class MyNode : public Node {
                 false,
             });
             label->set_text(text);
-            label->container_sizing.expand_h = true;
             label->container_sizing.flag_h = ContainerSizingFlag::Fill;
             // label->set_font(font);
 

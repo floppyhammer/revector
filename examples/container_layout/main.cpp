@@ -21,9 +21,7 @@ class MyNode : public Node {
             hbox_container->add_child(button);
 
             if (_ == 0) {
-                button->container_sizing.expand_h = true;
                 button->container_sizing.flag_h = ContainerSizingFlag::ShrinkCenter;
-
                 button->container_sizing.flag_v = ContainerSizingFlag::Fill;
             }
             if (_ == 1) {
@@ -49,9 +47,7 @@ class MyNode : public Node {
             vbox_container->add_child(button);
 
             if (_ == 0) {
-                button->container_sizing.expand_v = true;
                 button->container_sizing.flag_v = ContainerSizingFlag::ShrinkCenter;
-
                 button->container_sizing.flag_h = ContainerSizingFlag::Fill;
             }
             if (_ == 1) {

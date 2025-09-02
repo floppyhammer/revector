@@ -17,7 +17,6 @@ class MyNode : public Node {
 
         auto label = std::make_shared<Label>();
         label->set_text("This is a label");
-        label->container_sizing.expand_h = true;
         label->container_sizing.flag_h = ContainerSizingFlag::Fill;
         vbox->add_child(label);
 

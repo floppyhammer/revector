@@ -35,7 +35,6 @@ class MyNode : public Node {
         vbox_container->add_child(hbox_container);
 
         auto text_edit = std::make_shared<TextEdit>();
-        text_edit->container_sizing.expand_h = true;
         text_edit->container_sizing.flag_h = ContainerSizingFlag::Fill;
         hbox_container->add_child(text_edit);
 

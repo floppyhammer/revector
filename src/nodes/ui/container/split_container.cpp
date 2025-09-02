@@ -13,7 +13,7 @@ SplitContainer::SplitContainer() {
 
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
-    container_sizing.expand_h = true;
+    container_sizing.flag_h = ContainerSizingFlag::Fill;
 }
 
 void SplitContainer::adjust_layout() {
