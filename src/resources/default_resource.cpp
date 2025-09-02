@@ -6,7 +6,7 @@
 namespace revector {
 
 void DefaultResource::init(const bool dark_mode) {
-    default_theme = dark_mode ? Theme::dark_new() : Theme::light_new();
+    default_theme = dark_mode ? Theme::default_dark() : Theme::default_light();
 
     default_font = Font::from_memory(std::vector<char>(std::begin(DEFAULT_FONT_DATA), std::end(DEFAULT_FONT_DATA)));
     assert(default_font);

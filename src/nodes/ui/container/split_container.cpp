@@ -60,7 +60,7 @@ void SplitContainer::adjust_layout() {
         if (child->is_ui_node() && child->get_visibility()) {
             auto cast_child = dynamic_cast<NodeUi *>(child.get());
 
-            float grabber_left_edge_pos = size.x - split_to_right_length - effective_grabber_size * 0.5;
+            float grabber_left_edge_pos = size.x - split_to_right_length - effective_grabber_size * 0.5f;
 
             Vec2F child_size;
             Vec2F child_pos;
@@ -115,14 +115,14 @@ void SplitContainer::calc_minimum_size() {
     calculated_minimum_size = min_size;
 }
 
-void SplitContainer::update(double dt) {
-    NodeUi::update(dt);
+void SplitContainer::update(const double dt) {
+    Container::update(dt);
 
     adjust_layout();
 }
 
 void SplitContainer::input(InputEvent &event) {
-    auto global_position = get_global_position();
+    const auto global_position = get_global_position();
 
     bool consume_flag = false;
 
@@ -198,22 +198,23 @@ void SplitContainer::draw() {
     const auto global_position = get_global_position();
 
     if (splitting_enabled_) {
-        float grabber_left_edge_pos = size.x - split_to_right_length - grabber_size_ * 0.5f;
+        const float grabber_left_edge_pos = size.x - split_to_right_length - grabber_size_ * 0.5f;
 
         if (grabber_pressed_pos_.has_value()) {
-            const auto start = global_position + Vec2F(grabber_left_edge_pos + grabber_size_ * 0.5, size.y * 0.25);
-            const auto end = start + Vec2F(0, size.y * 0.5);
+            const auto start = global_position + Vec2F(grabber_left_edge_pos + grabber_size_ * 0.5f, size.y * 0.25f);
+            const auto end = start + Vec2F(0, size.y * 0.5f);
 
-            vector_server->draw_line(start, end, 2, ColorU::white());
+            const auto default_theme = DefaultResource::get_singleton()->get_default_theme();
+            vector_server->draw_line(start, end, 2, default_theme->accent_color);
         }
     }
 }
 
-void SplitContainer::set_separation(float new_separation) {
+void SplitContainer::set_separation(const float new_separation) {
     grabber_size_ = new_separation;
 }
 
-void SplitContainer::set_split_ratio(float new_ratio) {
+void SplitContainer::set_split_ratio(const float new_ratio) {
     split_to_right_length = (1.0f - new_ratio) * size.x;
 }
 
