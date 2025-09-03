@@ -159,12 +159,20 @@ void VectorServer::draw_render_image(RenderImage &render_image, Transform2 trans
 }
 
 void VectorServer::draw_style_box(const StyleBox &style_box, Vec2F position, Vec2F size, float alpha) {
-    if (style_box.border_width > 0) {
-        const float border_offset = style_box.border_width * 0.5f;
-        position.x += border_offset;
-        position.y += border_offset;
-        size.x -= border_offset;
-        size.y -= border_offset;
+    if (style_box.border_widths.has_value()) {
+        const auto widths = style_box.border_widths.value();
+        position.x += widths.left * 0.5f;
+        position.y += widths.top * 0.5f;
+        size.x += widths.right * 0.5f;
+        size.y += widths.bottom * 0.5f;
+    } else {
+        if (style_box.border_width > 0) {
+            const float border_offset = style_box.border_width * 0.5f;
+            position.x += border_offset;
+            position.y += border_offset;
+            size.x -= border_offset;
+            size.y -= border_offset;
+        }
     }
 
     auto path = Pathfinder::Path2d();
@@ -187,7 +195,37 @@ void VectorServer::draw_style_box(const StyleBox &style_box, Vec2F position, Vec
     canvas->set_fill_paint(Pathfinder::Paint::from_color(style_box.bg_color.apply_alpha(alpha)));
     canvas->fill_path(path, Pathfinder::FillRule::Winding);
 
-    if (style_box.border_width > 0) {
+    if (style_box.border_widths.has_value()) {
+        const auto widths = style_box.border_widths.value();
+        if (widths.left > 0) {
+            auto line = Pathfinder::Path2d();
+            line.add_line({}, Vec2F(0, size.y));
+            canvas->set_stroke_paint(Pathfinder::Paint::from_color(style_box.border_color.apply_alpha(alpha)));
+            canvas->set_line_width(widths.left);
+            canvas->stroke_path(line);
+        }
+        if (widths.right > 0) {
+            auto line = Pathfinder::Path2d();
+            line.add_line(Vec2F(0, size.x), size);
+            canvas->set_stroke_paint(Pathfinder::Paint::from_color(style_box.border_color.apply_alpha(alpha)));
+            canvas->set_line_width(widths.right);
+            canvas->stroke_path(line);
+        }
+        if (widths.top > 0) {
+            auto line = Pathfinder::Path2d();
+            line.add_line({}, Vec2F(size.x, 0));
+            canvas->set_stroke_paint(Pathfinder::Paint::from_color(style_box.border_color.apply_alpha(alpha)));
+            canvas->set_line_width(widths.top);
+            canvas->stroke_path(line);
+        }
+        if (widths.bottom > 0) {
+            auto line = Pathfinder::Path2d();
+            line.add_line(Vec2F(0, size.y), Vec2F(0, size.y));
+            canvas->set_stroke_paint(Pathfinder::Paint::from_color(style_box.border_color.apply_alpha(alpha)));
+            canvas->set_line_width(widths.bottom);
+            canvas->stroke_path(line);
+        }
+    } else if (style_box.border_width > 0) {
         canvas->set_stroke_paint(Pathfinder::Paint::from_color(style_box.border_color.apply_alpha(alpha)));
         canvas->set_line_width(style_box.border_width);
         canvas->stroke_path(path);

@@ -81,7 +81,7 @@ public:
 
     // Styles.
     StyleBox theme_normal;
-    StyleBox theme_hovered;
+    std::optional<StyleBox> theme_hovered;
     StyleBox theme_pressed;
     StyleBox theme_disabled;
     StyleBox active_style_box;

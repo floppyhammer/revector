@@ -59,9 +59,9 @@ Button::Button() {
     });
 
     released_callbacks.emplace_back([this]() {
-        if (hovered) {
-            target_style_box = theme_hovered;
-            active_style_box = theme_hovered;
+        if (hovered && theme_hovered.has_value()) {
+            target_style_box = theme_hovered.value();
+            active_style_box = theme_hovered.value();
         } else {
             if (pressed || toggled) {
                 target_style_box = theme_pressed;
@@ -80,9 +80,9 @@ Button::Button() {
             target_style_box = theme_pressed;
             active_style_box = theme_pressed;
         } else {
-            if (hovered) {
-                target_style_box = theme_hovered;
-                active_style_box = theme_hovered;
+            if (hovered && theme_hovered.has_value()) {
+                target_style_box = theme_hovered.value();
+                active_style_box = theme_hovered.value();
             } else {
                 target_style_box = theme_normal;
                 active_style_box = theme_normal;
@@ -93,8 +93,11 @@ Button::Button() {
     callbacks_cursor_entered.emplace_back([this] {
         hovered = true;
         InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Hand);
-        target_style_box = theme_hovered;
-        lerp_elapsed_ = 0;
+
+        if (theme_hovered.has_value()) {
+            target_style_box = theme_hovered.value();
+            lerp_elapsed_ = 0;
+        }
     });
 
     callbacks_cursor_exited.emplace_back([this] {

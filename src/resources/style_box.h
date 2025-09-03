@@ -13,6 +13,7 @@ struct StyleBox {
     float border_width = 0;
     float corner_radius = 8;
 
+    std::optional<RectF> border_widths;
     // Top-left, top-eight, bottom-left, bottom-right.
     std::optional<RectF> corner_radii;
 
@@ -50,6 +51,14 @@ struct StyleBox {
             }
         } else if (target_box.corner_radii.has_value()) {
             box.corner_radii = target_box.corner_radii;
+        }
+
+        if (border_widths.has_value()) {
+            if (target_box.border_widths.has_value()) {
+                box.border_widths = target_box.border_widths;
+            }
+        } else if (target_box.border_widths.has_value()) {
+            box.border_widths = target_box.border_widths;
         }
 
         return box;

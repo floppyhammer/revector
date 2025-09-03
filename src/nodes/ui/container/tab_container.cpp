@@ -123,7 +123,7 @@ void TabContainer::add_tab_button() {
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
     button->theme_normal = default_theme->tab_container.styles["tab_button_normal"];
-    button->theme_hovered = default_theme->tab_container.styles["tab_button_hovered"];
+    button->theme_hovered = {};
     button->theme_pressed = default_theme->tab_container.styles["tab_button_pressed"];
 }
 

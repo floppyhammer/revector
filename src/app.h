@@ -17,7 +17,7 @@
 namespace revector {
 class App {
 public:
-    explicit App(Vec2I primary_window_size, bool dark_mode, bool use_vulkan = false);
+    explicit App(Vec2I primary_window_size, bool dark_mode, bool use_vulkan = true);
 
     ~App();
 

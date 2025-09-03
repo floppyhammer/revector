@@ -119,14 +119,8 @@ std::shared_ptr<Theme> Theme::default_dark() {
             style_box.border_width = 0;
             style_box.corner_radius = 0;
             style_box.bg_color = ColorU(32, 32, 32);
-            theme->tab_container.styles["tab_button_hovered"] = style_box;
-        }
-
-        {
-            auto style_box = StyleBox();
-            style_box.border_width = 0;
-            style_box.corner_radius = 0;
-            style_box.bg_color = ColorU(32, 32, 32);
+            style_box.border_widths = {0, 4, 0, 0};
+            style_box.border_color = theme->accent_color;
             theme->tab_container.styles["tab_button_pressed"] = style_box;
         }
     }
@@ -296,14 +290,8 @@ std::shared_ptr<Theme> Theme::default_light() {
             style_box.border_width = 0;
             style_box.corner_radius = 0;
             style_box.bg_color = ColorU(200, 200, 200);
-            theme->tab_container.styles["tab_button_hovered"] = style_box;
-        }
-
-        {
-            auto style_box = StyleBox();
-            style_box.border_width = 0;
-            style_box.corner_radius = 0;
-            style_box.bg_color = ColorU(200, 200, 200);
+            style_box.border_widths = {0, 4, 0, 0};
+            style_box.border_color = theme->accent_color;
             theme->tab_container.styles["tab_button_pressed"] = style_box;
         }
     }
