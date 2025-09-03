@@ -190,6 +190,8 @@ std::shared_ptr<Theme> Theme::default_dark() {
 std::shared_ptr<Theme> Theme::default_light() {
     auto theme = std::make_shared<Theme>();
 
+    theme->accent_color = ColorU(90, 170, 255);
+
     theme->button.colors["text"] = ColorU(55, 55, 55);
     theme->button.colors["text_disabled"] = ColorU(55, 55, 55, 100);
 
