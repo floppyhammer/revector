@@ -157,7 +157,8 @@ void CollapseContainer::calc_minimum_size() {
         }
     }
 
-    calculated_minimum_size = min_child_size + min_embeded_child_size;
+    calculated_minimum_size.x = std::max(min_child_size.x, min_embeded_child_size.x);
+    calculated_minimum_size.y = min_child_size.y + min_embeded_child_size.y;
 }
 
 void CollapseContainer::set_title(std::string title) {
