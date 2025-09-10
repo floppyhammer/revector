@@ -164,6 +164,9 @@ void calc_minimum_size(Node* root) {
     for (auto& node : descendants) {
         if (node->is_ui_node()) {
             auto ui_node = dynamic_cast<NodeUi*>(node);
+            if (!ui_node->get_visibility()) {
+                continue;
+            }
             ui_node->calc_minimum_size();
             // std::cout << "Node: " << get_node_type_name(node->type)
             //           << ", size: " << ui_node->get_effective_minimum_size() << std::endl;
@@ -190,10 +193,10 @@ void SceneTree::process(double dt) {
         }
     }
 
-    auto input_task =
+    const auto input_task =
         std::async(std::launch::async, [this] { input_system(root.get(), InputServer::get_singleton()->input_queue); });
 
-    auto calc_min_size_task = std::async(std::launch::async, [this] {
+    const auto calc_min_size_task = std::async(std::launch::async, [this] {
         // Run calc_minimum_size() depth-first.
         calc_minimum_size(root.get());
     });
