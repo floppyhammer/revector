@@ -173,6 +173,7 @@ void PopupMenu::set_visibility(bool visible) {
 void PopupMenu::clear_items() {
     vbox_container_->remove_all_children();
     items_.clear();
+    meta_.clear();
 }
 
 void PopupMenu::calc_minimum_size() {
@@ -205,6 +206,11 @@ void PopupMenu::create_item(const std::string &text) {
     new_item->connect_signal("triggered", callback);
 
     items_.push_back(new_item);
+    meta_.emplace_back();
+}
+
+void PopupMenu::set_item_meta(uint32_t item_index, std::string meta) {
+    meta_[item_index] = std::move(meta);
 }
 
 void PopupMenu::set_item_height(float new_item_height) {
@@ -222,6 +228,10 @@ int PopupMenu::get_item_count() const {
 
 std::string PopupMenu::get_item_text(uint32_t item_index) const {
     return items_[item_index]->get_text();
+}
+
+std::string PopupMenu::get_item_mata(uint32_t item_index) const {
+    return meta_[item_index];
 }
 
 void PopupMenu::connect_signal(const std::string &signal, const AnyCallable<void> &callback) {

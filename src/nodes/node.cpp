@@ -218,6 +218,14 @@ void Node::set_visibility(bool visible) {
     visible_ = visible;
 }
 
+void Node::show() {
+    set_visibility(true);
+}
+
+void Node::hide() {
+    set_visibility(false);
+}
+
 bool Node::get_visibility() const {
     return visible_;
 }

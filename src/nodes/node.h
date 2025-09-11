@@ -116,6 +116,10 @@ public:
 
     virtual void set_visibility(bool visible);
 
+    void show();
+
+    void hide();
+
     bool get_visibility() const;
 
     bool get_global_visibility() const;

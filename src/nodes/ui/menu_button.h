@@ -22,6 +22,10 @@ public:
 
     std::string get_selected_item_text() const;
 
+    std::string get_selected_item_meta() const;
+
+    void calc_minimum_size() override;
+
 protected:
     std::optional<uint32_t> selected_item_index;
 

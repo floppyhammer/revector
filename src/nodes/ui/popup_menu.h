@@ -81,6 +81,8 @@ public:
 
     void create_item(const std::string &text = "item");
 
+    void set_item_meta(uint32_t item_index, std::string meta);
+
     void set_item_height(float new_item_height);
 
     float get_item_height() const;
@@ -88,6 +90,8 @@ public:
     int get_item_count() const;
 
     std::string get_item_text(uint32_t item_index) const;
+
+    std::string get_item_mata(uint32_t item_index) const;
 
     void connect_signal(const std::string &signal, const AnyCallable<void> &callback) override;
 
@@ -108,6 +112,8 @@ private:
     std::shared_ptr<MarginContainer> margin_container_;
 
     std::vector<std::shared_ptr<Button>> items_;
+
+    std::vector<std::string> meta_;
 
     float item_height_ = 48;
 
