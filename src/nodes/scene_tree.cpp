@@ -164,9 +164,9 @@ void calc_minimum_size(Node* root) {
     for (auto& node : descendants) {
         if (node->is_ui_node()) {
             auto ui_node = dynamic_cast<NodeUi*>(node);
-            if (!ui_node->get_visibility()) {
-                continue;
-            }
+            // if (!ui_node->get_visibility()) {
+            //     continue;
+            // }
             ui_node->calc_minimum_size();
             // std::cout << "Node: " << get_node_type_name(node->type)
             //           << ", size: " << ui_node->get_effective_minimum_size() << std::endl;
