@@ -34,6 +34,8 @@ enum class NodeType {
     CheckButton,
     RadioButton,
 
+    Slider,
+
     Label,
     TextEdit,
     SpinBox,

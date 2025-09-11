@@ -84,12 +84,15 @@ void VectorServer::draw_circle(Vec2F center, float radius, float line_width, boo
     canvas->save_state();
 
     Pathfinder::Path2d path;
-    path.add_circle({center.x, center.y}, radius);
+    path.add_circle(center, radius);
+
+    canvas->set_transform(Pathfinder::Transform2::from_scale(Vec2F(global_scale_, global_scale_)));
 
     if (fill) {
         canvas->set_fill_paint(Pathfinder::Paint::from_color(color));
         canvas->fill_path(path, Pathfinder::FillRule::Winding);
-    } else if (line_width > 0) {
+    }
+    if (line_width > Pathfinder::FLOAT_EPSILON) { // Ignore too small width
         canvas->set_stroke_paint(Pathfinder::Paint::from_color(color));
         canvas->set_line_width(line_width);
         canvas->stroke_path(path);

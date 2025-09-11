@@ -20,6 +20,7 @@
 #include "ui/popup_menu.h"
 #include "ui/progress_bar.h"
 #include "ui/radio_button.h"
+#include "ui/slider.h"
 #include "ui/spin_box.h"
 #include "ui/text_edit.h"
 #include "ui/texture_rect.h"
