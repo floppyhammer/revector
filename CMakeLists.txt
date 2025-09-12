@@ -63,6 +63,7 @@ add_subdirectory("third_party/rapidcsv-8.84")
 
 target_include_directories(revector PUBLIC "third_party/stduuid-1.2.3")
 
+set(ZLIB_BUILD_EXAMPLES OFF)
 add_subdirectory("third_party/zlib")
 
 target_include_directories(revector PRIVATE "third_party/font-kit-wrapper/include")
