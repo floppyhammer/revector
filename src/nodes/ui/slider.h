@@ -33,6 +33,8 @@ public:
 
     float get_value() const;
 
+    void set_integer_mode(bool enabled);
+
 protected:
     bool pressed = false;
     std::optional<Vec2F> pressed_position;
@@ -41,9 +43,12 @@ protected:
     bool disabled_ = false;
 
     float ratio_ = 0.5f;
+    float prev_value_ = 0.f;
 
     float range_start_ = 0;
     float range_end_ = 100;
+
+    bool integer_mode_ = false;
 
     std::vector<AnyCallable<void>> value_changed_callbacks;
 

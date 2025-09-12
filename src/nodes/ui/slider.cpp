@@ -167,12 +167,21 @@ void Slider::notify_value_changed(float new_value) {
 
 void Slider::set_range(float start, float end) {
     assert(range_end_ > range_start_);
-    range_start_ = start;
-    range_end_ = end;
+    if (integer_mode_) {
+        range_start_ = round(start);
+        range_end_ = round(end);
+    } else {
+        range_start_ = start;
+        range_end_ = end;
+    }
 }
 
 float Slider::get_value() const {
     return range_start_ + (range_end_ - range_start_) * ratio_;
+}
+
+void Slider::set_integer_mode(bool enabled) {
+    integer_mode_ = enabled;
 }
 
 void Slider::change_ratio(float new_ratio) {
@@ -181,8 +190,19 @@ void Slider::change_ratio(float new_ratio) {
         return;
     }
 
-    ratio_ = new_ratio;
-    notify_value_changed(get_value());
+    int new_value;
+    if (integer_mode_) {
+        new_value = round(range_start_ + (range_end_ - range_start_) * new_ratio);
+        ratio_ = (new_value - range_start_) / (range_end_ - range_start_);
+    } else {
+        ratio_ = new_ratio;
+        new_value = get_value();
+    }
+
+    if (!integer_mode_ || prev_value_ != new_value) {
+        notify_value_changed(get_value());
+    }
+    prev_value_ = new_value;
 }
 
 } // namespace revector
