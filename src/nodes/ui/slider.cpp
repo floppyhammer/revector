@@ -52,26 +52,24 @@ void Slider::input(InputEvent &event) {
         if (event.type == InputEventType::MouseMotion) {
             auto args = event.args.mouse_motion;
 
-            if (event.consumed) {
-            } else {
-                if (pressed) {
-                    auto local_pos = args.position - global_position;
-                    consume_flag = true;
-                    float new_ratio = local_pos.x / size.x;
-                    change_ratio(new_ratio);
-                }
+            if (pressed) {
+                auto local_pos = args.position - global_position;
+                consume_flag = true;
+                float new_ratio = (local_pos.x - grabber_margin_) / (size.x - grabber_margin_ * 2);
+                change_ratio(new_ratio);
             }
         }
 
         if (event.type == InputEventType::MouseButton) {
             const auto args = event.args.mouse_button;
 
+            if (!args.pressed) {
+                pressed = false;
+            }
+
             // Consumed by other UI nodes.
             if (event.consumed) {
             } else {
-                if (!args.pressed) {
-                    pressed = false;
-                }
                 if (RectF(global_position, global_position + size).contains_point(args.position)) {
                     // Mouse button pressed
                     if (args.pressed) {
@@ -80,7 +78,7 @@ void Slider::input(InputEvent &event) {
 
                         auto local_pos = args.position - global_position;
                         consume_flag = true;
-                        float new_ratio = local_pos.x / size.x;
+                        float new_ratio = (local_pos.x - grabber_margin_) / (size.x - grabber_margin_ * 2);
                         change_ratio(new_ratio);
 
                         // notify_pressed();
@@ -114,31 +112,32 @@ void Slider::draw() {
 
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
-    vector_server->draw_line(global_position + Vec2F(0, size.y * 0.5),
-                             global_position + Vec2F(size.x, size.y * 0.5),
+    vector_server->draw_line(global_position + Vec2F(grabber_margin_, size.y * 0.5),
+                             global_position + Vec2F(size.x - grabber_margin_, size.y * 0.5),
                              4,
-                             ColorU(220, 220, 220));
+                             default_theme->slider.colors["unfilled"]);
 
-    const float grabber_pos = ratio_ * size.x;
+    const float grabber_pos = ratio_ * (size.x - grabber_margin_ * 2) + grabber_margin_;
 
-    vector_server->draw_line(global_position + Vec2F(0, size.y * 0.5),
+    vector_server->draw_line(global_position + Vec2F(grabber_margin_, size.y * 0.5),
                              global_position + Vec2F(grabber_pos, size.y * 0.5),
                              4,
-                             default_theme->accent_color);
+                             default_theme->slider.colors["filled"]);
 
     const Vec2F grabber_center = global_position + Vec2F(grabber_pos, size.y * 0.5);
 
     if (pressed) {
-        vector_server->draw_circle(grabber_center, 8, 0, true, ColorU(255, 255, 255, 150));
+        vector_server->draw_circle(grabber_center, 8, 0, true, default_theme->slider.colors["grabber_fill_pressed"]);
     } else {
         if (hovered) {
-            vector_server->draw_circle(grabber_center, 8, 0, true, ColorU(255, 255, 255));
+            vector_server->draw_circle(
+                grabber_center, 8, 0, true, default_theme->slider.colors["grabber_fill_hovered"]);
         } else {
-            vector_server->draw_circle(grabber_center, 8, 0, true, ColorU(220, 220, 220));
+            vector_server->draw_circle(grabber_center, 8, 0, true, default_theme->slider.colors["grabber_fill"]);
         }
     }
 
-    vector_server->draw_circle(grabber_center, 8, 3, false, default_theme->accent_color);
+    vector_server->draw_circle(grabber_center, 8, 3, false, default_theme->slider.colors["grabber_border"]);
 
     NodeUi::draw();
 }
@@ -178,6 +177,13 @@ void Slider::set_range(float start, float end) {
 
 float Slider::get_value() const {
     return range_start_ + (range_end_ - range_start_) * ratio_;
+}
+
+void Slider::set_value(float new_value) {
+    prev_value_ = new_value;
+    new_value = std::clamp(new_value, range_start_, range_end_);
+    ratio_ = (new_value - range_start_) / (range_end_ - range_start_);
+    notify_value_changed(new_value);
 }
 
 void Slider::set_integer_mode(bool enabled) {

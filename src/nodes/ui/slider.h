@@ -33,6 +33,8 @@ public:
 
     float get_value() const;
 
+    void set_value(float new_value);
+
     void set_integer_mode(bool enabled);
 
 protected:
@@ -49,6 +51,8 @@ protected:
     float range_end_ = 100;
 
     bool integer_mode_ = false;
+
+    float grabber_margin_ = 4.f;
 
     std::vector<AnyCallable<void>> value_changed_callbacks;
 

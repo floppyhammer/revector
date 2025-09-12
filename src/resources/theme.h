@@ -64,6 +64,10 @@ public:
         std::map<std::string, StyleBox> styles;
         StyleLine caret;
     } text_edit;
+
+    struct {
+        std::map<std::string, ColorU> colors;
+    } slider;
 };
 
 } // namespace revector

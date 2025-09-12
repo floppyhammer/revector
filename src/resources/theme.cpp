@@ -182,6 +182,16 @@ std::shared_ptr<Theme> Theme::default_dark() {
         }
     }
 
+    // Slider
+    {
+        theme->slider.colors["unfilled"] = ColorU(85, 85, 85);
+        theme->slider.colors["filled"] = theme->accent_color;
+        theme->slider.colors["grabber_border"] = theme->accent_color;
+        theme->slider.colors["grabber_fill"] = ColorU(200, 200, 200);
+        theme->slider.colors["grabber_fill_hovered"] = ColorU(235, 235, 235);
+        theme->slider.colors["grabber_fill_pressed"] = ColorU(235, 235, 235, 150);
+    }
+
     theme->load_system_font();
 
     return theme;
@@ -352,6 +362,16 @@ std::shared_ptr<Theme> Theme::default_light() {
             style_box.border_width = 0;
             theme->popup_menu.styles["item_hovered"] = style_box;
         }
+    }
+
+    // Slider
+    {
+        theme->slider.colors["unfilled"] = ColorU(170, 170, 170);
+        theme->slider.colors["filled"] = theme->accent_color;
+        theme->slider.colors["grabber_border"] = theme->accent_color;
+        theme->slider.colors["grabber_fill"] = ColorU(220, 220, 220);
+        theme->slider.colors["grabber_fill_hovered"] = ColorU(255, 255, 255);
+        theme->slider.colors["grabber_fill_pressed"] = ColorU(255, 255, 255, 150);
     }
 
     theme->load_system_font();
