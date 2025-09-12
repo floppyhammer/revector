@@ -1,5 +1,5 @@
-add_executable(tree ${SOURCE_FILES} main.cpp)
+add_executable(revector-tree ${SOURCE_FILES} main.cpp)
 
-target_include_directories(tree PUBLIC "../../src")
+target_include_directories(revector-tree PUBLIC "../../src")
 
-target_link_libraries(tree revector)
+target_link_libraries(revector-tree revector)

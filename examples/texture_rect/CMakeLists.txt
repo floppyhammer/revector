@@ -1,5 +1,5 @@
-add_executable(texture_rect ${SOURCE_FILES} main.cpp)
+add_executable(revector-texture-rect ${SOURCE_FILES} main.cpp)
 
-target_include_directories(texture_rect PUBLIC "../../src")
+target_include_directories(revector-texture-rect PUBLIC "../../src")
 
-target_link_libraries(texture_rect revector)
+target_link_libraries(revector-texture-rect revector)

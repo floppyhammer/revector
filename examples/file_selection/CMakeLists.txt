@@ -1,5 +1,5 @@
-add_executable(file_selection ${SOURCE_FILES} main.cpp)
+add_executable(revector-file-selection ${SOURCE_FILES} main.cpp)
 
-target_include_directories(file_selection PUBLIC "../../src")
+target_include_directories(revector-file-selection PUBLIC "../../src")
 
-target_link_libraries(file_selection revector)
+target_link_libraries(revector-file-selection revector)

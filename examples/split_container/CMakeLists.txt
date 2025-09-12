@@ -1,5 +1,5 @@
-add_executable(split_container ${SOURCE_FILES} main.cpp)
+add_executable(revector-split-container ${SOURCE_FILES} main.cpp)
 
-target_include_directories(split_container PUBLIC "../../src")
+target_include_directories(revector-split-container PUBLIC "../../src")
 
-target_link_libraries(split_container revector)
+target_link_libraries(revector-split-container revector)

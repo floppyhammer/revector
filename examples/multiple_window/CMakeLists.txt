@@ -1,5 +1,5 @@
-add_executable(multiple_window ${SOURCE_FILES} main.cpp)
+add_executable(revector-multiple-window ${SOURCE_FILES} main.cpp)
 
-target_include_directories(multiple_window PUBLIC "../../src")
+target_include_directories(revector-multiple-window PUBLIC "../../src")
 
-target_link_libraries(multiple_window revector)
+target_link_libraries(revector-multiple-window revector)
