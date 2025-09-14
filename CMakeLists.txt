@@ -35,8 +35,6 @@ add_library(revector STATIC ${REVECTOR_SRC_FILES})
 
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
-file(COPY third_party/font-kit-wrapper/font_kit_wrapper.dll DESTINATION ${CMAKE_BINARY_DIR}/bin)
-
 # Has to be 20 or above.
 target_compile_features(revector PUBLIC cxx_std_20)
 
@@ -72,6 +70,7 @@ target_link_directories(revector PUBLIC "third_party/font-kit-wrapper")
 target_link_libraries(revector PUBLIC pathfinder harfbuzz zlibstatic)
 
 if (WIN32)
+    file(COPY third_party/font-kit-wrapper/font_kit_wrapper.dll DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
     target_link_libraries(revector PUBLIC font_kit_wrapper.dll.lib)
 elseif (APPLE)
     target_link_libraries(revector PUBLIC font_kit_wrapper.dylib)
