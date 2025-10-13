@@ -6,6 +6,9 @@
 
 namespace revector {
 
+/// Period to print the frame time, in seconds.
+constexpr float FRAME_TIME_PRINT_PERIOD = 5;
+
 float remove_elements_less_than(std::map<int64_t, float>& my_map, const int64_t target_key) {
     float sum = 0;
     size_t count = 0;
@@ -49,8 +52,18 @@ void Engine::tick() {
 
     elapsed = new_elapsed;
 
-    // Print FPS.
+    // Print frame time.
+    // ----------------------------------------
     std::chrono::duration<double> duration = current_time - last_time_updated_fps;
+
+    if (duration.count() > FRAME_TIME_PRINT_PERIOD) {
+        // Show frame time.
+        std::ostringstream string_stream;
+        string_stream << "Frame time: " << round(dt * 1000.f * 100.f) * 0.01f << " ms";
+        Logger::info(string_stream.str(), "revector");
+        last_time_updated_fps = current_time;
+    }
+    // ----------------------------------------
 
     int64_t nanoseconds = current_time.time_since_epoch().count();
     frametimes[nanoseconds] = dt;
