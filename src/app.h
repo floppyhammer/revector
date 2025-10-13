@@ -14,14 +14,23 @@
 #include "servers/input_server.h"
 #include "servers/translation_server.h"
 
+class ANativeWindow;
+
 namespace revector {
+
 class App {
 public:
-    explicit App(Vec2I primary_window_size, bool dark_mode, bool use_vulkan = true);
+#ifndef __ANDROID__
+    App(Vec2I primary_window_size, bool dark_mode, bool use_vulkan = true);
+#else
+    App(ANativeWindow* native_window, Vec2I window_size, bool dark_mode, bool use_vulkan = true);
+#endif
 
     ~App();
 
     void main_loop();
+
+    bool single_run();
 
     [[nodiscard]] std::shared_ptr<Node> get_tree_root() const;
 

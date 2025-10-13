@@ -126,7 +126,7 @@ void transform_system(Node* root) {
     }
 
 // There's no transform dependency between orphan UI nodes.
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__ANDROID__)
     std::ranges::for_each(orphan_ui_nodes, [](NodeUi* ui_node) { propagate_transform(ui_node, Vec2F{}); });
 #else
     std::for_each(std::execution::par, orphan_ui_nodes.begin(), orphan_ui_nodes.end(), [](NodeUi* ui_node) {

@@ -389,14 +389,20 @@ std::string replace_all(std::string str, const std::string &from, const std::str
 }
 
 std::shared_ptr<Pathfinder::SvgScene> VectorServer::load_svg(const std::string &path, bool override_with_accent_color) {
-    auto bytes = Pathfinder::load_file_as_string(path);
+#ifndef __ANDROID__
+    auto bytes = Pathfinder::load_file_as_bytes(path);
+#else
+    auto bytes = Pathfinder::load_asset(nullptr, path);
+#endif
+
+    auto str = std::string(bytes.begin(), bytes.end());
 
     if (override_with_accent_color) {
         auto default_theme = DefaultResource::get_singleton()->get_default_theme();
-        bytes = replace_all(bytes, "#000000", default_theme->accent_color.to_hex());
+        str = replace_all(str, "#000000", default_theme->accent_color.to_hex());
     }
 
-    auto svg_scene = std::make_shared<Pathfinder::SvgScene>(bytes, *canvas);
+    auto svg_scene = std::make_shared<Pathfinder::SvgScene>(str, *canvas);
 
     return svg_scene;
 }

@@ -3,9 +3,11 @@
 #include "default_resource.h"
 #include "font.h"
 
+#ifndef __ANDROID__
 extern "C" {
-#include <font_kit_wrapper.h>
+    #include <font_kit_wrapper.h>
 }
+#endif
 
 namespace revector {
 
@@ -192,7 +194,9 @@ std::shared_ptr<Theme> Theme::default_dark() {
         theme->slider.colors["grabber_fill_pressed"] = ColorU(235, 235, 235, 150);
     }
 
+#ifndef __ANDROID__
     theme->load_system_font();
+#endif
 
     return theme;
 }
@@ -374,7 +378,9 @@ std::shared_ptr<Theme> Theme::default_light() {
         theme->slider.colors["grabber_fill_pressed"] = ColorU(255, 255, 255, 150);
     }
 
+#ifndef __ANDROID__
     theme->load_system_font();
+#endif
 
     return theme;
 }
@@ -383,26 +389,27 @@ std::shared_ptr<Theme> Theme::from_json(const std::string& json) {
     return nullptr;
 }
 
+#ifndef __ANDROID__
 void Theme::load_system_font() {
     font = DefaultResource::get_singleton()->get_default_font();
 
-#ifdef WIN32
+    #ifdef WIN32
     std::array<const char*, 3> font_priority{
         "Microsoft YaHei",
         "SimSun",
         "SimHei",
     };
-#elif defined(__APPLE__)
+    #elif defined(__APPLE__)
     std::array<const char*, 1> font_priority{
         "PingFang SC",
     };
-#else
+    #else
     std::array<const char*, 3> font_priority{
         "Droid Sans Fallback",
         "Noto Sans CJK",
         "Noto Serif CJK",
     };
-#endif
+    #endif
 
     FontBuffer font_buffer{};
     for (const auto& font_name : font_priority) {
@@ -420,5 +427,6 @@ void Theme::load_system_font() {
         Logger::warn("System font is not found/valid: " + std::string(font_name), "revector");
     }
 }
+#endif
 
 } // namespace revector

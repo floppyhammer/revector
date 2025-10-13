@@ -155,7 +155,11 @@ struct HarfBuzzData {
 };
 
 std::shared_ptr<Font> Font::from_file(const std::string &path) {
+#ifndef __ANDROID__
     auto bytes = Pathfinder::load_file_as_bytes(path);
+#else
+    auto bytes = Pathfinder::load_asset(nullptr, path);
+#endif
 
     return from_memory(bytes);
 }

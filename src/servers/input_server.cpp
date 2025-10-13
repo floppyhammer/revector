@@ -27,6 +27,7 @@ std::string cpp11_codepoint_to_utf8(char32_t codepoint) {
 }
 
 InputServer::InputServer() {
+#ifndef __ANDROID__
     // All remaining cursors are destroyed when glfwTerminate is called.
     arrow_cursor = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
     ibeam_cursor = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
@@ -36,9 +37,11 @@ InputServer::InputServer() {
     resize_cursor_v = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
     resize_tlbr_cursor = glfwCreateStandardCursor(GLFW_RESIZE_NWSE_CURSOR);
     resize_trbl_cursor = glfwCreateStandardCursor(GLFW_RESIZE_NESW_CURSOR);
+#endif
 }
 
 void InputServer::initialize_window_callbacks(uint8_t window_index) {
+#ifndef __ANDROID__
     auto render_server = RenderServer::get_singleton();
     auto window = (GLFWwindow *)render_server->window_builder_->get_window(window_index).lock()->get_glfw_handle();
 
@@ -48,14 +51,14 @@ void InputServer::initialize_window_callbacks(uint8_t window_index) {
 
         auto pf_window = reinterpret_cast<Pathfinder::Window *>(glfwGetWindowUserPointer(window));
 
-#if defined(__linux__) || defined(_WIN32)
+    #if defined(__linux__) || defined(_WIN32)
         // Get DPI scale.
         float dpi_scale_x, dpi_scale_y;
         glfwGetWindowContentScale(window, &dpi_scale_x, &dpi_scale_y);
         assert(dpi_scale_x == dpi_scale_y);
         x_pos /= dpi_scale_x;
         y_pos /= dpi_scale_x;
-#endif
+    #endif
 
         InputEvent input_event{};
         input_event.type = InputEventType::MouseMotion;
@@ -184,6 +187,7 @@ void InputServer::initialize_window_callbacks(uint8_t window_index) {
     };
 
     glfwSetCharCallback(window, character_callback);
+#endif
 }
 
 void InputServer::clear_events() {
@@ -191,15 +195,22 @@ void InputServer::clear_events() {
 }
 
 std::string InputServer::get_clipboard() {
+#ifndef __ANDROID__
     auto chars = glfwGetClipboardString(nullptr);
     return std::string(chars);
+#else
+    return "";
+#endif
 }
 
 void InputServer::set_clipboard(const std::string &text) {
+#ifndef __ANDROID__
     glfwSetClipboardString(nullptr, text.c_str());
+#endif
 }
 
 void InputServer::set_cursor(uint8_t window_index, CursorShape shape) {
+#ifndef __ANDROID__
     auto render_server = RenderServer::get_singleton();
     auto window = (GLFWwindow *)render_server->window_builder_->get_window(window_index).lock()->get_glfw_handle();
 
@@ -233,6 +244,7 @@ void InputServer::set_cursor(uint8_t window_index, CursorShape shape) {
     }
 
     glfwSetCursor(window, current_cursor);
+#endif
 }
 
 bool InputServer::is_key_pressed(KeyCode code) const {
@@ -240,24 +252,30 @@ bool InputServer::is_key_pressed(KeyCode code) const {
 }
 
 void InputServer::set_cursor_captured(uint8_t window_index, bool captured) {
+#ifndef __ANDROID__
     auto render_server = RenderServer::get_singleton();
     auto window = (GLFWwindow *)render_server->window_builder_->get_window(window_index).lock()->get_glfw_handle();
 
     glfwSetInputMode(window, GLFW_CURSOR, captured ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+#endif
 }
 
 void InputServer::hide_cursor(uint8_t window_index) {
+#ifndef __ANDROID__
     auto render_server = RenderServer::get_singleton();
     auto window = (GLFWwindow *)render_server->window_builder_->get_window(window_index).lock()->get_glfw_handle();
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+#endif
 }
 
 void InputServer::restore_cursor(uint8_t window_index) {
+#ifndef __ANDROID__
     auto render_server = RenderServer::get_singleton();
     auto window = (GLFWwindow *)render_server->window_builder_->get_window(window_index).lock()->get_glfw_handle();
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+#endif
 }
 
 } // namespace revector
