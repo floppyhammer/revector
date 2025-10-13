@@ -127,9 +127,6 @@ void Node::update(double dt) {
     custom_update(dt);
 }
 
-void Node::notify(Signal signal) {
-}
-
 void Node::draw() {
     custom_draw();
 }

@@ -70,8 +70,6 @@ public:
 
     virtual void update(double dt);
 
-    virtual void notify(Signal signal);
-
     virtual void draw();
 
     /// For some special nodes (e.g. ScrollContainer).

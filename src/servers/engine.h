@@ -5,11 +5,6 @@
 
 namespace revector {
 
-enum class Signal {
-    SwapChainChanged,
-    RebuildCommandBuffer,
-};
-
 class Engine {
 public:
     static Engine *get_singleton() {
