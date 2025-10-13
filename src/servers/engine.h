@@ -25,6 +25,8 @@ public:
 
     int get_fps_int();
 
+    void *asset_manager{};
+
 private:
     std::chrono::time_point<std::chrono::steady_clock> last_time_updated_fps;
 

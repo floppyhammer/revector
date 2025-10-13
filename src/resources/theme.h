@@ -19,7 +19,9 @@ public:
     // TODO
     static std::shared_ptr<Theme> from_json(const std::string& json);
 
+#ifndef __ANDROID__
     void load_system_font();
+#endif
 
     std::shared_ptr<Font> font;
 
