@@ -160,4 +160,8 @@ bool App::single_run() {
     return tree->render();
 }
 
+void App::single_run_cleanup() {
+    RenderServer::get_singleton()->window_builder_->stop_and_destroy_swapchains();
+}
+
 } // namespace revector

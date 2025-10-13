@@ -36,6 +36,8 @@ public:
 
     bool single_run();
 
+    void single_run_cleanup();
+
     [[nodiscard]] std::shared_ptr<Node> get_tree_root() const;
 
     void set_window_title(const std::string& title);
