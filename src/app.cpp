@@ -3,10 +3,12 @@
 #include <cstdint>
 #include <memory>
 
-
+// clang-format off
 #include "vulkan_wrapper.h"
 #include "pathfinder/gpu/gl/window_builder.h"
 #include "pathfinder/gpu/vk/window_builder.h"
+// clang-format on
+
 #include "resources/default_resource.h"
 #include "servers/engine.h"
 #include "servers/input_server.h"
@@ -49,12 +51,18 @@ App::App(Vec2I primary_window_size, const bool dark_mode, bool use_vulkan) {
 }
 
 #else
-App::App(ANativeWindow* native_window, Vec2I window_size, const bool dark_mode, bool use_vulkan) {
+App::App(ANativeWindow* native_window,
+         AAssetManager* asset_manager,
+         Vec2I window_size,
+         const bool dark_mode,
+         bool use_vulkan) {
     // Set logger level.
     Logger::set_global_level(Logger::Level::Info);
     Logger::set_module_level("revector", Logger::Level::Info);
 
     dark_mode_ = dark_mode;
+
+    Engine::get_singleton()->asset_manager = asset_manager;
 
     DefaultResource::get_singleton()->init(dark_mode_);
 

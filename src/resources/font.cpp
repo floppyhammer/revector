@@ -35,6 +35,7 @@
 #include <gzip/utils.hpp>
 #include <optional>
 
+#include "../servers/engine.h"
 #include "default_resource.h"
 
 namespace revector {
@@ -158,7 +159,7 @@ std::shared_ptr<Font> Font::from_file(const std::string &path) {
 #ifndef __ANDROID__
     auto bytes = Pathfinder::load_file_as_bytes(path);
 #else
-    auto bytes = Pathfinder::load_asset(nullptr, path);
+    auto bytes = Pathfinder::load_asset(Engine::get_singleton()->asset_manager, path);
 #endif
 
     return from_memory(bytes);

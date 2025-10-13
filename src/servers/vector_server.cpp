@@ -1,6 +1,7 @@
 #include "vector_server.h"
 
 #include "../resources/default_resource.h"
+#include "engine.h"
 
 namespace revector {
 
@@ -392,7 +393,7 @@ std::shared_ptr<Pathfinder::SvgScene> VectorServer::load_svg(const std::string &
 #ifndef __ANDROID__
     auto bytes = Pathfinder::load_file_as_bytes(path);
 #else
-    auto bytes = Pathfinder::load_asset(nullptr, path);
+    auto bytes = Pathfinder::load_asset(Engine::get_singleton()->asset_manager, path);
 #endif
 
     auto str = std::string(bytes.begin(), bytes.end());
