@@ -4,7 +4,7 @@
 #include <memory>
 
 // clang-format off
-#include "vulkan_wrapper.h"
+#include "android/vulkan_wrapper.h"
 #include "pathfinder/gpu/gl/window_builder.h"
 #include "pathfinder/gpu/vk/window_builder.h"
 // clang-format on
@@ -69,6 +69,7 @@ App::App(ANativeWindow* native_window, void* asset_manager, Vec2I window_size, c
     if (!use_vulkan) {
         window_builder = std::make_shared<Pathfinder::WindowBuilderGl>(native_window, window_size);
     } else {
+        InitVulkan();
         window_builder = std::make_shared<Pathfinder::WindowBuilderVk>(native_window, window_size);
     }
 

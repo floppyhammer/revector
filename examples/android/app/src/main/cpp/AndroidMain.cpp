@@ -6,14 +6,13 @@
 #include <random>
 
 // clang-format off
-#include "src/vulkan_wrapper.h"
+#include "src/android/vulkan_wrapper.h"
 #include "src/app.h"
 // clang-format on
 
 revector::App *app;
 
 constexpr bool USE_VULKAN = false;
-bool vulkan_initialized = false;
 
 constexpr int DPI_STANDARD = 96;
 
@@ -184,7 +183,7 @@ void handle_motion_event(GameActivityMotionEvent *event) {
             input_server->input_queue.push_back(input_event);
         } break;
         case AMOTION_EVENT_ACTION_SCROLL: {
-            __android_log_print(ANDROID_LOG_INFO, "Pathfinder", "INPUT: SCROLL (%.1f, %.1f)", x, y);
+            __android_log_print(ANDROID_LOG_INFO, "revector", "INPUT: SCROLL (%.1f, %.1f)", x, y);
         } break;
     }
 }
@@ -199,11 +198,6 @@ void android_main(struct android_app *app_ctx) {
     // It's also recommended to nullify any filters to ensure all input is received:
     android_app_set_key_event_filter(app_ctx, nullptr);
     android_app_set_motion_event_filter(app_ctx, nullptr);
-
-    if (USE_VULKAN && !vulkan_initialized) {
-        InitVulkan();
-        vulkan_initialized = true;
-    }
 
     // Used to poll the events in the main loop.
     int events;

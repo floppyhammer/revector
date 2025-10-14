@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // This file is generated.
-#include "src/vulkan_wrapper.h"
+
+#ifdef __ANDROID__
+
+#include "vulkan_wrapper.h"
 
 #include <dlfcn.h>
 
@@ -403,3 +406,4 @@ PFN_vkCreateDebugReportCallbackEXT vkCreateDebugReportCallbackEXT;
 PFN_vkDestroyDebugReportCallbackEXT vkDestroyDebugReportCallbackEXT;
 PFN_vkDebugReportMessageEXT vkDebugReportMessageEXT;
 
+#endif
