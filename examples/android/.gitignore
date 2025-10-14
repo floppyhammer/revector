@@ -91,3 +91,5 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+
+app/src/main/assets/*
