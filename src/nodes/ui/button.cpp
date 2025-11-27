@@ -104,7 +104,7 @@ Button::Button() {
         hovered = false;
         InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow);
 
-        if (pressed || toggled) {
+        if (toggled) {
             target_style_box = theme_pressed;
             lerp_elapsed_ = 0;
         } else {
@@ -145,39 +145,32 @@ void Button::input(InputEvent &event) {
 
     bool consume_flag = false;
 
+    auto global_rect = RectF(global_position, global_position + size);
+
     if (!disabled_) {
         if (event.type == InputEventType::MouseMotion) {
             auto args = event.args.mouse_motion;
 
-            if (event.consumed) {
-                if (!toggle_mode) {
-                    pressed = false;
-                }
+            if (!event.consumed) {
+                // if (!toggle_mode) {
+                //     pressed = false;
+                // }
             } else {
-                if (RectF(global_position, global_position + size).contains_point(args.position)) {
+                if (global_rect.contains_point(args.position)) {
                     consume_flag = true;
                 } else {
-                    if (!toggle_mode) {
-                        pressed = false;
-                    }
+                    // if (!toggle_mode) {
+                    //     pressed = false;
+                    // }
                 }
             }
         }
 
-        if (event.type == InputEventType::MouseButton) {
+        if (event.type == InputEventType::MouseButton && event.args.mouse_button.button == 0) {
             const auto args = event.args.mouse_button;
 
-            // Consumed by other UI nodes.
-            if (event.consumed) {
-                if (!args.pressed) {
-                    if (RectF(global_position, global_position + size).contains_point(args.position)) {
-                        if (!toggle_mode) {
-                            pressed = false;
-                        }
-                    }
-                }
-            } else {
-                if (RectF(global_position, global_position + size).contains_point(args.position)) {
+            if (!event.consumed) {
+                if (global_rect.contains_point(args.position)) {
                     // Mouse button pressed
                     if (args.pressed) {
                         pressed_position = args.position;
@@ -186,31 +179,37 @@ void Button::input(InputEvent &event) {
                     }
                     // Mouse button released
                     else {
-                        // Release on a pressed button
-                        if (pressed) {
-                            if (pressed_position.has_value() &&
-                                (args.position - pressed_position.value()).length() < 8) {
-                                if (toggle_mode) {
-                                    if (group) {
-                                        // Let group handle this event.
-                                        group->notify_toggled(this);
-                                    } else {
-                                        toggled = !toggled;
-                                        notify_toggled(toggled);
-                                    }
+                        // Pressed and released on the same button
+                        if (pressed_position.has_value() && global_rect.contains_point(pressed_position.value())) {
+                            if (toggle_mode) {
+                                if (group) {
+                                    // Let group handle this event.
+                                    group->notify_toggled(this);
                                 } else {
-                                    notify_triggered();
+                                    toggled = !toggled;
+                                    notify_toggled(toggled);
                                 }
+                            } else {
+                                notify_triggered();
                             }
-
-                            pressed = false;
-                            pressed_position = {};
-                            notify_released();
                         }
+
+                        pressed = false;
+                        notify_released();
                     }
 
                     consume_flag = true;
+                } else {
+                    pressed_position = {};
                 }
+            }
+
+            if (!args.pressed) {
+                if (!toggle_mode) {
+                    pressed = false;
+                }
+
+                pressed_position = {};
             }
         }
     }
