@@ -84,8 +84,6 @@ void ProgressBar::draw() {
     if (theme_fg.has_value()) {
         vector_server->draw_style_box(theme_fg.value(), get_global_position(), size);
     }
-
-    label->draw();
 }
 
 void ProgressBar::set_position(Vec2F new_position) {
@@ -103,6 +101,7 @@ void ProgressBar::set_value(float new_value) {
         lerp_elapsed_ = 0;
     } else {
         value = std::clamp(new_value, min_value, max_value);
+        target_value = value; // In case lerp is enabled afterwards.
         ratio = (value - min_value) / (max_value - min_value);
 
         if (label_visible) {
@@ -149,6 +148,7 @@ void ProgressBar::connect_signal(const std::string &signal, const AnyCallable<vo
 
 void ProgressBar::set_label_visibility(bool new_visibility) {
     label_visible = new_visibility;
+    label->set_visibility(new_visibility);
 }
 
 void ProgressBar::set_label_font_size(float new_font_size) {
