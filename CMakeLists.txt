@@ -65,19 +65,10 @@ target_include_directories(revector PUBLIC "third_party/stduuid-1.2.3")
 set(ZLIB_BUILD_EXAMPLES OFF)
 add_subdirectory("third_party/zlib")
 
-target_include_directories(revector PRIVATE "third_party/font-kit-wrapper/include")
-target_link_directories(revector PUBLIC "third_party/font-kit-wrapper")
-
 target_link_libraries(revector PUBLIC pathfinder harfbuzz zlibstatic)
 
-if (WIN32)
-    file(COPY third_party/font-kit-wrapper/font_kit_wrapper.dll DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-    target_link_libraries(revector PUBLIC font_kit_wrapper.dll.lib)
-elseif (APPLE)
-    file(COPY third_party/font-kit-wrapper/libfont_kit_wrapper.dylib DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-    target_link_libraries(revector PUBLIC font_kit_wrapper.dylib)
-elseif (LINUX)
-    target_link_libraries(revector PUBLIC font_kit_wrapper.so tbb)
+if (LINUX)
+    target_link_libraries(revector PUBLIC tbb)
 endif ()
 
 if (NOT REVECTOR_FRIBIDI)
