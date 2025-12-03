@@ -193,15 +193,18 @@ void SceneTree::process(double dt) {
         }
     }
 
-    const auto input_task =
-        std::async(std::launch::async, [this] { input_system(root.get(), InputServer::get_singleton()->input_queue); });
-
     const auto calc_min_size_task = std::async(std::launch::async, [this] {
         // Run calc_minimum_size() depth-first.
         calc_minimum_size(root.get());
     });
 
-    input_task.wait();
+    // OpenGL calls in input callbacks cannot be made from another thread. So we don't use async for input_system.
+    input_system(root.get(), InputServer::get_singleton()->input_queue);
+    // const auto input_task =
+    //     std::async(std::launch::async, [this] { input_system(root.get(), InputServer::get_singleton()->input_queue);
+    //     });
+
+    // input_task.wait();
     calc_min_size_task.wait();
 
     // Update global transform for each node.
