@@ -78,57 +78,20 @@ void PopupMenu::input(InputEvent &event) {
         return;
     }
 
-    // auto global_position = get_global_position();
-    //
-    // // If a popup menu is shown, it captures mouse events anyway.
-    // bool consume_flag = true;
-    //
-    // if (event.type == InputEventType::MouseMotion) {
-    //     auto args = event.args.mouse_motion;
-    //     auto local_mouse_position = args.position - global_position;
-    //
-    //     for (auto &item : items_) {
-    //         item->hovered = false;
-    //     }
-    //
-    //     if (RectF(global_position, global_position + size).contains_point(args.position)) {
-    //         consume_flag = true;
-    //
-    //         if (items_.empty()) {
-    //             return;
-    //         }
-    //         int item_index = int(local_mouse_position.y / item_height_);
-    //         item_index = std::clamp(item_index, 0, (int)items_.size() - 1);
-    //         items_[item_index]->hovered = true;
-    //     }
-    // }
-    //
-    // if (event.type == InputEventType::MouseButton) {
-    //     auto args = event.args.mouse_button;
-    //
-    //     // Hide menu.
-    //     if (RectF(global_position, global_position + size).contains_point(args.position)) {
-    //         consume_flag = true;
-    //         set_visibility(false);
-    //
-    //         if (items_.empty()) {
-    //             return;
-    //         }
-    //         int item_index = int(local_mouse_position.y / item_height_);
-    //         item_index = std::clamp(item_index, 0, (int)items_.size() - 1);
-    //
-    //         when_item_selected(item_index);
-    //     } else {
-    //         consume_flag = true;
-    //         set_visibility(false);
-    //     }
-    // }
-    //
-    // for (auto &item : items_) {
-    //     item->input(event, global_position);
-    // }
-    //
-    // event.consumed = true;
+    auto global_position = get_global_position();
+
+    // If a popup menu is shown, it captures mouse events anyway.
+    bool consume_flag = true;
+
+    if (event.type == InputEventType::MouseButton) {
+        auto args = event.args.mouse_button;
+
+        // Hide menu.
+        if (!RectF(global_position, global_position + size).contains_point(args.position)) {
+            consume_flag = true;
+            set_visibility(false);
+        }
+    }
 
     NodeUi::input(event);
 }
