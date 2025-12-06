@@ -33,7 +33,7 @@ public:
             }
 
             if (args.pressed && args.button == 0) {
-                menu_.lock()->set_visibility(false);
+                // menu_.lock()->set_visibility(false);
             }
         }
     }

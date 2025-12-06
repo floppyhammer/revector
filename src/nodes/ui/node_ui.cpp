@@ -91,7 +91,7 @@ void NodeUi::input(InputEvent &event) {
             break;
     }
 
-    if (consume_flag) {
+    if (mouse_filter == MouseFilter::Stop && consume_flag) {
         event.consumed = true;
     }
 

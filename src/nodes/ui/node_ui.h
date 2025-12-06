@@ -174,6 +174,8 @@ protected:
 
     Vec2F local_mouse_position;
 
+    std::optional<Vec2F> pressed_mouse_position;
+
     AnchorFlag anchor_mode = AnchorFlag::None;
 
     bool is_cursor_inside = false;

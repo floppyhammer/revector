@@ -27,13 +27,15 @@ PopupMenu::PopupMenu() {
     auto glitch_margin_container = std::make_shared<MarginContainer>();
     glitch_margin_container->name = "PopupMenu embedded glitch fixing margin container";
     glitch_margin_container->set_margin_all(1);
+    glitch_margin_container->set_mouse_filter(MouseFilter::Pass);
     scroll_container_->add_child(glitch_margin_container);
 
     vbox_container_ = std::make_shared<VBoxContainer>();
+    vbox_container_->set_mouse_filter(MouseFilter::Pass);
     glitch_margin_container->add_child(vbox_container_);
 
-    auto callback = [this] { set_visibility(false); };
-    connect_signal("focus_released", callback);
+    // auto callback = [this] { set_visibility(false); };
+    // connect_signal("focus_released", callback);
 }
 
 void PopupMenu::update(double dt) {
@@ -187,6 +189,7 @@ void PopupMenu::set_popup_position(Vec2F new_position, float new_button_height) 
 
 void PopupMenu::create_item(const std::string &text) {
     auto new_item = std::make_shared<Button>();
+    new_item->set_mouse_filter(MouseFilter::Pass);
     new_item->set_text(text);
 
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
@@ -195,6 +198,7 @@ void PopupMenu::create_item(const std::string &text) {
     new_item->theme_pressed = new_item->theme_hovered;
     vbox_container_->add_child(new_item);
     vbox_container_->set_separation(0);
+    vbox_container_->set_mouse_filter(MouseFilter::Pass);
 
     int item_index = vbox_container_->get_children().size() - 1;
 

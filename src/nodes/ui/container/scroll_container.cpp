@@ -67,12 +67,6 @@ void ScrollContainer::calc_minimum_size() {
 }
 
 void ScrollContainer::input(InputEvent &event) {
-    NodeUi::input(event);
-
-    if (children.empty() || !children.front()->is_ui_node()) {
-        return;
-    }
-
     // Scroll container can only have one effective control child.
     auto content = (NodeUi *)children.front().get();
 
@@ -104,16 +98,48 @@ void ScrollContainer::input(InputEvent &event) {
                 if (mouse_filter == MouseFilter::Stop) {
                     consume_flag = true;
                 }
-            } else {
+            }
+        } break;
+        case InputEventType::MouseButton: {
+            if (event.args.mouse_button.button == 0) {
+                const auto args = event.args.mouse_button;
+                if (args.pressed) {
+                    if (!event.consumed) {
+                        if (active_rect.contains_point(args.position)) {
+                            pressed_mouse_position = args.position;
+                            prev_hscroll = hscroll;
+                            prev_vscroll = vscroll;
+                        }
+                        consume_flag = true;
+                    }
+                } else {
+                    if (max_movement.length() > 1) {
+                        std::cout << max_movement.length() << std::endl;
+                        inertial_speed = max_movement * inertia;
+                        lerp_elapsed_ = 0;
+                    }
+
+                    pressed_mouse_position.reset();
+                    prev_hscroll.reset();
+                    prev_hscroll.reset();
+                }
+            }
+        } break;
+        case InputEventType::MouseMotion: {
+            const auto args = event.args.mouse_motion;
+
+            max_movement = args.relative;
+
+            if (pressed_mouse_position.has_value()) {
+                hscroll = prev_hscroll.value() - (args.position.x - pressed_mouse_position.value().x);
+                vscroll = prev_vscroll.value() - (args.position.y - pressed_mouse_position.value().y);
             }
         } break;
         default:
             break;
     }
 
-    if (consume_flag) {
-        event.consumed = true;
-    }
+    NodeUi::input(event);
 }
 
 void ScrollContainer::update(double dt) {
@@ -123,6 +149,16 @@ void ScrollContainer::update(double dt) {
 
     if (children.empty() || !children.front()->is_ui_node()) {
         return;
+    }
+
+    if (inertial_speed.length() > 0) {
+        lerp_elapsed_ += dt;
+        float t = std::clamp(lerp_elapsed_ / lerp_duration_, 0.0f, 1.0f);
+        inertial_speed.x = Pathfinder::lerp(inertial_speed.x, 0, t);
+        inertial_speed.y = Pathfinder::lerp(inertial_speed.y, 0, t);
+
+        vscroll -= inertial_speed.y * dt;
+        hscroll -= inertial_speed.x * dt;
     }
 
     vscroll = std::max(0.0f, vscroll);

@@ -151,10 +151,6 @@ void Button::input(InputEvent &event) {
     }
 
     NodeUi::input(event);
-
-    if (consume_flag) {
-        event.consumed = true;
-    }
 }
 
 void Button::draw() {

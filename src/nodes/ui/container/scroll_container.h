@@ -46,6 +46,16 @@ protected:
     float hscroll = 0;
     float vscroll = 0;
 
+    Vec2F max_movement;
+    Vec2F inertial_speed;
+    float inertia = 100;
+
+    float lerp_elapsed_ = 0;
+    float lerp_duration_ = 2; // In second
+
+    std::optional<float> prev_hscroll;
+    std::optional<float> prev_vscroll;
+
     float scroll_speed = 20.0;
 
     StyleBox theme_scroll_bar;
