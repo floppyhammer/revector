@@ -11,8 +11,6 @@ MenuButton::MenuButton() {
 
     label->set_text("Menu Button");
 
-    theme_pressed = theme_normal;
-
     menu = std::make_shared<PopupMenu>();
     // Add a Node to disable transform propagation since a PopupMenu will always be in the global coordinates.
     auto node = std::make_shared<Node>();

@@ -49,68 +49,14 @@ Button::Button() {
 
     add_embedded_child(margin_container);
 
-    // To make a button responsive, no animation should be set when it is pressed/hovered.
-    // Animations should only happen upon unpressing/unhovering.
-
-    pressed_callbacks.emplace_back([this]() {
-        target_style_box = theme_pressed;
-        active_style_box = theme_pressed;
-        lerp_elapsed_ = lerp_duration_;
-    });
-
-    released_callbacks.emplace_back([this]() {
-        if (hovered && theme_hovered.has_value()) {
-            target_style_box = theme_hovered.value();
-            active_style_box = theme_hovered.value();
-        } else {
-            if (pressed || toggled) {
-                target_style_box = theme_pressed;
-                active_style_box = theme_pressed;
-            } else {
-                target_style_box = theme_normal;
-                active_style_box = theme_normal;
-            }
-        }
-        lerp_elapsed_ = lerp_duration_;
-    });
-
-    toggled_callbacks.emplace_back([this](bool toggled) {
-        lerp_elapsed_ = lerp_duration_;
-        if (toggled) {
-            target_style_box = theme_pressed;
-            active_style_box = theme_pressed;
-        } else {
-            if (hovered && theme_hovered.has_value()) {
-                target_style_box = theme_hovered.value();
-                active_style_box = theme_hovered.value();
-            } else {
-                target_style_box = theme_normal;
-                active_style_box = theme_normal;
-            }
-        }
-    });
-
     callbacks_cursor_entered.emplace_back([this] {
         hovered = true;
         InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Hand);
-
-        if (theme_hovered.has_value()) {
-            target_style_box = theme_hovered.value();
-            lerp_elapsed_ = 0;
-        }
     });
 
     callbacks_cursor_exited.emplace_back([this] {
         hovered = false;
         InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow);
-
-        if (toggled) {
-            target_style_box = theme_pressed;
-            lerp_elapsed_ = 0;
-        } else {
-            target_style_box = theme_normal;
-            lerp_elapsed_ = 0;
-        }
     });
 }
 
@@ -126,16 +72,6 @@ void Button::ready() {
     }
 
     ready_ = true;
-
-    if (toggle_mode && toggled) {
-        target_style_box = theme_pressed;
-        active_style_box = theme_pressed;
-    } else {
-        target_style_box = theme_normal;
-        active_style_box = theme_normal;
-    }
-
-    lerp_elapsed_ = lerp_duration_;
 
     custom_ready();
 }
@@ -221,20 +157,6 @@ void Button::input(InputEvent &event) {
     }
 }
 
-void Button::update(double dt) {
-    NodeUi::update(dt);
-
-    if (animated_) {
-        if (lerp_elapsed_ < lerp_duration_) {
-            lerp_elapsed_ += dt;
-            float t = std::clamp(lerp_elapsed_ / lerp_duration_, 0.0f, 1.0f);
-            active_style_box = active_style_box.lerp_style_box(target_style_box, t);
-        }
-    } else {
-        active_style_box = target_style_box;
-    }
-}
-
 void Button::draw() {
     if (!visible_) {
         return;
@@ -264,14 +186,30 @@ void Button::draw() {
         }
     }
 
+    StyleBox active_style_box = theme_normal;
+
     // Draw style box.
     if (!flat_) {
-        // Consider modulating.
-        target_style_box.bg_color = ColorU(target_style_box.bg_color.to_f32() * modulate.to_f32());
-        target_style_box.border_color = ColorU(target_style_box.border_color.to_f32() * modulate.to_f32());
+        if (hovered) {
+            active_style_box = theme_hovered;
+        }
+        if (pressed) {
+            active_style_box = theme_pressed;
+        }
+        if (use_pressed_style_box_for_toggled && toggled) {
+            active_style_box = theme_pressed;
+        }
 
-        vector_server->draw_style_box(active_style_box, global_position, size);
+        if (disabled_) {
+            active_style_box = theme_disabled;
+        }
     }
+
+    // Consider modulating.
+    active_style_box.bg_color = ColorU(active_style_box.bg_color.to_f32() * modulate.to_f32());
+    active_style_box.border_color = ColorU(active_style_box.border_color.to_f32() * modulate.to_f32());
+
+    vector_server->draw_style_box(active_style_box, global_position, size);
 
     NodeUi::draw();
 }
@@ -396,10 +334,6 @@ void Button::set_toggled(bool p_toggled) {
 
 void Button::trigger() {
     notify_triggered();
-}
-
-void Button::set_animated(bool animated) {
-    animated_ = animated;
 }
 
 void ToggleButtonGroup::notify_toggled(const Button *toggled_button) {

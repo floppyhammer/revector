@@ -192,8 +192,7 @@ void PopupMenu::create_item(const std::string &text) {
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
     new_item->theme_normal = default_theme->popup_menu.styles["item_normal"];
     new_item->theme_hovered = default_theme->popup_menu.styles["item_hovered"];
-    new_item->theme_pressed = new_item->theme_hovered.value();
-    new_item->set_animated(false);
+    new_item->theme_pressed = new_item->theme_hovered;
     vbox_container_->add_child(new_item);
     vbox_container_->set_separation(0);
 

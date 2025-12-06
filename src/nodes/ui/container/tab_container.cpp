@@ -104,6 +104,7 @@ void TabContainer::add_child(const std::shared_ptr<Node> &new_child) {
 
 void TabContainer::add_tab_button() {
     auto button = std::make_shared<Button>();
+    button->set_pressed_style_to_toggled(true);
     button_container->add_child(button);
 
     uint32_t button_idx = tab_buttons.size();
@@ -123,7 +124,7 @@ void TabContainer::add_tab_button() {
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
     button->theme_normal = default_theme->tab_container.styles["tab_button_normal"];
-    button->theme_hovered = {};
+    button->theme_hovered = button->theme_normal;
     button->theme_pressed = default_theme->tab_container.styles["tab_button_pressed"];
 }
 

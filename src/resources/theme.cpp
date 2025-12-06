@@ -15,45 +15,36 @@ std::shared_ptr<Theme> Theme::default_dark() {
         theme->button.colors["text"] = ColorU(200, 200, 200);
         theme->button.colors["text_disabled"] = ColorU(200, 200, 200, 100);
 
-        {
-            auto style_box = StyleBox();
-            style_box.bg_color = ColorU(32, 32, 32);
-            style_box.border_color = ColorU(67, 67, 67);
-            style_box.border_width = 2;
-            style_box.corner_radius = 8;
-            theme->button.styles["normal"] = style_box;
-        }
+        auto style_box_normal = StyleBox();
+        style_box_normal.bg_color = ColorU(32, 32, 32);
+        style_box_normal.border_color = ColorU(67, 67, 67);
+        style_box_normal.border_width = 2;
+        style_box_normal.corner_radius = 8;
+        theme->button.styles["normal"] = style_box_normal;
 
         {
-            auto style_box = StyleBox();
+            auto style_box = style_box_normal;
             style_box.bg_color = ColorU(41, 41, 41);
-            style_box.border_color = theme->accent_color;
-            style_box.border_width = 2;
-            style_box.corner_radius = 8;
             theme->button.styles["hovered"] = style_box;
         }
 
         {
-            auto style_box = StyleBox();
-            style_box.bg_color = ColorU(45, 45, 45, 255);
-            style_box.border_color = ColorU(67, 67, 67, 255);
-            style_box.border_width = 2;
-            style_box.corner_radius = 8;
+            auto style_box = style_box_normal;
+            style_box.bg_color = ColorU(45, 45, 45);
+            style_box.border_color = theme->accent_color;
             theme->button.styles["pressed"] = style_box;
         }
 
         {
-            auto style_box = StyleBox();
-            style_box.bg_color = ColorU(32, 32, 32, 255);
-            style_box.border_color = ColorU(67, 67, 67, 255);
-            style_box.border_width = 2;
-            style_box.corner_radius = 8;
+            auto style_box = style_box_normal;
+            style_box.bg_color = ColorU(32, 32, 32, 150);
+            style_box.border_color = ColorU(67, 67, 67, 150);
             theme->button.styles["disabled"] = style_box;
         }
     }
 
     // Label
-    theme->label.colors["text"] = ColorU(200, 200, 200, 255);
+    theme->label.colors["text"] = ColorU(200, 200, 200);
     theme->label.styles["background"] = StyleBox::from_empty();
 
     // Panel
@@ -201,39 +192,30 @@ std::shared_ptr<Theme> Theme::default_light() {
     theme->button.colors["text"] = ColorU(55, 55, 55);
     theme->button.colors["text_disabled"] = ColorU(55, 55, 55, 100);
 
-    {
-        auto style_box = StyleBox();
-        style_box.bg_color = ColorU(223, 223, 223);
-        style_box.border_color = ColorU(188, 188, 188);
-        style_box.border_width = 2;
-        style_box.corner_radius = 8;
-        theme->button.styles["normal"] = style_box;
-    }
+    auto style_box_normal = StyleBox();
+    style_box_normal.bg_color = ColorU(223, 223, 223);
+    style_box_normal.border_color = ColorU(188, 188, 188);
+    style_box_normal.border_width = 2;
+    style_box_normal.corner_radius = 8;
+    theme->button.styles["normal"] = style_box_normal;
 
     {
-        auto style_box = StyleBox();
+        auto style_box = style_box_normal;
         style_box.bg_color = ColorU(210, 210, 210);
-        style_box.border_color = theme->accent_color;
-        style_box.border_width = 2;
-        style_box.corner_radius = 8;
         theme->button.styles["hovered"] = style_box;
     }
 
     {
-        auto style_box = StyleBox();
+        auto style_box = style_box_normal;
         style_box.bg_color = ColorU(210, 210, 210, 255);
-        style_box.border_color = ColorU(188, 188, 188, 255);
-        style_box.border_width = 2;
-        style_box.corner_radius = 8;
+        style_box.border_color = theme->accent_color;
         theme->button.styles["pressed"] = style_box;
     }
 
     {
-        auto style_box = StyleBox();
-        style_box.bg_color = ColorU(223, 223, 223, 255);
-        style_box.border_color = ColorU(188, 188, 188, 255);
-        style_box.border_width = 2;
-        style_box.corner_radius = 8;
+        auto style_box = style_box_normal;
+        style_box.bg_color = ColorU(223, 223, 223, 150);
+        style_box.border_color = ColorU(188, 188, 188, 150);
         theme->button.styles["disabled"] = style_box;
     }
 

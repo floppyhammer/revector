@@ -23,8 +23,6 @@ public:
 
     void input(InputEvent &event) override;
 
-    void update(double dt) override;
-
     void draw() override;
 
     void set_position(Vec2F _position) override;
@@ -73,19 +71,17 @@ public:
         disabled_ = disabled;
     }
 
-    // void set_pressed(true);
-
-    void set_animated(bool animated);
+    void set_pressed_style_to_toggled(bool value) {
+        use_pressed_style_box_for_toggled = value;
+    }
 
     ToggleButtonGroup *group = nullptr;
 
     // Styles.
     StyleBox theme_normal;
-    std::optional<StyleBox> theme_hovered;
+    StyleBox theme_hovered;
     StyleBox theme_pressed;
     StyleBox theme_disabled;
-    StyleBox active_style_box;
-    StyleBox target_style_box;
 
 protected:
     bool pressed = false;
@@ -94,17 +90,13 @@ protected:
 
     bool toggle_mode = false;
     bool toggled = false;
+    bool use_pressed_style_box_for_toggled = false;
 
     bool icon_expand_ = false;
 
     bool flat_ = false;
 
     bool disabled_ = false;
-
-    bool animated_ = true;
-
-    float lerp_elapsed_ = 0.0;
-    float lerp_duration_ = 1.0; // In second
 
     /// Embed children: Button<HBoxContainer<TextureRect, Label>>
     std::shared_ptr<MarginContainer> margin_container;
