@@ -4,19 +4,12 @@
 
 #include "../../../common/utils.h"
 #include "../../../resources/default_resource.h"
-#include "../check_button.h"
+#include "../button/check_button.h"
 
 namespace revector {
 
 CollapseContainer::CollapseContainer(CollapseButtonType button_type) {
     type = NodeType::CollapseContainer;
-
-    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
-
-    theme_title_bar_ = std::make_optional(default_theme->collapse_container.styles["title_bar"]);
-    theme_title_bar_->border_width = 2;
-    theme_title_bar_->corner_radii = {8, 8, 0, 0};
-    theme_panel_ = std::make_optional(default_theme->collapse_container.styles["background"]);
 
     set_color(ColorU(78, 135, 82));
 
@@ -74,17 +67,6 @@ void CollapseContainer::adjust_layout() {
 
 void CollapseContainer::set_color(ColorU color) {
     theme_color_ = color;
-
-    if (theme_title_bar_.has_value()) {
-        if (!collapsed_) {
-            theme_title_bar_->bg_color = color;
-        }
-
-        theme_title_bar_->border_color = color;
-    }
-    if (theme_panel_.has_value()) {
-        theme_panel_->border_color = color;
-    }
 }
 
 void CollapseContainer::set_collapse(bool collapse) {
@@ -102,16 +84,6 @@ void CollapseContainer::set_collapse(bool collapse) {
 
     if (collapse) {
         this->size_before_collapse_ = this->size;
-    }
-
-    if (collapse) {
-        theme_title_bar_->bg_color = theme_panel_->bg_color;
-        theme_title_bar_->border_color = theme_color_;
-        theme_title_bar_->corner_radii = {8, 8, 8, 8};
-    } else {
-        theme_title_bar_->bg_color = theme_color_;
-        theme_title_bar_->border_color = theme_color_;
-        theme_title_bar_->corner_radii = {8, 8, 0, 0};
     }
 }
 
@@ -180,17 +152,31 @@ void CollapseContainer::draw() {
 
     auto global_position = get_global_position();
 
-    if (!collapsed_) {
-        if (theme_panel_.has_value()) {
-            vector_server->draw_style_box(theme_panel_.value(), global_position, size);
-        }
+    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
+
+    auto theme_title_bar = theme_override_title_bar_.value_or(default_theme->collapse_container.styles["title_bar"]);
+    theme_title_bar.border_width = 2;
+    theme_title_bar.corner_radii = {8, 8, 0, 0};
+    auto theme_bg = theme_override_bg_.value_or(default_theme->collapse_container.styles["background"]);
+
+    if (collapsed_) {
+        theme_title_bar.bg_color = theme_bg.bg_color;
+        theme_title_bar.corner_radii = {8, 8, 8, 8};
+    } else {
+        theme_title_bar.bg_color = theme_color_;
+        theme_title_bar.corner_radii = {8, 8, 0, 0};
     }
 
-    if (theme_title_bar_.has_value()) {
-        auto title_bar_size = size;
-        title_bar_size.y = title_bar_height_;
-        vector_server->draw_style_box(theme_title_bar_.value(), global_position, title_bar_size);
+    theme_title_bar.border_color = theme_color_;
+    theme_bg.border_color = theme_color_;
+
+    if (!collapsed_) {
+        vector_server->draw_style_box(theme_bg, global_position, size);
     }
+
+    auto title_bar_size = size;
+    title_bar_size.y = title_bar_height_;
+    vector_server->draw_style_box(theme_title_bar, global_position, title_bar_size);
 }
 
 } // namespace revector

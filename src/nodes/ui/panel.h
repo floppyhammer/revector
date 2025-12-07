@@ -13,10 +13,7 @@ public:
 
     void draw() override;
 
-    void set_theme_panel(StyleBox style_box);
-
-protected:
-    std::optional<StyleBox> theme_panel_;
+    std::optional<StyleBox> theme_override_bg_;
 };
 
 } // namespace revector

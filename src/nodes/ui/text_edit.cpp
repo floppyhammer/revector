@@ -37,16 +37,6 @@ TextEdit::TextEdit() {
 
     add_embedded_child(margin_container);
 
-    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
-
-    theme_normal = default_theme->text_edit.styles["normal"];
-
-    theme_focused = default_theme->text_edit.styles["focused"];
-
-    theme_caret = default_theme->text_edit.caret;
-
-    theme_selection = default_theme->text_edit.styles["selection"];
-
     set_text("Enter text");
 
     callbacks_cursor_entered.emplace_back(
@@ -258,6 +248,13 @@ void TextEdit::draw() {
     auto vector_server = VectorServer::get_singleton();
 
     auto global_position = get_global_position();
+
+    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
+
+    auto theme_normal = theme_override_normal.value_or(default_theme->text_edit.styles["normal"]);
+    auto theme_focused = theme_override_focused.value_or(default_theme->text_edit.styles["focused"]);
+    auto theme_caret = theme_override_caret.value_or(default_theme->text_edit.caret);
+    auto theme_selection = theme_override_selection.value_or(default_theme->text_edit.styles["selection"]);
 
     // Draw bg.
     {

@@ -3,7 +3,7 @@
 #include <optional>
 
 #include "../../../resources/style_box.h"
-#include "../button.h"
+#include "../button/button.h"
 #include "../label.h"
 #include "box_container.h"
 
@@ -34,6 +34,9 @@ public:
 
     void connect_signal(const std::string &signal, const AnyCallable<void> &callback) override;
 
+    std::optional<StyleBox> theme_override_title_bar_;
+    std::optional<StyleBox> theme_override_bg_;
+
 private:
     void when_collapsed(bool collapsed);
 
@@ -49,9 +52,6 @@ private:
     Vec2F size_before_collapse_;
 
     ColorU theme_color_ = {};
-
-    std::optional<StyleBox> theme_title_bar_;
-    std::optional<StyleBox> theme_panel_;
 };
 
 } // namespace revector

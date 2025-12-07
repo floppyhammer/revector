@@ -8,7 +8,7 @@
 #include "../../resources/font.h"
 #include "../../resources/style_box.h"
 #include "../../resources/vector_image.h"
-#include "button.h"
+#include "button/button.h"
 #include "container/box_container.h"
 #include "node_ui.h"
 

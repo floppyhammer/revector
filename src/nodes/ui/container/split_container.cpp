@@ -4,7 +4,7 @@
 
 #include "../../../common/utils.h"
 #include "../../../resources/default_resource.h"
-#include "../check_button.h"
+#include "../button/check_button.h"
 
 namespace revector {
 

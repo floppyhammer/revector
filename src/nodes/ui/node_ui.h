@@ -150,7 +150,7 @@ public:
 
     void connect_signal(const std::string &signal, const AnyCallable<void> &callback) override;
 
-    void set_theme_bg(StyleBox style_box);
+    std::optional<StyleBox> debug_box;
 
 protected:
     Vec2F position{0};
@@ -189,8 +189,6 @@ protected:
     void cursor_exited();
 
     float alpha = 1.0;
-
-    std::optional<StyleBox> theme_bg;
 
     MouseFilter mouse_filter = MouseFilter::Stop;
 

@@ -99,6 +99,8 @@ public:
 
     void set_popup_position(Vec2F new_position, float new_button_height);
 
+    std::optional<StyleBox> theme_override_bg;
+
 private:
     void when_item_selected(uint32_t item_index);
     void when_popup_hide();
@@ -116,8 +118,6 @@ private:
     std::vector<std::string> meta_;
 
     float item_height_ = 48;
-
-    std::optional<StyleBox> theme_bg_;
 
     std::vector<AnyCallable<void>> item_selected_callbacks;
 

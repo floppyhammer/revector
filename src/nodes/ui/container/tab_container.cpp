@@ -10,10 +10,6 @@ TabContainer::TabContainer() {
 
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
-    theme_bg = std::make_optional(default_theme->tab_container.styles["background"]);
-
-    theme_button_panel = default_theme->tab_container.styles["tab_background"];
-
     button_scroll_container = std::make_shared<ScrollContainer>();
     button_scroll_container->enable_vscroll(false);
     add_embedded_child(button_scroll_container);
@@ -89,7 +85,20 @@ void TabContainer::draw() {
 
     auto tab_button_height = button_container->get_effective_minimum_size().y;
 
-    vs->draw_style_box(theme_button_panel.value(), global_pos, {size.x, tab_button_height});
+    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
+
+    auto theme_tab_bg = theme_override_tab_bg.value_or(default_theme->tab_container.styles["tab_background"]);
+
+    auto theme_bg = theme_override_bg.value_or(default_theme->tab_container.styles["background"]);
+
+    vs->draw_style_box(theme_bg, global_pos, size);
+    vs->draw_style_box(theme_tab_bg, global_pos, {size.x, tab_button_height});
+
+    for (const auto& btn : tab_buttons) {
+        btn->theme_override_normal = default_theme->tab_container.styles["tab_button_normal"];
+        btn->theme_override_hovered = btn->theme_override_normal;
+        btn->theme_override_pressed = default_theme->tab_container.styles["tab_button_pressed"];
+    }
 }
 
 void TabContainer::add_child(const std::shared_ptr<Node> &new_child) {
@@ -120,12 +129,6 @@ void TabContainer::add_tab_button() {
     };
     button->connect_signal("toggled", callback);
     button->set_toggle_mode(true);
-
-    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
-
-    button->theme_normal = default_theme->tab_container.styles["tab_button_normal"];
-    button->theme_hovered = button->theme_normal;
-    button->theme_pressed = default_theme->tab_container.styles["tab_button_pressed"];
 }
 
 void TabContainer::set_tab_title(uint32_t tab_index, const std::string &title) {

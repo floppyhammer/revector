@@ -2,12 +2,12 @@
 
 #include <functional>
 
-#include "../../resources/style_box.h"
-#include "container/box_container.h"
-#include "container/margin_container.h"
-#include "label.h"
-#include "node_ui.h"
-#include "texture_rect.h"
+#include "../../../resources/style_box.h"
+#include "../container/box_container.h"
+#include "../container/margin_container.h"
+#include "../label.h"
+#include "../node_ui.h"
+#include "../texture_rect.h"
 
 namespace revector {
 
@@ -77,11 +77,11 @@ public:
 
     ToggleButtonGroup *group = nullptr;
 
-    // Styles.
-    StyleBox theme_normal;
-    StyleBox theme_hovered;
-    StyleBox theme_pressed;
-    StyleBox theme_disabled;
+    // Style overrides.
+    std::optional<StyleBox> theme_override_normal;
+    std::optional<StyleBox> theme_override_hovered;
+    std::optional<StyleBox> theme_override_pressed;
+    std::optional<StyleBox> theme_override_disabled;
 
 protected:
     bool pressed = false;

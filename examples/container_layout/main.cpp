@@ -13,7 +13,7 @@ class MyNode : public Node {
         auto hbox_container = std::make_shared<HBoxContainer>();
         hbox_container->set_separation(8);
         hbox_container->set_position({100, 100});
-        hbox_container->set_theme_bg(StyleBox());
+        hbox_container->theme_override_bg = StyleBox();
         add_child(hbox_container);
 
         for (int _ = 0; _ < 4; _++) {
@@ -39,7 +39,7 @@ class MyNode : public Node {
         auto vbox_container = std::make_shared<VBoxContainer>();
         vbox_container->set_separation(8);
         vbox_container->set_position({100, 300});
-        vbox_container->set_theme_bg(StyleBox());
+        vbox_container->theme_override_bg = StyleBox();
         add_child(vbox_container);
 
         for (int _ = 0; _ < 4; _++) {
@@ -66,7 +66,7 @@ class MyNode : public Node {
         grid_container->set_separation(8);
         grid_container->set_position({600, 400});
         grid_container->set_column_limit(2);
-        grid_container->set_theme_bg(StyleBox());
+        grid_container->theme_override_bg = StyleBox();
         grid_container->set_item_shrinking(false);
         add_child(grid_container);
 

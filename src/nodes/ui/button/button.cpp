@@ -2,9 +2,9 @@
 
 #include <optional>
 
-#include "../../common/geometry.h"
-#include "../../resources/default_resource.h"
-#include "../../resources/vector_image.h"
+#include "../../../common/geometry.h"
+#include "../../../resources/default_resource.h"
+#include "../../../resources/vector_image.h"
 
 namespace revector {
 
@@ -13,22 +13,12 @@ Button::Button() {
 
     auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
-    theme_normal = default_theme->button.styles["normal"];
-
-    theme_hovered = default_theme->button.styles["hovered"];
-
-    theme_pressed = default_theme->button.styles["pressed"];
-
-    theme_disabled = default_theme->button.styles["disabled"];
-
     // Don't add the label as a child since it's not a normal node but part of the button.
     label = std::make_shared<Label>();
     label->set_text("Button");
     label->set_mouse_filter(MouseFilter::Ignore);
     label->set_horizontal_alignment(Alignment::Center);
     label->set_vertical_alignment(Alignment::Center);
-    label->set_text_style(TextStyle{default_theme->button.colors["text"]});
-    label->theme_background = StyleBox::from_empty();
     label->container_sizing.flag_h = ContainerSizingFlag::Fill;
 
     icon_rect = std::make_shared<TextureRect>();
@@ -158,13 +148,17 @@ void Button::draw() {
         return;
     }
 
+    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
+    auto theme_normal = theme_override_normal.value_or(default_theme->button.styles["normal"]);
+    auto theme_hovered = theme_override_hovered.value_or(default_theme->button.styles["hovered"]);
+    auto theme_pressed = theme_override_pressed.value_or(default_theme->button.styles["pressed"]);
+    auto theme_disabled = theme_override_disabled.value_or(default_theme->button.styles["disabled"]);
+
     auto vector_server = VectorServer::get_singleton();
 
     auto global_position = get_global_position();
 
     icon_rect->set_texture(icon_normal_);
-
-    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
     if (disabled_) {
         label->set_text_style(TextStyle{default_theme->button.colors["text_disabled"]});

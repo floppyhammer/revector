@@ -21,6 +21,10 @@ public:
         return default_theme;
     }
 
+    void set_default_theme(const std::shared_ptr<Theme> &theme) {
+        default_theme = theme;
+    }
+
     std::shared_ptr<Font> get_default_font() {
         return default_font;
     }

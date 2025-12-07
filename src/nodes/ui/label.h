@@ -93,7 +93,9 @@ public:
         multi_line_ = enabled;
     }
 
-    StyleBox theme_background;
+    std::optional<StyleBox> theme_override_bg;
+    std::optional<TextStyle> theme_override_text_style;
+    TextStyle text_style;
 
 private:
     void measure();
@@ -145,8 +147,6 @@ private:
 
     bool need_to_remeasure = true;
     bool need_to_update_layout = true;
-
-    TextStyle text_style;
 
     // Controls how to align the text box to the label area.
     Alignment horizontal_alignment = Alignment::Center;

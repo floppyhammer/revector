@@ -13,6 +13,10 @@ public:
 
     void calc_minimum_size() override;
 
+    void draw() override;
+
+    std::optional<StyleBox> theme_override_bg;
+
 protected:
     /// The most important method for containers.
     /// This adjusts its own size (not position), adjusts its children's sizes and local positions.

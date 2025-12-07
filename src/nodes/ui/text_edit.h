@@ -39,6 +39,12 @@ public:
 
     void set_numbers_only(bool new_value);
 
+    std::optional<StyleBox> theme_override_normal;
+    std::optional<StyleBox> theme_override_focused;
+    std::optional<StyleBox> theme_override_uneditable;
+    std::optional<StyleLine> theme_override_caret;
+    std::optional<StyleBox> theme_override_selection;
+
 private:
     bool editable = true;
     bool single_line = false;
@@ -50,9 +56,6 @@ private:
     uint32_t current_caret_index = 0;
     uint32_t selection_start_index = 0;
     Vec2F caret_position;
-
-    StyleLine theme_caret;
-    StyleBox theme_selection;
 
     std::shared_ptr<MarginContainer> margin_container;
     std::shared_ptr<Label> label;
@@ -66,10 +69,6 @@ private:
     uint32_t calculate_caret_index(Vec2F local_cursor_position_to_label);
 
     Vec2F calculate_caret_position(int32_t caret_index);
-
-    StyleBox theme_normal;
-    StyleBox theme_focused;
-    StyleBox theme_uneditable;
 };
 
 } // namespace revector

@@ -19,7 +19,7 @@ class MyNode : public Node {
             auto label = std::make_shared<Label>();
             label->set_custom_minimum_size({256, 64});
             label->set_horizontal_alignment(Alignment::Begin);
-            label->set_theme_bg(StyleBox());
+            label->theme_override_bg = StyleBox();
             vbox_container->add_child(label);
         }
 
@@ -27,7 +27,7 @@ class MyNode : public Node {
             auto label = std::make_shared<Label>();
             label->set_custom_minimum_size({256, 64});
             label->set_horizontal_alignment(Alignment::Center);
-            label->set_theme_bg(StyleBox());
+            label->theme_override_bg = StyleBox();
             vbox_container->add_child(label);
         }
 
@@ -35,7 +35,7 @@ class MyNode : public Node {
             auto label = std::make_shared<Label>();
             label->set_custom_minimum_size({256, 64});
             label->set_horizontal_alignment(Alignment::End);
-            label->set_theme_bg(StyleBox());
+            label->theme_override_bg = StyleBox();
             vbox_container->add_child(label);
         }
 
@@ -43,7 +43,7 @@ class MyNode : public Node {
             auto label = std::make_shared<Label>();
             label->set_vertical_alignment(Alignment::Begin);
             label->set_custom_minimum_size({256, 64});
-            label->set_theme_bg(StyleBox());
+            label->theme_override_bg = StyleBox();
             vbox_container->add_child(label);
         }
 
@@ -51,7 +51,7 @@ class MyNode : public Node {
             auto label = std::make_shared<Label>();
             label->set_vertical_alignment(Alignment::Center);
             label->set_custom_minimum_size({256, 64});
-            label->set_theme_bg(StyleBox());
+            label->theme_override_bg = StyleBox();
             vbox_container->add_child(label);
         }
 
@@ -59,7 +59,7 @@ class MyNode : public Node {
             auto label = std::make_shared<Label>();
             label->set_vertical_alignment(Alignment::End);
             label->set_custom_minimum_size({256, 64});
-            label->set_theme_bg(StyleBox());
+            label->theme_override_bg = StyleBox();
             vbox_container->add_child(label);
         }
     }

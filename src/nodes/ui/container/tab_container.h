@@ -2,7 +2,7 @@
 
 #include <optional>
 
-#include "../button.h"
+#include "../button/button.h"
 #include "container.h"
 
 namespace revector {
@@ -31,6 +31,10 @@ public:
 
     void add_child(const std::shared_ptr<Node>& new_child) override;
 
+    std::optional<StyleBox> theme_override_tab_bg;
+
+    std::optional<StyleBox> theme_override_bg;
+
 protected:
     void add_tab_button();
 
@@ -42,8 +46,6 @@ protected:
     std::shared_ptr<ToggleButtonGroup> tab_button_group;
 
     std::vector<std::shared_ptr<Button>> tab_buttons;
-
-    std::optional<StyleBox> theme_button_panel;
 };
 
 } // namespace revector

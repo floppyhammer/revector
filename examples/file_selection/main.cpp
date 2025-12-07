@@ -15,7 +15,7 @@ class MyNode : public Node {
             StyleBox new_bg;
             new_bg.bg_color = ColorU(27, 27, 27, 255);
             new_bg.corner_radius = 0;
-            panel->set_theme_panel(new_bg);
+            panel->theme_override_bg_ = new_bg;
         }
 
         auto margin_container = std::make_shared<MarginContainer>();

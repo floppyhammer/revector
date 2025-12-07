@@ -20,9 +20,6 @@ PopupMenu::PopupMenu() {
     scroll_container_->enable_hscroll(false);
     margin_container_->add_child(scroll_container_);
 
-    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
-    theme_bg_ = std::make_optional(default_theme->popup_menu.styles["background"]);
-
     // Add an extra one-pixel margin to avoid rendering glitch of a scroll RenderTarget.
     auto glitch_margin_container = std::make_shared<MarginContainer>();
     glitch_margin_container->name = "PopupMenu embedded glitch fixing margin container";
@@ -63,14 +60,15 @@ void PopupMenu::draw() {
 
     NodeUi::draw();
 
-    if (theme_bg_.has_value()) {
-        vector_server->draw_style_box(theme_bg_.value(), get_global_position(), size);
-    }
+    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
 
-    // auto global_position = get_global_position();
-    // for (auto &item : items_) {
-    //     item->draw(global_position);
-    // }
+    auto theme_bg = theme_override_bg.value_or(default_theme->popup_menu.styles["background"]);
+
+    vector_server->draw_style_box(theme_bg, get_global_position(), size);
+
+    for (const auto &item : items_) {
+        item->theme_override_normal = default_theme->popup_menu.styles["item_normal"];
+    }
 }
 
 void PopupMenu::input(InputEvent &event) {
@@ -155,10 +153,6 @@ void PopupMenu::create_item(const std::string &text) {
     new_item->set_mouse_filter(MouseFilter::Pass);
     new_item->set_text(text);
 
-    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
-    new_item->theme_normal = default_theme->popup_menu.styles["item_normal"];
-    new_item->theme_hovered = default_theme->popup_menu.styles["item_hovered"];
-    new_item->theme_pressed = new_item->theme_hovered;
     vbox_container_->add_child(new_item);
     vbox_container_->set_separation(0);
     vbox_container_->set_mouse_filter(MouseFilter::Pass);

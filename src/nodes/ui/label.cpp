@@ -223,8 +223,6 @@ Label::Label() {
     }
     // emoji_font = Font::from_file("assets/fonts/EmojiOneColor.otf");
 
-    text_style.color = default_theme->label.colors["text"];
-    theme_background = default_theme->label.styles["background"];
     font_size_ = default_theme->font_size;
 }
 
@@ -506,6 +504,11 @@ void Label::draw() {
     auto global_position = get_global_position();
 
     auto vector_server = VectorServer::get_singleton();
+
+    auto default_theme = DefaultResource::get_singleton()->get_default_theme();
+
+    text_style.color = default_theme->label.colors["text"];
+    auto theme_background = theme_override_bg.value_or(default_theme->label.styles["background"]);
 
     vector_server->draw_style_box(theme_background, global_position, size, alpha);
 

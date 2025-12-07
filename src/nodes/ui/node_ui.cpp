@@ -24,12 +24,12 @@ Vec2F NodeUi::get_effective_minimum_size() const {
 void NodeUi::draw() {
     Node::draw();
 
-    if (visible_ && theme_bg.has_value()) {
+    if (visible_ && debug_box.has_value()) {
         auto vector_server = VectorServer::get_singleton();
 
         auto global_position = get_global_position();
 
-        vector_server->draw_style_box(theme_bg.value(), global_position, size);
+        vector_server->draw_style_box(debug_box.value(), global_position, size);
     }
 }
 
@@ -167,10 +167,6 @@ ColorU NodeUi::get_global_modulate() {
     }
 }
 
-void NodeUi::set_theme_bg(StyleBox style_box) {
-    theme_bg = std::make_optional(style_box);
-}
-
 bool NodeUi::is_inside_container() const {
     if (parent) {
         switch (parent->get_node_type()) {
@@ -183,7 +179,7 @@ bool NodeUi::is_inside_container() const {
             case NodeType::ScrollContainer:
             case NodeType::TabContainer: {
                 return true;
-            } break;
+            }
             default:
                 return false;
         }

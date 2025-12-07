@@ -45,6 +45,22 @@ void Container::update(double dt) {
     adjust_layout();
 }
 
+void Container::draw() {
+    NodeUi::draw();
+
+    if (!visible_) {
+        return;
+    }
+
+    if (theme_override_bg.has_value()) {
+        auto vector_server = VectorServer::get_singleton();
+
+        auto global_position = get_global_position();
+
+        vector_server->draw_style_box(theme_override_bg.value(), global_position, size);
+    }
+}
+
 std::vector<NodeUi *> Container::get_visible_ui_children() const {
     // Get UI children.
     std::vector<NodeUi *> ui_children;
