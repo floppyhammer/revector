@@ -182,10 +182,10 @@ void Button::draw() {
         }
     }
 
-    StyleBox active_style_box = theme_normal;
-
     // Draw style box.
     if (!flat_) {
+        StyleBox active_style_box = theme_normal;
+
         if (hovered) {
             active_style_box = theme_hovered;
         }
@@ -199,13 +199,13 @@ void Button::draw() {
         if (disabled_) {
             active_style_box = theme_disabled;
         }
+
+        // Consider modulating.
+        active_style_box.bg_color = ColorU(active_style_box.bg_color.to_f32() * modulate.to_f32());
+        active_style_box.border_color = ColorU(active_style_box.border_color.to_f32() * modulate.to_f32());
+
+        vector_server->draw_style_box(active_style_box, global_position, size);
     }
-
-    // Consider modulating.
-    active_style_box.bg_color = ColorU(active_style_box.bg_color.to_f32() * modulate.to_f32());
-    active_style_box.border_color = ColorU(active_style_box.border_color.to_f32() * modulate.to_f32());
-
-    vector_server->draw_style_box(active_style_box, global_position, size);
 
     NodeUi::draw();
 }

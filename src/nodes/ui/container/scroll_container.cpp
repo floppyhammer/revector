@@ -114,7 +114,6 @@ void ScrollContainer::input(InputEvent &event) {
                     }
                 } else {
                     if (max_movement.length() > 1) {
-                        std::cout << max_movement.length() << std::endl;
                         inertial_speed = max_movement * inertia;
                         lerp_elapsed_ = 0;
                     }
