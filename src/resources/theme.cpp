@@ -37,7 +37,9 @@ std::shared_ptr<Theme> Theme::default_dark() {
 
         {
             auto style_box = style_box_normal;
-            style_box.bg_color = ColorU(32, 32, 32, 150);
+            style_box.bg_color = ColorU(32, 32, 32, 100);
+            style_box.border_width = 0;
+            style_box.corner_radius = 0;
             style_box.border_color = ColorU(67, 67, 67, 150);
             theme->button.styles["disabled"] = style_box;
         }
@@ -214,7 +216,9 @@ std::shared_ptr<Theme> Theme::default_light() {
 
     {
         auto style_box = style_box_normal;
-        style_box.bg_color = ColorU(223, 223, 223, 150);
+        style_box.bg_color = ColorU(223, 223, 223, 100);
+        style_box.border_width = 0;
+        style_box.corner_radius = 0;
         style_box.border_color = ColorU(188, 188, 188, 150);
         theme->button.styles["disabled"] = style_box;
     }
