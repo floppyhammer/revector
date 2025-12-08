@@ -41,12 +41,12 @@ Button::Button() {
 
     callbacks_cursor_entered.emplace_back([this] {
         hovered = true;
-        InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Hand);
+        // InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Hand);
     });
 
     callbacks_cursor_exited.emplace_back([this] {
         hovered = false;
-        InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow);
+        // InputServer::get_singleton()->set_cursor(get_window_index(), CursorShape::Arrow);
     });
 }
 
