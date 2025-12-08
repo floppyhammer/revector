@@ -167,13 +167,13 @@ void VectorServer::draw_style_box(const StyleBox &style_box, Vec2F position, Vec
         const auto widths = style_box.border_widths.value();
         position.x += widths.left * 0.5f;
         position.y += widths.top * 0.5f;
-        size.x += widths.right * 0.5f;
-        size.y += widths.bottom * 0.5f;
+        size.x += widths.right;
+        size.y += widths.bottom;
     } else {
         if (style_box.border_width > 0) {
-            const float border_offset = style_box.border_width * 0.5f;
-            position.x += border_offset;
-            position.y += border_offset;
+            const float border_offset = style_box.border_width;
+            position.x += border_offset * 0.5f;
+            position.y += border_offset * 0.5f;
             size.x -= border_offset;
             size.y -= border_offset;
         }
