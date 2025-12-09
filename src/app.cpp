@@ -4,7 +4,9 @@
 #include <memory>
 
 // clang-format off
+#ifdef __ANDROID__
 #include "android/vulkan_wrapper.h"
+#endif
 #include "pathfinder/gpu/gl/window_builder.h"
 #include "pathfinder/gpu/vk/window_builder.h"
 // clang-format on
