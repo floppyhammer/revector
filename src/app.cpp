@@ -4,11 +4,12 @@
 #include <memory>
 
 // clang-format off
-#ifdef __ANDROID__
-#include "android/vulkan_wrapper.h"
-#endif
+#ifdef PATHFINDER_USE_OPENGL
 #include "pathfinder/gpu/gl/window_builder.h"
+#endif
+#ifdef PATHFINDER_USE_VULKAN
 #include "pathfinder/gpu/vk/window_builder.h"
+#endif
 // clang-format on
 
 #include "resources/default_resource.h"
