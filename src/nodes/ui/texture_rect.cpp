@@ -4,8 +4,8 @@
 
 #include "../../common/utils.h"
 #include "../../resources/default_resource.h"
-#include "../../servers/engine.h"
 #include "../../resources/render_image.h"
+#include "../../servers/engine.h"
 
 namespace revector {
 
@@ -27,7 +27,11 @@ void TextureRect::update(double dt) {
 }
 
 void TextureRect::draw() {
-    custom_draw();
+    NodeUi::draw();
+
+    if (!visible_) {
+        return;
+    }
 
     if (texture) {
         auto global_position = get_global_position();
@@ -97,8 +101,6 @@ void TextureRect::draw() {
             Logger::error("Unsupported texture type!", "revector");
         }
     }
-
-    NodeUi::draw();
 }
 
 void TextureRect::calc_minimum_size() {

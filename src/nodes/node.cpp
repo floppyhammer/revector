@@ -128,6 +128,10 @@ void Node::update(double dt) {
 }
 
 void Node::draw() {
+    if (!visible_) {
+        return;
+    }
+
     custom_draw();
 }
 
