@@ -32,6 +32,8 @@ public:
 
     void set_collapse(bool collapse);
 
+    bool get_collapse() const;
+
     void connect_signal(const std::string &signal, const AnyCallable<void> &callback) override;
 
     std::optional<StyleBox> theme_override_title_bar_;

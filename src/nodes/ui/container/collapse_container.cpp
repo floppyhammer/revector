@@ -87,6 +87,10 @@ void CollapseContainer::set_collapse(bool collapse) {
     }
 }
 
+bool CollapseContainer::get_collapse() const {
+    return collapsed_;
+}
+
 void CollapseContainer::when_collapsed(bool collapsed) {
     for (auto &callback : collapsed_callbacks) {
         try {
