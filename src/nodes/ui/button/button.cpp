@@ -78,16 +78,11 @@ void Button::input(InputEvent &event) {
             auto args = event.args.mouse_motion;
 
             if (!event.consumed) {
-                // if (!toggle_mode) {
-                //     pressed = false;
-                // }
             } else {
                 if (global_rect.contains_point(args.position)) {
                     consume_flag = true;
                 } else {
-                    // if (!toggle_mode) {
-                    //     pressed = false;
-                    // }
+                    pressed_position.reset();
                 }
             }
         }
