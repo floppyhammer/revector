@@ -14,10 +14,10 @@ std::string get_asset_dir(const std::string &relative_path) {
 
     std::string asset_dir;
     if (app_dir) {
-        Logger::info("Got the app directory: " + std::string(app_dir), "revector");
+        Logger::debug("Got the app directory: " + std::string(app_dir), "revector");
         asset_dir = std::string(app_dir) + "/assets/";
     } else {
-        Logger::error("Failed to get the app directory, will use relative path", "revector");
+        Logger::debug("Failed to get the app directory, will use relative path", "revector");
         asset_dir = "assets/";
     }
 
