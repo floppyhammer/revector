@@ -119,7 +119,7 @@ void TextEdit::input(InputEvent &event) {
                 }
 
                 if (numbers_only) {
-                    if (event.args.text.codepoint <= 48 || event.args.text.codepoint >= 57) {
+                    if (event.args.text.codepoint < 48 || event.args.text.codepoint >= 57) {
                         break;
                     }
                 }
