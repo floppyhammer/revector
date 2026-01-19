@@ -15,6 +15,10 @@ void BoxContainer::adjust_layout() {
 
     // In the first loop, we need to do some calculation.
     for (auto &ui_child : ui_children) {
+        if (!ui_child->get_visibility()) {
+            continue;
+        }
+        
         if (horizontal) {
             if (ui_child->container_sizing.expand_h()) {
                 expanding_children.push_back(ui_child);
@@ -42,9 +46,17 @@ void BoxContainer::adjust_layout() {
     uint32_t expanding_child_count = expanding_children.size();
 
     // FIXME: same expanding space is not optimal.
-    float extra_space_for_each_expanding_child = available_space_for_expanding / (float)expanding_child_count;
+    float extra_space_for_each_expanding_child = 0;
+    if (expanding_child_count > 0) {
+        extra_space_for_each_expanding_child = available_space_for_expanding / (float)expanding_child_count;
+    }
 
     float pos_shift = 0;
+
+    // When there's at least one expanding child, the alignment doesn't matter because there's no space for it to make a difference.
+    if (expanding_child_count == 0 && alignment == BoxContainerAlignment::End) {
+        pos_shift = available_space_for_expanding;
+    }
 
     // In the second loop, we set child sizes and positions.
     for (auto &ui_child : ui_children) {
@@ -196,6 +208,10 @@ void BoxContainer::set_separation(float new_separation) {
     }
 
     separation = new_separation;
+}
+
+void BoxContainer::set_alignment(BoxContainerAlignment new_alignment) {
+    alignment = new_alignment;
 }
 
 } // namespace revector
