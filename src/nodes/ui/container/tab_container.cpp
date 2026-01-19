@@ -104,38 +104,46 @@ void TabContainer::draw() {
 void TabContainer::add_child(const std::shared_ptr<Node> &new_child) {
     Node::add_child(new_child);
 
-    add_tab_button();
+    reload_tab_buttons();
 
-    if (children.size() == 1) {
+    if (children.size() > 1) {
         set_current_tab(0);
     }
 }
 
-void TabContainer::add_tab_button() {
-    auto button = std::make_shared<Button>();
-    button->set_pressed_style_to_toggled(true);
-    button_container->add_child(button);
+void TabContainer::add_child_at_index(const std::shared_ptr<Node> &new_child, uint32_t index) {
+    Node::add_child_at_index(new_child, index);
 
-    uint32_t button_idx = tab_buttons.size();
-    button->set_text("Tab " + std::to_string(button_idx));
-    tab_buttons.push_back(button);
+    reload_tab_buttons();
 
-    tab_button_group->add_button(button);
-
-    auto callback = [this, button_idx](const bool toggled) {
-        if (toggled) {
-            current_tab = button_idx;
-        }
-    };
-    button->connect_signal("toggled", callback);
-    button->set_toggle_mode(true);
+    if (children.size() > 1) {
+        set_current_tab(0);
+    }
 }
 
-void TabContainer::set_tab_title(uint32_t tab_index, const std::string &title) {
-    if (tab_index >= tab_buttons.size()) {
-        return;
+void TabContainer::reload_tab_buttons() {
+    button_container->remove_all_children();
+    tab_buttons.clear();
+    tab_button_group->clear_buttons();
+
+    for (int idx = 0; idx < children.size(); idx++) {
+        auto button = std::make_shared<Button>();
+        button->set_pressed_style_to_toggled(true);
+
+        button->set_text(children[idx]->name);
+
+        button_container->add_child(button);
+        tab_buttons.push_back(button);
+        tab_button_group->add_button(button);
+
+        auto callback = [this, idx](const bool toggled) {
+            if (toggled) {
+                current_tab = idx;
+            }
+        };
+        button->connect_signal("toggled", callback);
+        button->set_toggle_mode(true);
     }
-    tab_buttons[tab_index]->set_text(title);
 }
 
 void TabContainer::set_tab_disabled(bool disabled) {

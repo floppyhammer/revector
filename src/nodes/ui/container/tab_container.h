@@ -23,20 +23,20 @@ public:
 
     void set_current_tab(uint32_t index);
 
-    void set_tab_title(uint32_t tab_index, const std::string& title);
-
     void set_tab_disabled(bool disabled);
 
     void draw() override;
 
     void add_child(const std::shared_ptr<Node>& new_child) override;
 
+    void add_child_at_index(const std::shared_ptr<Node> &new_child, uint32_t index) override;
+
     std::optional<StyleBox> theme_override_tab_bg;
 
     std::optional<StyleBox> theme_override_bg;
 
 protected:
-    void add_tab_button();
+    void reload_tab_buttons();
 
     std::optional<uint32_t> current_tab;
 

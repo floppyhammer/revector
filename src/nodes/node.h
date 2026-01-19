@@ -93,6 +93,8 @@ public:
 
     virtual void add_child(const std::shared_ptr<Node> &new_child);
 
+    virtual void add_child_at_index(const std::shared_ptr<Node> &new_child, uint32_t index);
+
     void add_embedded_child(const std::shared_ptr<Node> &new_child);
 
     NodeType get_node_type() const;

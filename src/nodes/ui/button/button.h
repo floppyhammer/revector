@@ -127,6 +127,8 @@ class ToggleButtonGroup {
 public:
     void add_button(const std::weak_ptr<Button> &new_button);
 
+    void clear_buttons();
+
     void notify_toggled(const Button *toggled_button);
 
     std::vector<std::weak_ptr<Button>> buttons;

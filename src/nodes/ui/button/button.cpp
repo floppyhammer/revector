@@ -333,4 +333,8 @@ void ToggleButtonGroup::add_button(const std::weak_ptr<Button> &new_button) {
     buttons.push_back(new_button);
 }
 
+void ToggleButtonGroup::clear_buttons() {
+    buttons.clear();
+}
+
 } // namespace revector

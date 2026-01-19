@@ -179,6 +179,25 @@ void Node::add_child(const std::shared_ptr<Node> &new_child) {
     children.push_back(new_child);
 }
 
+void Node::add_child_at_index(const std::shared_ptr<Node> &new_child, uint32_t index) {
+    assert(new_child && new_child.get() != this);
+
+    if (std::find(children.begin(), children.end(), new_child) != children.end()) {
+        std::cout << "Attempted to add a repeated child!" << std::endl;
+        return;
+    }
+
+    if (index >= children.size()) {
+        std::cout << "Attempted to add a child at a non-exist index!" << std::endl;
+    }
+
+    // Set self as the parent of the new node.
+    new_child->parent = this;
+    new_child->tree_ = tree_;
+
+    children.insert(children.begin() + index, new_child);
+}
+
 void Node::add_embedded_child(const std::shared_ptr<Node> &new_child) {
     if (std::find(embedded_children.begin(), embedded_children.end(), new_child) != embedded_children.end()) {
         std::cout << "Attempted to add a repeated embedded child!" << std::endl;
