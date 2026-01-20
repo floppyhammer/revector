@@ -62,6 +62,23 @@ class MyNode : public Node {
         }
         vbox_container->set_size({200, 300});
 
+        // BoxContainer alignment.
+        {
+            auto box_container = std::make_shared<VBoxContainer>();
+            box_container->set_separation(8);
+            box_container->set_position({350, 250});
+            box_container->theme_override_bg = StyleBox();
+            box_container->set_alignment(BoxContainerAlignment::End);
+            add_child(box_container);
+
+            for (int i = 0; i < 3; i++) {
+                auto label = std::make_shared<Label>();
+                box_container->add_child(label);
+                label->set_text("Label " + std::to_string(i));
+            }
+            box_container->set_size({100, 200});
+        }
+
         auto grid_container = std::make_shared<GridContainer>();
         grid_container->set_separation(8);
         grid_container->set_position({600, 400});
