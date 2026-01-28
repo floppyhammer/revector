@@ -135,8 +135,6 @@ void SpinBox::set_size(Vec2F p_size) {
         return;
     }
 
-    auto path = get_node_path();
-
     auto final_size = p_size.max(container_h->get_effective_minimum_size());
     final_size = final_size.max(custom_minimum_size);
 

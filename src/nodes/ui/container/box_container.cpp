@@ -7,8 +7,6 @@ void BoxContainer::adjust_layout() {
         return;
     }
 
-    auto path = get_node_path();
-
     std::vector<NodeUi *> expanding_children;
 
     std::vector<NodeUi *> ui_children = get_visible_ui_children();

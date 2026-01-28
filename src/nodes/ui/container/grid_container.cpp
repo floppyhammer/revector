@@ -7,8 +7,6 @@ void GridContainer::adjust_layout() {
         return;
     }
 
-    auto path = get_node_path();
-
     std::vector<NodeUi *> ui_children = get_visible_ui_children();
 
     int row_num = ui_children.size() / col_limit;

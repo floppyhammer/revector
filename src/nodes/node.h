@@ -114,8 +114,6 @@ public:
 
     virtual bool is_ui_node() const;
 
-    std::string get_node_path() const;
-
     virtual void set_visibility(bool visible);
 
     void show();

@@ -271,16 +271,6 @@ uint8_t Node::get_window_index() const {
     return 0;
 }
 
-std::string Node::get_node_path() const {
-    std::string type_name = ""; // NodeTypeName[static_cast<unsigned __int64>(type)];
-
-    if (parent) {
-        return parent->get_node_path() + "/" + type_name;
-    }
-
-    return "/" + type_name;
-}
-
 void Node::when_parent_size_changed(Vec2F new_size) {
     for (auto &child : children) {
         child->when_parent_size_changed(new_size);
