@@ -474,20 +474,22 @@ void Label::consider_alignment() {
 void Label::update(double dt) {
     NodeUi::update(dt);
 
-    if (need_to_remeasure) {
-        need_to_remeasure = false;
-        measure();
-        layout_is_dirty = true;
-    }
-    if (layout_is_dirty) {
-        layout_is_dirty = false;
-        make_layout();
-    }
+    if (visible_) {
+        if (need_to_remeasure) {
+            need_to_remeasure = false;
+            measure();
+            layout_is_dirty = true;
+        }
+        if (layout_is_dirty) {
+            layout_is_dirty = false;
+            make_layout();
+        }
 
-    auto min_size = get_text_minimum_size();
-    size = size.max(min_size);
+        auto min_size = get_text_minimum_size();
+        size = size.max(min_size);
 
-    consider_alignment();
+        consider_alignment();
+    }
 }
 
 void Label::set_text_style(TextStyle _text_style) {
