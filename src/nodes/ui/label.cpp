@@ -474,7 +474,7 @@ void Label::consider_alignment() {
 void Label::update(double dt) {
     NodeUi::update(dt);
 
-    if (visible_) {
+    if (get_global_visibility()) {
         if (need_to_remeasure) {
             need_to_remeasure = false;
             measure();
