@@ -48,6 +48,7 @@ if (REVECTOR_VULKAN)
 else ()
     set(PATHFINDER_BACKEND_VULKAN OFF)
 endif ()
+set(PATHFINDER_USE_D3D11 OFF)
 target_include_directories(revector PUBLIC "third_party/pathfinder-cpp")
 add_subdirectory("third_party/pathfinder-cpp")
 
