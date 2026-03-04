@@ -58,8 +58,6 @@ public:
 
     void quit();
 
-    bool has_quited() const;
-
     std::weak_ptr<Pathfinder::Window> get_primary_window() const;
 
 private:

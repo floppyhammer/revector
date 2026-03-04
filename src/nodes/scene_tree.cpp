@@ -274,7 +274,7 @@ bool SceneTree::render() const {
         w->post_draw_propagation();
     }
 
-    return root->get_raw_window()->should_close();
+    return root->get_raw_window()->should_close() || quited;
 }
 
 void SceneTree::notify_primary_window_size_changed(Vec2I new_size) const {
@@ -287,10 +287,6 @@ std::shared_ptr<Node> SceneTree::get_root() const {
 
 void SceneTree::quit() {
     quited = true;
-}
-
-bool SceneTree::has_quited() const {
-    return quited;
 }
 
 std::weak_ptr<Pathfinder::Window> SceneTree::get_primary_window() const {
