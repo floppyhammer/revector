@@ -31,9 +31,11 @@ Blit::Blit(const std::shared_ptr<Device> &_device, const std::shared_ptr<Queue> 
 
     sampler = device->create_sampler(SamplerDescriptor{});
 
+    fence = device->create_fence("blit fence");
+
     auto encoder = device->create_command_encoder("Upload Blit vertex buffer");
     encoder->write_buffer(vertex_buffer, 0, sizeof(vertices), (void *)vertices);
-    _queue->submit_and_wait(encoder);
+    _queue->submit(encoder, fence);
 
     // Pipeline.
     {

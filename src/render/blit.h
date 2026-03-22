@@ -34,6 +34,8 @@ private:
     std::shared_ptr<Pathfinder::DescriptorSet> descriptor_set;
 
     std::shared_ptr<Pathfinder::Sampler> sampler;
+
+    std::shared_ptr<Pathfinder::Fence> fence;
 };
 
 } // namespace revector
