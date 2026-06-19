@@ -9,6 +9,9 @@ using Pathfinder::Vec2;
 using Pathfinder::Vec3;
 
 class MyNode : public Node {
+    std::shared_ptr<HBoxContainer> water_fill_hbox;
+    float timer = 0;
+
     void custom_ready() override {
         auto hbox_container = std::make_shared<HBoxContainer>();
         hbox_container->set_separation(8);
@@ -66,7 +69,7 @@ class MyNode : public Node {
         {
             auto box_container = std::make_shared<VBoxContainer>();
             box_container->set_separation(8);
-            box_container->set_position({350, 250});
+            box_container->set_position({350, 400});
             box_container->theme_override_bg = StyleBox();
             box_container->set_alignment(BoxContainerAlignment::End);
             add_child(box_container);
@@ -92,6 +95,52 @@ class MyNode : public Node {
             grid_container->add_child(button);
         }
         grid_container->set_size({200, 300});
+
+        // --- Water-filling Test ---
+        {
+            auto label = std::make_shared<Label>();
+            label->set_text("Water-filling: B1(min 50), B2(min 150), B3(min 100)");
+            label->set_position({350, 230});
+            add_child(label);
+
+            auto hbox = std::make_shared<HBoxContainer>();
+            hbox->set_separation(10);
+            hbox->set_position({350, 260});
+            hbox->theme_override_bg = StyleBox();
+            add_child(hbox);
+
+            auto b1 = std::make_shared<Button>();
+            b1->set_text("B1");
+            b1->set_custom_minimum_size({50, 40});
+            b1->container_sizing.flag_h = ContainerSizingFlag::Fill;
+            hbox->add_child(b1);
+
+            auto b2 = std::make_shared<Button>();
+            b2->set_text("B2");
+            b2->set_custom_minimum_size({150, 40});
+            b2->container_sizing.flag_h = ContainerSizingFlag::Fill;
+            hbox->add_child(b2);
+
+            auto b3 = std::make_shared<Button>();
+            b3->set_text("B3");
+            b3->set_custom_minimum_size({100, 40});
+            b3->container_sizing.flag_h = ContainerSizingFlag::Fill;
+            hbox->add_child(b3);
+
+            // Total min width = 320. Set to 400 (80 extra).
+            // Expect: B1=115, B3=115, B2=150.
+            hbox->set_size({400, 60});
+            water_fill_hbox = hbox;
+        }
+    }
+
+    void custom_update(double dt) override {
+        if (water_fill_hbox) {
+            timer += (float)dt;
+            // 让宽度在 320 (最小宽度) 到 700 之间循环振荡
+            float dynamic_width = 320.0f + (std::sin(timer * 1.5f) + 1.0f) * 0.5f * 380.0f;
+            water_fill_hbox->set_size({dynamic_width, 60});
+        }
     }
 };
 

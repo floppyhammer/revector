@@ -1,5 +1,8 @@
 #include "box_container.h"
 
+#include <algorithm>
+#include <numeric>
+
 namespace revector {
 
 void BoxContainer::adjust_layout() {
@@ -8,15 +11,13 @@ void BoxContainer::adjust_layout() {
     }
 
     std::vector<NodeUi *> expanding_children;
-
     std::vector<NodeUi *> ui_children = get_visible_ui_children();
 
-    // In the first loop, we need to do some calculation.
     for (auto &ui_child : ui_children) {
         if (!ui_child->get_visibility()) {
             continue;
         }
-        
+
         if (horizontal) {
             if (ui_child->container_sizing.expand_h()) {
                 expanding_children.push_back(ui_child);
@@ -30,7 +31,6 @@ void BoxContainer::adjust_layout() {
 
     auto effective_min_size = get_effective_minimum_size();
 
-    // Space available for child expanding.
     float available_space_for_expanding;
     if (horizontal) {
         available_space_for_expanding = size.x - effective_min_size.x;
@@ -38,61 +38,93 @@ void BoxContainer::adjust_layout() {
         available_space_for_expanding = size.y - effective_min_size.y;
     }
 
-    // If the container is not large enough, readjust it to contain all its children.
     size = size.max(effective_min_size);
 
     uint32_t expanding_child_count = expanding_children.size();
 
-    // FIXME: same expanding space is not optimal.
-    float extra_space_for_each_expanding_child = 0;
+    // --- 新的水位填充算法逻辑 ---
+    float target_expanding_size = 0;
     if (expanding_child_count > 0) {
-        extra_space_for_each_expanding_child = available_space_for_expanding / (float)expanding_child_count;
+        std::vector<float> min_sizes;
+        for (auto &child : expanding_children) {
+            auto ms = child->get_effective_minimum_size();
+            min_sizes.push_back(horizontal ? ms.x : ms.y);
+        }
+        // 1. 从小到大排序
+        std::sort(min_sizes.begin(), min_sizes.end());
+
+        // 2. 寻找目标水位线 (Target Size)
+        // 我们寻找一个 T，使得 sum(max(min_size_i, T)) = sum(min_size_i) + available_space
+        float running_sum = 0;
+        bool found = false;
+        for (size_t k = 0; k < min_sizes.size(); ++k) {
+            running_sum += min_sizes[k];
+            // 假设前 k+1 个元素被提升到 T，而后面的元素保持原样
+            // (k + 1) * T + sum(min_sizes[k+1...N-1]) = sum(min_sizes[0...N-1]) + available_space
+            // (k + 1) * T = sum(min_sizes[0...k]) + available_space
+            float t = (running_sum + available_space_for_expanding) / (float)(k + 1);
+
+            // 检查这个 T 是否小于或等于下一个节点的最小尺寸（如果存在）
+            if (k + 1 < min_sizes.size()) {
+                if (t <= min_sizes[k + 1]) {
+                    target_expanding_size = t;
+                    found = true;
+                    break;
+                }
+            } else {
+                // 如果已经是最后一个节点
+                target_expanding_size = t;
+                found = true;
+            }
+        }
     }
+    // --- 算法结束 ---
 
     float pos_shift = 0;
-
-    // When there's at least one expanding child, the alignment doesn't matter because there's no space for it to make a difference.
     if (expanding_child_count == 0 && alignment == BoxContainerAlignment::End) {
         pos_shift = available_space_for_expanding;
     }
 
-    // In the second loop, we set child sizes and positions.
     for (auto &ui_child : ui_children) {
         auto child_min_size = ui_child->get_effective_minimum_size();
+        float min_dim = horizontal ? child_min_size.x : child_min_size.y;
 
-        float real_space = horizontal ? child_min_size.x : child_min_size.y;
-        float occupied_space = real_space;
+        float occupied_space = min_dim;
 
-        if (extra_space_for_each_expanding_child > 0) {
-            if (std::find(expanding_children.begin(), expanding_children.end(), ui_child) != expanding_children.end()) {
-                occupied_space += extra_space_for_each_expanding_child;
-            }
+        // 如果是扩展节点，分配空闲空间
+        if (expanding_child_count > 0 &&
+            std::find(expanding_children.begin(), expanding_children.end(), ui_child) != expanding_children.end()) {
+            // 节点的最终占用空间是其最小尺寸与水位线中的较大者
+            occupied_space = std::max(min_dim, target_expanding_size);
         }
 
         if (horizontal) {
+            float real_space = occupied_space; // 默认填充/拉伸
             float pos_x = 0;
             float pos_y = 0;
             float height = 0;
 
-            // Handle horizontal sizing.
+            // 处理水平方向
             switch (ui_child->container_sizing.flag_h) {
                 case ContainerSizingFlag::NoExpand:
                 case ContainerSizingFlag::Fill: {
-                    real_space = occupied_space;
                     pos_x = pos_shift;
                 } break;
                 case ContainerSizingFlag::ShrinkStart: {
+                    real_space = min_dim;
                     pos_x = pos_shift;
                 } break;
                 case ContainerSizingFlag::ShrinkCenter: {
+                    real_space = min_dim;
                     pos_x = pos_shift + (occupied_space - real_space) * 0.5f;
                 } break;
                 case ContainerSizingFlag::ShrinkEnd: {
+                    real_space = min_dim;
                     pos_x = pos_shift + (occupied_space - real_space);
                 } break;
             }
 
-            // Handle vertical sizing.
+            // 处理垂直方向 (纵向填充逻辑保持不变)
             switch (ui_child->container_sizing.flag_v) {
                 case ContainerSizingFlag::NoExpand:
                 case ContainerSizingFlag::Fill: {
@@ -115,32 +147,33 @@ void BoxContainer::adjust_layout() {
 
             ui_child->set_position({pos_x, pos_y});
             ui_child->set_size({real_space, height});
-        }
-        // Vertical
-        else {
+        } else {
+            float real_space = occupied_space;
             float pos_x = 0;
             float pos_y = 0;
             float width = 0;
 
-            // Handle vertical sizing.
+            // 处理垂直方向
             switch (ui_child->container_sizing.flag_v) {
                 case ContainerSizingFlag::NoExpand:
                 case ContainerSizingFlag::Fill: {
-                    real_space = occupied_space;
                     pos_y = pos_shift;
                 } break;
                 case ContainerSizingFlag::ShrinkStart: {
+                    real_space = min_dim;
                     pos_y = pos_shift;
                 } break;
                 case ContainerSizingFlag::ShrinkCenter: {
+                    real_space = min_dim;
                     pos_y = pos_shift + (occupied_space - real_space) * 0.5f;
                 } break;
                 case ContainerSizingFlag::ShrinkEnd: {
+                    real_space = min_dim;
                     pos_y = pos_shift + (occupied_space - real_space);
                 } break;
             }
 
-            // Handle horizontal sizing.
+            // 处理水平方向
             switch (ui_child->container_sizing.flag_h) {
                 case ContainerSizingFlag::NoExpand:
                 case ContainerSizingFlag::Fill: {
