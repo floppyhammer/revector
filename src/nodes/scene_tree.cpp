@@ -184,6 +184,9 @@ void SceneTree::process(double dt) {
         notify_primary_window_size_changed(get_primary_window().lock()->get_logical_size());
     }
 
+    // OpenGL calls in input callbacks cannot be made from another thread.
+    input_system(root.get(), InputServer::get_singleton()->input_queue);
+
     // Get ready from-back-to-front.
     std::vector<Node*> nodes;
     dfs_preorder_ltr_traversal(root.get(), nodes);
@@ -192,8 +195,6 @@ void SceneTree::process(double dt) {
     }
 
     // Update from-back-to-front.
-    nodes.clear();
-    dfs_preorder_ltr_traversal(root.get(), nodes);
     for (auto& node : nodes) {
         if (!node->ready_) {
             continue;
@@ -203,9 +204,6 @@ void SceneTree::process(double dt) {
 
     // Run calc_minimum_size() depth-first.
     calc_minimum_size(root.get());
-
-    // OpenGL calls in input callbacks cannot be made from another thread. So we don't use async for input_system.
-    input_system(root.get(), InputServer::get_singleton()->input_queue);
 
     // Update global transform for each node.
     transform_system(root.get());
