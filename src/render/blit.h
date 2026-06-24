@@ -31,6 +31,8 @@ private:
 
     std::shared_ptr<Pathfinder::Buffer> vertex_buffer;
 
+    std::shared_ptr<Pathfinder::DescriptorSetLayout> descriptor_set_layout;
+
     std::shared_ptr<Pathfinder::DescriptorSet> descriptor_set;
 
     std::shared_ptr<Pathfinder::Sampler> sampler;

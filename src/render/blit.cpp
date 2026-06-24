@@ -55,16 +55,21 @@ Blit::Blit(const std::shared_ptr<Device> &_device, const std::shared_ptr<Queue> 
 
         auto blend_state = BlendState::from_over();
 
-        descriptor_set = device->create_descriptor_set();
-        descriptor_set->add_or_update({
-            Descriptor::sampled(0, ShaderStage::Fragment, "uTexture"),
-        });
+        {
+            std::vector layouts = {
+                DescriptorLayout{0, ShaderStage::Fragment, DescriptorType::Sampler, "uTexture"},
+            };
+
+            descriptor_set_layout = device->create_descriptor_set_layout(layouts);
+        }
+
+        descriptor_set = device->create_descriptor_set(descriptor_set_layout);
 
         pipeline = device->create_render_pipeline(device->create_shader_module(vert_source, ShaderStage::Vertex, ""),
                                                   device->create_shader_module(frag_source, ShaderStage::Fragment, ""),
                                                   attribute_descriptions,
                                                   blend_state,
-                                                  descriptor_set,
+                                                  descriptor_set_layout,
                                                   target_format,
                                                   "blit pipeline");
     }
@@ -74,7 +79,7 @@ void Blit::set_texture(const std::shared_ptr<Texture> &new_texture) {
     texture = new_texture;
 
     descriptor_set->add_or_update({
-        Descriptor::sampled(0, ShaderStage::Fragment, "uTexture", texture, sampler),
+        Descriptor::sampled(0, texture, sampler),
     });
 }
 
