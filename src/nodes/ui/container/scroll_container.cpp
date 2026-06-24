@@ -67,9 +67,6 @@ void ScrollContainer::calc_minimum_size() {
 }
 
 void ScrollContainer::input(InputEvent &event) {
-    // Scroll container can only have one effective control child.
-    auto content = (NodeUi *)children.front().get();
-
     auto global_position = get_global_position();
 
     auto active_rect = RectF(global_position, global_position + size);

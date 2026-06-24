@@ -20,19 +20,9 @@ PopupMenu::PopupMenu() {
     scroll_container_->enable_hscroll(false);
     margin_container_->add_child(scroll_container_);
 
-    // Add an extra one-pixel margin to avoid rendering glitch of a scroll RenderTarget.
-    auto glitch_margin_container = std::make_shared<MarginContainer>();
-    glitch_margin_container->name = "PopupMenu embedded glitch fixing margin container";
-    glitch_margin_container->set_margin_all(1);
-    glitch_margin_container->set_mouse_filter(MouseFilter::Pass);
-    scroll_container_->add_child(glitch_margin_container);
-
     vbox_container_ = std::make_shared<VBoxContainer>();
     vbox_container_->set_mouse_filter(MouseFilter::Pass);
-    glitch_margin_container->add_child(vbox_container_);
-
-    // auto callback = [this] { set_visibility(false); };
-    // connect_signal("focus_released", callback);
+    scroll_container_->add_child(vbox_container_);
 }
 
 void PopupMenu::update(double dt) {
