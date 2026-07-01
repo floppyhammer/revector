@@ -2,8 +2,8 @@
 
 #include <string>
 
-namespace revector {
+namespace vecgui {
 
 std::string get_asset_dir(const std::string &relative_path);
 
-} // namespace revector
+} // namespace vecgui

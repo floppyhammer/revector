@@ -7,7 +7,7 @@
 #include "../../resources/render_image.h"
 #include "../../servers/engine.h"
 
-namespace revector {
+namespace vecgui {
 
 TextureRect::TextureRect() {
     type = NodeType::TextureRect;
@@ -116,4 +116,4 @@ void TextureRect::set_stretch_mode(TextureRect::StretchMode new_stretch_mode) {
     stretch_mode = new_stretch_mode;
 }
 
-} // namespace revector
+} // namespace vecgui

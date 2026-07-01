@@ -18,7 +18,7 @@
 #include "servers/render_server.h"
 #include "servers/vector_server.h"
 
-namespace revector {
+namespace vecgui {
 
 #ifndef __ANDROID__
 App::App(Vec2I primary_window_size, const bool dark_mode, bool use_vulkan) {
@@ -178,4 +178,4 @@ void App::single_run_cleanup() {
     RenderServer::get_singleton()->window_builder_->stop_and_destroy_swapchains();
 }
 
-} // namespace revector
+} // namespace vecgui

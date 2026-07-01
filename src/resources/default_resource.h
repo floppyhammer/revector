@@ -2,7 +2,7 @@
 
 #include "theme.h"
 
-namespace revector {
+namespace vecgui {
 
 class Font;
 
@@ -34,4 +34,4 @@ private:
     std::shared_ptr<Font> default_font;
 };
 
-} // namespace revector
+} // namespace vecgui

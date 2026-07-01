@@ -3,7 +3,7 @@
 #include "../../../resources/default_resource.h"
 #include "scroll_container.h"
 
-namespace revector {
+namespace vecgui {
 
 TabContainer::TabContainer() {
     type = NodeType::TabContainer;
@@ -152,4 +152,4 @@ void TabContainer::set_tab_disabled(bool disabled) {
     }
 }
 
-} // namespace revector
+} // namespace vecgui

@@ -8,7 +8,7 @@
 #include "../nodes/proxy_window.h"
 #include "render_server.h"
 
-namespace revector {
+namespace vecgui {
 
 std::string cpp11_codepoint_to_utf8(char32_t codepoint) {
     char utf8[4];
@@ -278,4 +278,4 @@ void InputServer::restore_cursor(uint8_t window_index) {
 #endif
 }
 
-} // namespace revector
+} // namespace vecgui

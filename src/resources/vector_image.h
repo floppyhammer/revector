@@ -7,7 +7,7 @@
 #include "../common/geometry.h"
 #include "image.h"
 
-namespace revector {
+namespace vecgui {
 
 // TODO: Merge this with VectorTexture.
 /// A thin wrapper over Pathfinder::Path2d.
@@ -42,4 +42,4 @@ protected:
     std::shared_ptr<Pathfinder::SvgScene> svg_scene;
 };
 
-} // namespace revector
+} // namespace vecgui

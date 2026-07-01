@@ -9,7 +9,7 @@
 #include "../node_ui.h"
 #include "../texture_rect.h"
 
-namespace revector {
+namespace vecgui {
 
 class ToggleButtonGroup;
 
@@ -137,4 +137,4 @@ public:
     uint32_t max_selection = 0;
 };
 
-} // namespace revector
+} // namespace vecgui

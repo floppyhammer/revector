@@ -5,7 +5,7 @@
 #include "../../resources/style_box.h"
 #include "node_ui.h"
 
-namespace revector {
+namespace vecgui {
 
 class Panel : public NodeUi {
 public:
@@ -16,4 +16,4 @@ public:
     std::optional<StyleBox> theme_override_bg_;
 };
 
-} // namespace revector
+} // namespace vecgui

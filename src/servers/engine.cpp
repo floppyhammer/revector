@@ -4,7 +4,7 @@
 
 #include "../common/utils.h"
 
-namespace revector {
+namespace vecgui {
 
 /// Period to print the frame time, in seconds.
 constexpr float FRAME_TIME_PRINT_PERIOD = 5;
@@ -93,4 +93,4 @@ int Engine::get_fps_int() {
     return int(round(get_fps()));
 }
 
-} // namespace revector
+} // namespace vecgui

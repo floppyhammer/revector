@@ -2,7 +2,7 @@
 
 #include "container.h"
 
-namespace revector {
+namespace vecgui {
 
 enum struct BoxContainerAlignment {
     Begin,
@@ -49,4 +49,4 @@ public:
     }
 };
 
-} // namespace revector
+} // namespace vecgui

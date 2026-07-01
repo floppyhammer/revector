@@ -8,7 +8,7 @@
 #include "../../resources/style_box.h"
 #include "label.h"
 
-namespace revector {
+namespace vecgui {
 
 class MarginContainer;
 
@@ -71,4 +71,4 @@ private:
     Vec2F calculate_caret_position(int32_t caret_index);
 };
 
-} // namespace revector
+} // namespace vecgui

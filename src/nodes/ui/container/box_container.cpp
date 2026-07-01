@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <numeric>
 
-namespace revector {
+namespace vecgui {
 
 void BoxContainer::adjust_layout() {
     if (children.empty()) {
@@ -245,4 +245,4 @@ void BoxContainer::set_alignment(BoxContainerAlignment new_alignment) {
     alignment = new_alignment;
 }
 
-} // namespace revector
+} // namespace vecgui

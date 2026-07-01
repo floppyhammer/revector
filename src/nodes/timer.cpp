@@ -4,7 +4,7 @@
 
 #include "proxy_window.h"
 
-namespace revector {
+namespace vecgui {
 
 void Timer::start_timer(float time) {
     if (time <= 0) {
@@ -55,4 +55,4 @@ void Timer::emit_timeout() {
     }
 }
 
-} // namespace revector
+} // namespace vecgui

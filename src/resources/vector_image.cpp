@@ -8,7 +8,7 @@
 #include "../servers/vector_server.h"
 #include "default_resource.h"
 
-namespace revector {
+namespace vecgui {
 
 VectorImage::VectorImage(Vec2I size_) {
     size = size_;
@@ -43,4 +43,4 @@ std::shared_ptr<Pathfinder::SvgScene> VectorImage::get_svg_scene() {
     return svg_scene;
 }
 
-} // namespace revector
+} // namespace vecgui

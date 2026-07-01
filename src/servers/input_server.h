@@ -12,7 +12,7 @@ namespace Pathfinder {
 class Window;
 }
 
-namespace revector {
+namespace vecgui {
 
 enum class InputEventType {
     MouseButton = 0,
@@ -143,4 +143,4 @@ private:
     std::set<KeyCode> keys_pressed;
 };
 
-} // namespace revector
+} // namespace vecgui

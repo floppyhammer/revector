@@ -7,7 +7,7 @@
 #include "../../servers/input_server.h"
 #include "container/margin_container.h"
 
-namespace revector {
+namespace vecgui {
 
 std::string keep_numbers(const std::string &src) {
     std::string dst;
@@ -369,4 +369,4 @@ void TextEdit::delete_selection() {
     current_caret_index = selection_start_index = start_index;
 }
 
-} // namespace revector
+} // namespace vecgui

@@ -5,7 +5,7 @@
 #include "../render/base.h"
 #include "image.h"
 
-namespace revector {
+namespace vecgui {
 
 class RasterImage final : public Image {
 public:
@@ -16,4 +16,4 @@ public:
     std::shared_ptr<Pathfinder::Image> image_data;
 };
 
-} // namespace revector
+} // namespace vecgui

@@ -6,7 +6,7 @@
 #include "../../resources/default_resource.h"
 #include "../scene_tree.h"
 
-namespace revector {
+namespace vecgui {
 
 PopupMenu::PopupMenu() {
     type = NodeType::PopupMenu;
@@ -215,4 +215,4 @@ void PopupMenu::when_popup_hide() {
     }
 }
 
-} // namespace revector
+} // namespace vecgui

@@ -2,7 +2,7 @@
 
 using Pathfinder::clamp;
 
-namespace revector {
+namespace vecgui {
 
 ScrollContainer::ScrollContainer() {
     type = NodeType::ScrollContainer;
@@ -319,4 +319,4 @@ void ScrollContainer::post_draw_children() {
     draw_scroll_bar();
 }
 
-} // namespace revector
+} // namespace vecgui

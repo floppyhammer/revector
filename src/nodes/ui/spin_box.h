@@ -10,7 +10,7 @@
 #include "node_ui.h"
 #include "texture_rect.h"
 
-namespace revector {
+namespace vecgui {
 
 /**
  * Numerical input field.
@@ -75,4 +75,4 @@ protected:
     void when_value_changed();
 };
 
-} // namespace revector
+} // namespace vecgui

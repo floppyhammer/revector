@@ -6,7 +6,7 @@
 
 #define FTR(TAG) revector::TranslationServer::get_singleton()->get_translation(TAG)
 
-namespace revector {
+namespace vecgui {
 
 class TranslationServer {
 public:
@@ -29,4 +29,4 @@ private:
     std::string current_locale_ = "en";
 };
 
-} // namespace revector
+} // namespace vecgui

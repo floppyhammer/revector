@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-namespace revector {
+namespace vecgui {
 
 TranslationServer::TranslationServer() = default;
 
@@ -49,4 +49,4 @@ void TranslationServer::load_translations(const std::string& filename) {
     }
 }
 
-} // namespace revector
+} // namespace vecgui

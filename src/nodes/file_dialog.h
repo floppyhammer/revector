@@ -4,7 +4,7 @@
 
 #include "node.h"
 
-namespace revector {
+namespace vecgui {
 
 class FileDialog final : public Node {
 public:
@@ -16,4 +16,4 @@ protected:
     std::string default_path_;
 };
 
-} // namespace revector
+} // namespace vecgui

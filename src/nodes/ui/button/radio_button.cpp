@@ -2,7 +2,7 @@
 
 #include "../../../resources/default_resource.h"
 
-namespace revector {
+namespace vecgui {
 
 RadioButton::RadioButton() {
     type = NodeType::RadioButton;
@@ -15,4 +15,4 @@ RadioButton::RadioButton() {
     icon_pressed_ = std::make_shared<VectorImage>(get_asset_dir("icons/GuiRadioChecked.svg"), true);
 }
 
-} // namespace revector
+} // namespace vecgui

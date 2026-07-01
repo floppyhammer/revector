@@ -5,7 +5,7 @@
 #include "../common/geometry.h"
 #include "node.h"
 
-namespace revector {
+namespace vecgui {
 
 class Blit;
 
@@ -50,4 +50,4 @@ private:
     } temp_draw_data;
 };
 
-} // namespace revector
+} // namespace vecgui

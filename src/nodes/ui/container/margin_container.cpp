@@ -1,6 +1,6 @@
 #include "margin_container.h"
 
-namespace revector {
+namespace vecgui {
 
 void MarginContainer::calc_minimum_size() {
     Vec2F margin_size = {margin_.left + margin_.right, margin_.top + margin_.bottom};
@@ -50,4 +50,4 @@ RectF MarginContainer::get_margin() const {
     return margin_;
 }
 
-} // namespace revector
+} // namespace vecgui

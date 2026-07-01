@@ -7,7 +7,7 @@
 #include "../label.h"
 #include "box_container.h"
 
-namespace revector {
+namespace vecgui {
 
 class SplitContainer : public Container {
 public:
@@ -49,4 +49,4 @@ private:
     std::optional<StyleBox> theme_panel_;
 };
 
-} // namespace revector
+} // namespace vecgui

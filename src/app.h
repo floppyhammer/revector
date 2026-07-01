@@ -16,7 +16,7 @@
 
 class ANativeWindow;
 
-namespace revector {
+namespace vecgui {
 
 class App {
 public:
@@ -50,4 +50,4 @@ private:
     bool dark_mode_ = false;
 };
 
-} // namespace revector
+} // namespace vecgui

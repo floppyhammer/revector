@@ -4,7 +4,7 @@
 #include "../servers/render_server.h"
 #include "../servers/vector_server.h"
 
-namespace revector {
+namespace vecgui {
 
 ProxyWindow::ProxyWindow(const Vec2I size, const int window_index) {
     type = NodeType::Window;
@@ -139,4 +139,4 @@ std::shared_ptr<Pathfinder::Window> ProxyWindow::get_raw_window() const {
     return window;
 }
 
-} // namespace revector
+} // namespace vecgui

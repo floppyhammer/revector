@@ -4,7 +4,7 @@
 #include "app.h"
 #include "nodes/proxy_window.h"
 
-using namespace revector;
+using namespace vecgui;
 
 class MyNode : public Node {
     void custom_ready() override {

@@ -2,11 +2,11 @@
 
 #include "button.h"
 
-namespace revector {
+namespace vecgui {
 
 class RadioButton : public Button {
 public:
     RadioButton();
 };
 
-} // namespace revector
+} // namespace vecgui

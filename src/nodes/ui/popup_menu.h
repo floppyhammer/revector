@@ -13,7 +13,7 @@
 #include "node_ui.h"
 #include "texture_rect.h"
 
-namespace revector {
+namespace vecgui {
 
 class PopupMenu;
 
@@ -124,4 +124,4 @@ private:
     std::vector<AnyCallable<void>> popup_hide_callbacks;
 };
 
-} // namespace revector
+} // namespace vecgui

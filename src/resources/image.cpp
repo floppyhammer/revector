@@ -1,6 +1,6 @@
 #include "image.h"
 
-namespace revector {
+namespace vecgui {
 
 Vec2I Image::get_size() {
     return size;
@@ -10,4 +10,4 @@ ImageType Image::get_type() {
     return type;
 }
 
-} // namespace revector
+} // namespace vecgui

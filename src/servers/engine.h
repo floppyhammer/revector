@@ -3,7 +3,7 @@
 #include <chrono>
 #include <map>
 
-namespace revector {
+namespace vecgui {
 
 class Engine {
 public:
@@ -37,4 +37,4 @@ private:
     double dt = 0;
 };
 
-} // namespace revector
+} // namespace vecgui

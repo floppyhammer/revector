@@ -7,7 +7,7 @@
 #include "../servers/render_server.h"
 #include "proxy_window.h"
 
-namespace revector {
+namespace vecgui {
 
 SceneTree::SceneTree(Vec2I primary_window_size) {
     auto primary_window = std::make_shared<ProxyWindow>(primary_window_size, 0);
@@ -279,4 +279,4 @@ std::weak_ptr<Pathfinder::Window> SceneTree::get_primary_window() const {
     return root->get_raw_window();
 }
 
-} // namespace revector
+} // namespace vecgui

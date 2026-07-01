@@ -6,7 +6,7 @@
 
 using Pathfinder::Rect;
 
-namespace revector {
+namespace vecgui {
 
 NodeUi::NodeUi() {
     type = NodeType::NodeUi;
@@ -331,4 +331,4 @@ void NodeUi::connect_signal(const std::string &signal, const AnyCallable<void> &
     }
 }
 
-} // namespace revector
+} // namespace vecgui

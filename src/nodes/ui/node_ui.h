@@ -10,7 +10,7 @@
 
 using Pathfinder::ColorF;
 
-namespace revector {
+namespace vecgui {
 
 /// How a UI node handles mouse input propagation.
 enum class MouseFilter {
@@ -198,4 +198,4 @@ protected:
     std::vector<AnyCallable<void>> callbacks_parent_size_changed;
 };
 
-} // namespace revector
+} // namespace vecgui

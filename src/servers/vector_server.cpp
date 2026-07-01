@@ -3,7 +3,7 @@
 #include "../resources/default_resource.h"
 #include "engine.h"
 
-namespace revector {
+namespace vecgui {
 
 constexpr float STROKE_WIDTH_FOR_PSEUDO_BOLD_TEXT = 1.0;
 
@@ -408,4 +408,4 @@ std::shared_ptr<Pathfinder::SvgScene> VectorServer::load_svg(const std::string &
     return svg_scene;
 }
 
-} // namespace revector
+} // namespace vecgui

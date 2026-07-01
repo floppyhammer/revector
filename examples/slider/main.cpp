@@ -3,7 +3,7 @@
 
 #include "app.h"
 
-using namespace revector;
+using namespace vecgui;
 
 class MyNode : public NodeUi {
     void custom_ready() override {

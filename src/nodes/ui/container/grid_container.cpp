@@ -1,6 +1,6 @@
 #include "grid_container.h"
 
-namespace revector {
+namespace vecgui {
 
 void GridContainer::adjust_layout() {
     if (children.empty()) {
@@ -95,4 +95,4 @@ void GridContainer::set_item_shrinking(bool new_shrinking) {
     shrinking = new_shrinking;
 }
 
-} // namespace revector
+} // namespace vecgui

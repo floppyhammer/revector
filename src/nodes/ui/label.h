@@ -10,7 +10,7 @@
 
 using Pathfinder::Rect;
 
-namespace revector {
+namespace vecgui {
 
 enum class BidiAlignment {
     Auto,
@@ -156,4 +156,4 @@ private:
     BidiAlignment bidi_alignment_ = BidiAlignment::Auto;
 };
 
-} // namespace revector
+} // namespace vecgui

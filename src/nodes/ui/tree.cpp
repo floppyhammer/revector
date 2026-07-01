@@ -5,7 +5,7 @@
 #include "../../common/utils.h"
 #include "../scene_tree.h"
 
-namespace revector {
+namespace vecgui {
 
 Tree::Tree() {
     type = NodeType::Tree;
@@ -260,4 +260,4 @@ void TreeItem::set_icon(const std::shared_ptr<Image> &texture) {
     icon->set_texture(texture);
 }
 
-} // namespace revector
+} // namespace vecgui

@@ -8,7 +8,7 @@
 #include "../servers/engine.h"
 #include "node.h"
 
-namespace revector {
+namespace vecgui {
 
 class Timer final : public Node {
 public:
@@ -32,4 +32,4 @@ protected:
     std::vector<AnyCallable<void>> timeout_callbacks;
 };
 
-} // namespace revector
+} // namespace vecgui

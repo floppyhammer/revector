@@ -4,7 +4,7 @@
 
 #include "style_box.h"
 
-namespace revector {
+namespace vecgui {
 
 class Font;
 
@@ -70,4 +70,4 @@ public:
     } slider;
 };
 
-} // namespace revector
+} // namespace vecgui

@@ -9,7 +9,7 @@
 
 using namespace Pathfinder;
 
-namespace revector {
+namespace vecgui {
 
 Blit::Blit(const std::shared_ptr<Device> &_device, const std::shared_ptr<Queue> &_queue, TextureFormat target_format) {
     device = _device;
@@ -93,4 +93,4 @@ void Blit::draw(const std::shared_ptr<CommandEncoder> &encoder) {
     encoder->draw(0, 3);
 }
 
-} // namespace revector
+} // namespace vecgui

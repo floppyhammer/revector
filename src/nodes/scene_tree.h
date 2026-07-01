@@ -30,7 +30,7 @@ namespace Pathfinder {
 class Window;
 }
 
-namespace revector {
+namespace vecgui {
 
 class ProxyWindow;
 
@@ -70,4 +70,4 @@ private:
     std::thread render_thread;
 };
 
-} // namespace revector
+} // namespace vecgui

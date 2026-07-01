@@ -7,7 +7,7 @@
 #include "label.h"
 #include "node_ui.h"
 
-namespace revector {
+namespace vecgui {
 
 class ProgressBar : public NodeUi {
 public:
@@ -79,4 +79,4 @@ protected:
     std::vector<AnyCallable<void>> on_value_changed;
 };
 
-} // namespace revector
+} // namespace vecgui

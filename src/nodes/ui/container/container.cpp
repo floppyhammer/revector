@@ -1,6 +1,6 @@
 #include "container.h"
 
-namespace revector {
+namespace vecgui {
 
 Container::Container() {
     type = NodeType::NotInstantiable;
@@ -80,4 +80,4 @@ std::vector<NodeUi *> Container::get_visible_ui_children() const {
     return ui_children;
 }
 
-} // namespace revector
+} // namespace vecgui

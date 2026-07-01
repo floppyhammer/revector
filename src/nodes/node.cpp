@@ -6,7 +6,7 @@
 #include "../servers/render_server.h"
 #include "proxy_window.h"
 
-namespace revector {
+namespace vecgui {
 
 const char *NodeNames[] = {
     "Node",
@@ -302,4 +302,4 @@ SceneTree *Node::get_tree() const {
     return tree_;
 }
 
-} // namespace revector
+} // namespace vecgui

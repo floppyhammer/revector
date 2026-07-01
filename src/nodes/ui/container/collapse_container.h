@@ -7,7 +7,7 @@
 #include "../label.h"
 #include "box_container.h"
 
-namespace revector {
+namespace vecgui {
 
 enum class CollapseButtonType {
     Default,
@@ -56,4 +56,4 @@ private:
     ColorU theme_color_ = {};
 };
 
-} // namespace revector
+} // namespace vecgui

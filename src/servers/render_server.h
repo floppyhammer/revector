@@ -3,7 +3,7 @@
 #include <pathfinder/prelude.h>
 #include "../render/blit.h"
 
-namespace revector {
+namespace vecgui {
 
 class RenderServer {
 public:
@@ -23,4 +23,4 @@ public:
     std::shared_ptr<Pathfinder::Queue> queue_;
 };
 
-} // namespace revector
+} // namespace vecgui

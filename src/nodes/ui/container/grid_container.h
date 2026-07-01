@@ -2,7 +2,7 @@
 
 #include "container.h"
 
-namespace revector {
+namespace vecgui {
 
 class GridContainer : public Container {
 public:
@@ -28,4 +28,4 @@ protected:
     bool shrinking = false;
 };
 
-} // namespace revector
+} // namespace vecgui

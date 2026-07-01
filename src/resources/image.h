@@ -2,7 +2,7 @@
 
 #include "../common/geometry.h"
 
-namespace revector {
+namespace vecgui {
 
 enum class ImageType {
     Raster,
@@ -25,4 +25,4 @@ protected:
     Vec2I size;
 };
 
-} // namespace revector
+} // namespace vecgui

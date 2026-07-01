@@ -8,7 +8,7 @@
 #include "../servers/engine.h"
 #include "../servers/input_server.h"
 
-namespace revector {
+namespace vecgui {
 
 enum class NodeType {
     // General.
@@ -175,4 +175,4 @@ void dfs_postorder_rtl_traversal(Node *node, std::vector<Node *> &ordered_nodes)
 
 void dfs_postorder_rtl_traversal_skip_priority_node_and_invisible(Node *node, std::vector<Node *> &ordered_nodes);
 
-} // namespace revector
+} // namespace vecgui

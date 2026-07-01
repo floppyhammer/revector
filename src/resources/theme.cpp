@@ -3,7 +3,7 @@
 #include "default_resource.h"
 #include "font.h"
 
-namespace revector {
+namespace vecgui {
 
 std::shared_ptr<Theme> Theme::default_dark() {
     auto theme = std::make_shared<Theme>();
@@ -376,4 +376,4 @@ void Theme::load_unifont() {
     }
 }
 
-} // namespace revector
+} // namespace vecgui

@@ -2,7 +2,7 @@
 
 #include <pathfinder/prelude.h>
 
-namespace revector {
+namespace vecgui {
 
 typedef Pathfinder::ColorU ColorU;
 typedef Pathfinder::ColorF ColorF;
@@ -13,4 +13,4 @@ typedef Pathfinder::Vec2F Vec2F;
 typedef Pathfinder::Vec2I Vec2I;
 typedef Pathfinder::Mat3 Mat3;
 
-} // namespace revector
+} // namespace vecgui

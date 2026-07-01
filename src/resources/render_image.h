@@ -6,7 +6,7 @@
 #include "../servers/render_server.h"
 #include "image.h"
 
-namespace revector {
+namespace vecgui {
 
 class RenderImage : public Image {
 public:
@@ -22,4 +22,4 @@ protected:
     std::shared_ptr<Pathfinder::Texture> texture_;
 };
 
-} // namespace revector
+} // namespace vecgui

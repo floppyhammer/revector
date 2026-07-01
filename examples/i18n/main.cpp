@@ -5,7 +5,7 @@
 
 #include "app.h"
 
-using namespace revector;
+using namespace vecgui;
 
 using Pathfinder::Vec2;
 using Pathfinder::Vec3;

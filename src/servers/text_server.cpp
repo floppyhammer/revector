@@ -1,6 +1,6 @@
 #include "text_server.h"
 
-namespace revector {
+namespace vecgui {
 
 std::shared_ptr<std::vector<char>> TextServer::get_font(std::string font_id) {
     auto find = raw_font_cache.find(font_id);
@@ -15,4 +15,4 @@ void TextServer::cleanup() {
     raw_font_cache.clear();
 }
 
-} // namespace revector
+} // namespace vecgui

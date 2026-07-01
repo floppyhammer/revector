@@ -2,9 +2,9 @@
 
 #include <pathfinder/prelude.h>
 
-namespace revector {
+namespace vecgui {
 
 typedef Pathfinder::Logger Logger;
 typedef Pathfinder::Timestamp Timestamp;
 
-} // namespace revector
+} // namespace vecgui

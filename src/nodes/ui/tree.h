@@ -12,7 +12,7 @@
 #include "container/box_container.h"
 #include "node_ui.h"
 
-namespace revector {
+namespace vecgui {
 
 class Tree;
 
@@ -98,4 +98,4 @@ private:
     std::optional<StyleBox> theme_bg_focused;
 };
 
-} // namespace revector
+} // namespace vecgui

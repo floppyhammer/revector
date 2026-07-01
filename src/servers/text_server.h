@@ -5,7 +5,7 @@
 
 #include "../resources/font.h"
 
-namespace revector {
+namespace vecgui {
 
 class TextServer {
 public:
@@ -22,4 +22,4 @@ private:
     std::unordered_map<std::string, std::shared_ptr<Font>> font_cache;
 };
 
-} // namespace revector
+} // namespace vecgui

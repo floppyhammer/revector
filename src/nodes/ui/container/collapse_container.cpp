@@ -6,7 +6,7 @@
 #include "../../../resources/default_resource.h"
 #include "../button/check_button.h"
 
-namespace revector {
+namespace vecgui {
 
 CollapseContainer::CollapseContainer(CollapseButtonType button_type) {
     type = NodeType::CollapseContainer;
@@ -183,4 +183,4 @@ void CollapseContainer::draw() {
     vector_server->draw_style_box(theme_title_bar, global_position, title_bar_size);
 }
 
-} // namespace revector
+} // namespace vecgui

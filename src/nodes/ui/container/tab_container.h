@@ -5,7 +5,7 @@
 #include "../button/button.h"
 #include "container.h"
 
-namespace revector {
+namespace vecgui {
 
 class ScrollContainer;
 
@@ -48,4 +48,4 @@ protected:
     std::vector<std::shared_ptr<Button>> tab_buttons;
 };
 
-} // namespace revector
+} // namespace vecgui

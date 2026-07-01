@@ -2,7 +2,7 @@
 
 #include "../../../resources/default_resource.h"
 
-namespace revector {
+namespace vecgui {
 
 CheckButton::CheckButton() {
     type = NodeType::CheckButton;
@@ -15,4 +15,4 @@ CheckButton::CheckButton() {
     icon_pressed_ = std::make_shared<VectorImage>(get_asset_dir("icons/CheckBox_Checked.svg"), true);
 }
 
-} // namespace revector
+} // namespace vecgui

@@ -3,7 +3,7 @@
 #include "../common/utils.h"
 #include "tinyfiledialogs/tinyfiledialogs.h"
 
-namespace revector {
+namespace vecgui {
 
 std::optional<std::string> FileDialog::show() {
     Logger::info("Show file dialog", "revector");
@@ -29,4 +29,4 @@ void FileDialog::set_default_path(const std::string& default_path) {
     default_path_ = default_path;
 }
 
-} // namespace revector
+} // namespace vecgui

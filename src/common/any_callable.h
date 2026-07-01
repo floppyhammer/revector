@@ -3,7 +3,7 @@
 #include <any>
 #include <functional>
 
-namespace revector {
+namespace vecgui {
 
 template <typename Ret>
 struct AnyCallable {
@@ -22,4 +22,4 @@ struct AnyCallable {
     std::any m_any;
 };
 
-} // namespace revector
+} // namespace vecgui

@@ -3,7 +3,7 @@
 #include "../common/utils.h"
 #import <Foundation/Foundation.h>
 
-namespace revector {
+namespace vecgui {
 
 std::string getResourcesPath() {
     @autoreleasepool {
@@ -36,4 +36,4 @@ std::string get_asset_dir(const std::string &relative_path) {
     return asset_dir + relative_path;
 }
 
-} // namespace revector
+} // namespace vecgui

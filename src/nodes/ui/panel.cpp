@@ -5,7 +5,7 @@
 #include "../../common/utils.h"
 #include "../../resources/default_resource.h"
 
-namespace revector {
+namespace vecgui {
 
 Panel::Panel() {
     type = NodeType::Panel;
@@ -27,4 +27,4 @@ void Panel::draw() {
     vector_server->draw_style_box(theme_panel, global_position, size);
 }
 
-} // namespace revector
+} // namespace vecgui

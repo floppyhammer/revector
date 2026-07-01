@@ -16,7 +16,7 @@ constexpr bool USE_VULKAN = false;
 
 constexpr int DPI_STANDARD = 96;
 
-using namespace revector;
+using namespace vecgui;
 
 using Pathfinder::Vec2;
 using Pathfinder::Vec3;

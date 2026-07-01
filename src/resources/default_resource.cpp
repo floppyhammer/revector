@@ -3,7 +3,7 @@
 #include "font.h"
 #include "opensans_regular_ttf.h"
 
-namespace revector {
+namespace vecgui {
 
 void DefaultResource::init(const bool dark_mode) {
     default_theme = dark_mode ? Theme::default_dark() : Theme::default_light();
@@ -12,4 +12,4 @@ void DefaultResource::init(const bool dark_mode) {
     assert(default_font);
 }
 
-} // namespace revector
+} // namespace vecgui

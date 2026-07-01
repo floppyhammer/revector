@@ -9,7 +9,7 @@
 #include "../resources/style_box.h"
 #include "../resources/vector_image.h"
 
-namespace revector {
+namespace vecgui {
 
 /// All visible shapes will be collected by the vector server and drawn at once.
 class VectorServer final {
@@ -84,4 +84,4 @@ private:
     float global_scale_ = 1.0f;
 };
 
-} // namespace revector
+} // namespace vecgui

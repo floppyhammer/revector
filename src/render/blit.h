@@ -5,7 +5,7 @@
 
 #include <memory>
 
-namespace revector {
+namespace vecgui {
 
 /**
  * Simple class to blit a texture to screen.
@@ -40,6 +40,6 @@ private:
     std::shared_ptr<Pathfinder::Fence> fence;
 };
 
-} // namespace revector
+} // namespace vecgui
 
 #endif

@@ -9,7 +9,7 @@
 #include <cstring>
 #include <stdexcept>
 
-namespace revector {
+namespace vecgui {
 
 RasterImage::RasterImage(Vec2I size_) {
     type = ImageType::Raster;
@@ -39,4 +39,4 @@ RasterImage::RasterImage(const std::string &path) {
     stbi_image_free(pixels);
 }
 
-} // namespace revector
+} // namespace vecgui

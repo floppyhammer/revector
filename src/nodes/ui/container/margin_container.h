@@ -4,7 +4,7 @@
 
 using Pathfinder::Rect;
 
-namespace revector {
+namespace vecgui {
 
 class MarginContainer : public Container {
 public:
@@ -26,4 +26,4 @@ private:
     RectF margin_ = {8, 8, 8, 8};
 };
 
-} // namespace revector
+} // namespace vecgui

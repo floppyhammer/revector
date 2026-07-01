@@ -2,7 +2,7 @@
 
 #include "../../common/geometry.h"
 
-namespace revector {
+namespace vecgui {
 
 ProgressBar::ProgressBar() {
     type = NodeType::ProgressBar;
@@ -167,4 +167,4 @@ void ProgressBar::set_fill_mode(FillMode new_fill_mode) {
     fill_mode_ = new_fill_mode;
 }
 
-} // namespace revector
+} // namespace vecgui

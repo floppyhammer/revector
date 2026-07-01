@@ -2,7 +2,7 @@
 
 #include "button.h"
 
-namespace revector {
+namespace vecgui {
 
 class PopupMenu;
 class ScrollContainer;
@@ -36,4 +36,4 @@ protected:
     void when_item_selected(uint32_t item_index);
 };
 
-} // namespace revector
+} // namespace vecgui

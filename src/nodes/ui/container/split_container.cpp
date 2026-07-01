@@ -6,7 +6,7 @@
 #include "../../../resources/default_resource.h"
 #include "../button/check_button.h"
 
-namespace revector {
+namespace vecgui {
 
 SplitContainer::SplitContainer() {
     type = NodeType::SplitContainer;
@@ -218,4 +218,4 @@ void SplitContainer::set_split_ratio(const float new_ratio) {
     split_to_right_length = (1.0f - new_ratio) * size.x;
 }
 
-} // namespace revector
+} // namespace vecgui

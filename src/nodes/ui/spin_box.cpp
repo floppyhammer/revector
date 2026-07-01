@@ -6,7 +6,7 @@
 #include "../../common/geometry.h"
 #include "../../resources/vector_image.h"
 
-namespace revector {
+namespace vecgui {
 
 SpinBox::SpinBox() {
     type = NodeType::SpinBox;
@@ -187,4 +187,4 @@ float SpinBox::get_value() const {
     return value;
 }
 
-} // namespace revector
+} // namespace vecgui

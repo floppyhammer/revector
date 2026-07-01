@@ -5,7 +5,7 @@
 #include "../../common/geometry.h"
 #include "../../resources/default_resource.h"
 
-namespace revector {
+namespace vecgui {
 
 Slider::Slider() {
     type = NodeType::Slider;
@@ -211,4 +211,4 @@ void Slider::change_ratio(float new_ratio) {
     prev_value_ = new_value;
 }
 
-} // namespace revector
+} // namespace vecgui

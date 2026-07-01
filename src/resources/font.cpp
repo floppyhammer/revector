@@ -38,7 +38,7 @@
 #include "../servers/engine.h"
 #include "default_resource.h"
 
-namespace revector {
+namespace vecgui {
 
 hb_script_t to_harfbuzz_script(Script script) {
     switch (script) {
@@ -914,4 +914,4 @@ bool Font::is_valid() const {
     return !font_data.empty();
 }
 
-} // namespace revector
+} // namespace vecgui

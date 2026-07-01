@@ -13,7 +13,7 @@
 
 struct stbtt_fontinfo;
 
-namespace revector {
+namespace vecgui {
 
 template <typename T>
 void utf8_to_utf16(const std::string &source, std::basic_string<T> &result) {
@@ -209,4 +209,4 @@ private:
     float update_metrics(uint32_t size, float &ascent, float &descent);
 };
 
-} // namespace revector
+} // namespace vecgui

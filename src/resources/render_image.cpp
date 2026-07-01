@@ -1,6 +1,6 @@
 #include "render_image.h"
 
-namespace revector {
+namespace vecgui {
 
 RenderImage::RenderImage(Vec2I _size) {
     size = _size;
@@ -21,4 +21,4 @@ RenderImage::RenderImage(const std::shared_ptr<Pathfinder::Texture>& existing_te
     texture_ = existing_texture;
 }
 
-} // namespace revector
+} // namespace vecgui

@@ -4,7 +4,7 @@
 
 #include "node_ui.h"
 
-namespace revector {
+namespace vecgui {
 
 /**
  * Used to display an ImageTexture or a VectorTexture.
@@ -42,4 +42,4 @@ protected:
     std::shared_ptr<Image> texture;
 };
 
-} // namespace revector
+} // namespace vecgui

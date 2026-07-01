@@ -2,7 +2,7 @@
 
 #include "../node_ui.h"
 
-namespace revector {
+namespace vecgui {
 
 /// A Container adjusts layouts for its UI children automatically.
 class Container : public NodeUi {
@@ -25,4 +25,4 @@ protected:
     std::vector<NodeUi *> get_visible_ui_children() const;
 };
 
-} // namespace revector
+} // namespace vecgui

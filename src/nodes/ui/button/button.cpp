@@ -6,7 +6,7 @@
 #include "../../../resources/default_resource.h"
 #include "../../../resources/vector_image.h"
 
-namespace revector {
+namespace vecgui {
 
 Button::Button() {
     type = NodeType::Button;
@@ -335,4 +335,4 @@ void ToggleButtonGroup::clear_buttons() {
     buttons.clear();
 }
 
-} // namespace revector
+} // namespace vecgui

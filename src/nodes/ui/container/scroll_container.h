@@ -2,7 +2,7 @@
 
 #include "container.h"
 
-namespace revector {
+namespace vecgui {
 
 class ScrollContainer : public Container {
 public:
@@ -66,4 +66,4 @@ protected:
     } temp_draw_data;
 };
 
-} // namespace revector
+} // namespace vecgui

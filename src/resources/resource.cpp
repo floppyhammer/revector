@@ -6,7 +6,7 @@
 
 #ifndef __APPLE__
 
-namespace revector {
+namespace vecgui {
 
 std::string get_asset_dir(const std::string &relative_path) {
     // AppImage specific.
@@ -24,6 +24,6 @@ std::string get_asset_dir(const std::string &relative_path) {
     return asset_dir + relative_path;
 }
 
-} // namespace revector
+} // namespace vecgui
 
 #endif

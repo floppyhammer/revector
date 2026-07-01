@@ -9,7 +9,7 @@
 #include "node_ui.h"
 #include "texture_rect.h"
 
-namespace revector {
+namespace vecgui {
 
 class Slider : public NodeUi {
 public:
@@ -59,4 +59,4 @@ protected:
     void change_ratio(float new_ratio);
 };
 
-} // namespace revector
+} // namespace vecgui

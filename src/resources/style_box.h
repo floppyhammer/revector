@@ -4,7 +4,7 @@
 
 #include "../common/geometry.h"
 
-namespace revector {
+namespace vecgui {
 
 struct StyleBox {
     ColorU bg_color = ColorU(27, 27, 27, 255);
@@ -71,4 +71,4 @@ struct StyleLine {
     float width = 2;
 };
 
-} // namespace revector
+} // namespace vecgui
