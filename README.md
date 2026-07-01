@@ -68,12 +68,12 @@ int main() {
 
 ## 🖼️ Gallery
 
-| Layout System | Text & i18n |
-| :---: | :---: |
+|                  Buttons                   |                  Widgets                   |
+|:------------------------------------------:|:------------------------------------------:|
 | ![Example 0](screenshots/screenshot_0.png) | ![Example 1](screenshots/screenshot_1.png) |
 
-| Multi-Window Support | Widgets |
-| :---: | :---: |
+|               Layout System                |                Text & i18n                 |
+|:------------------------------------------:|:------------------------------------------:|
 | ![Example 2](screenshots/screenshot_2.png) | ![Example 3](screenshots/screenshot_3.png) |
 
 ## 🛠️ Building
