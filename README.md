@@ -15,7 +15,7 @@
 Most C++ GUI frameworks are either immediate-mode (like ImGui) which can be hard to manage for complex layouts, or bitmap-based which suffer from blurriness on HiDPI screens. **VecGui** offers a middle ground:
 
 - **Godot-like Workflow**: If you've used Godot, you'll feel right at home. It uses a Node-based scene tree, signals (coming soon), and a powerful container-based layout system.
-- **Pure Vector Rendering**: Powered by [Pathfinder](https://github.com/servo/pathfinder), every UI element is rendered as a vector shape on the GPU. This means perfect antialiasing and infinite scalability without any loss in quality.
+- **Pure Vector Rendering**: Powered by [Pathfinder](https://github.com/floppyhammer/pathfinder-cpp), every UI element is rendered as a vector shape on the GPU. This means perfect antialiasing and infinite scalability without any loss in quality.
 - **Modern C++**: Built with C++17/20, utilizing smart pointers and modern memory management practices.
 
 ## ✨ Features
