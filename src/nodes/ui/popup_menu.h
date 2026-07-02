@@ -71,8 +71,6 @@ public:
 
     void input(InputEvent &event) override;
 
-    void update(double dt) override;
-
     void draw() override;
 
     void clear_items();
@@ -98,6 +96,8 @@ public:
     void calc_minimum_size() override;
 
     void set_popup_position(Vec2F new_position, float new_button_height);
+
+    void adjust_layout() override;
 
     std::optional<StyleBox> theme_override_bg;
 

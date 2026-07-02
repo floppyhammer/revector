@@ -16,6 +16,23 @@ void NodeUi::calc_minimum_size() {
     calculated_minimum_size = {};
 }
 
+void NodeUi::adjust_layout() {
+    size = get_effective_minimum_size().max(size);
+}
+
+void NodeUi::queue_relayout() {
+    if (layout_is_dirty) {
+        return;
+    }
+
+    layout_is_dirty = true;
+
+    if (parent && parent->is_ui_node()) {
+        auto ui_parent = dynamic_cast<NodeUi *>(parent);
+        ui_parent->queue_relayout();
+    }
+}
+
 Vec2F NodeUi::get_effective_minimum_size() const {
     // Take both custom_minimum_size and calculated_minimum_size into account.
     return custom_minimum_size.max(calculated_minimum_size);
@@ -34,10 +51,6 @@ void NodeUi::draw() {
 }
 
 void NodeUi::update(double dt) {
-    apply_anchor();
-
-    size = get_effective_minimum_size().max(size);
-
     Node::update(dt);
 }
 
@@ -119,7 +132,17 @@ void NodeUi::set_size(Vec2F new_size) {
         return;
     }
 
-    size = new_size.max(get_effective_minimum_size());
+    size = new_size;
+    queue_relayout();
+
+    // When size changes, all UI children (including embedded ones) must be notified
+    // to re-evaluate their anchors and internal layouts.
+    for (auto &child : get_all_children()) {
+        if (child->is_ui_node()) {
+            auto cast_child = dynamic_cast<NodeUi *>(child.get());
+            cast_child->queue_relayout();
+        }
+    }
 }
 
 Vec2F NodeUi::get_position() const {
@@ -131,7 +154,11 @@ Vec2F NodeUi::get_size() const {
 }
 
 void NodeUi::set_custom_minimum_size(Vec2F new_size) {
+    if (custom_minimum_size == new_size) {
+        return;
+    }
     custom_minimum_size = new_size;
+    queue_relayout();
 }
 
 Vec2F NodeUi::get_custom_minimum_size() const {
@@ -308,6 +335,7 @@ void NodeUi::set_anchor_flag(AnchorFlag anchor_flag) {
     }
 
     anchor_mode = anchor_flag;
+    queue_relayout();
 }
 
 AnchorFlag NodeUi::get_anchor_flag() const {
@@ -315,8 +343,9 @@ AnchorFlag NodeUi::get_anchor_flag() const {
 }
 
 void NodeUi::when_parent_size_changed(Vec2F new_size) {
-    for (auto &child : children) {
-        if (child->get_node_type() == NodeType::NodeUi) {
+    queue_relayout();
+    for (auto &child : get_all_children()) {
+        if (child->is_ui_node()) {
             auto cast_child = dynamic_cast<NodeUi *>(child.get());
             cast_child->when_parent_size_changed(size);
         }

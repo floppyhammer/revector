@@ -93,8 +93,21 @@ public:
     Vec2F get_effective_minimum_size() const;
 
     /// Calculates the minimum size of this node, considering all its children's sizing effect.
-    /// Runs once per frame.
     virtual void calc_minimum_size();
+
+    void apply_anchor();
+
+    virtual void adjust_layout();
+
+    void queue_relayout();
+
+    bool is_layout_dirty() const {
+        return layout_is_dirty;
+    }
+
+    void clear_layout_dirty() {
+        layout_is_dirty = false;
+    }
 
     bool is_ui_node() const override {
         return true;
@@ -136,8 +149,6 @@ public:
     /**
      * Adjust the node's position and size according to the anchor flag.
      */
-    void apply_anchor();
-
     void set_anchor_flag(AnchorFlag new_flag);
 
     AnchorFlag get_anchor_flag() const;

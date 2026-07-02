@@ -27,8 +27,6 @@ public:
 
     void set_position(Vec2F _position) override;
 
-    void set_size(Vec2F _size) override;
-
     void calc_minimum_size() override;
 
     void connect_signal(const std::string &signal, const AnyCallable<void> &callback) override;

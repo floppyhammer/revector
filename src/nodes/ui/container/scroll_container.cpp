@@ -15,7 +15,8 @@ ScrollContainer::ScrollContainer() {
 }
 
 void ScrollContainer::adjust_layout() {
-    // Get the minimum size.
+    if (children.empty()) return;
+
     Vec2F max_child_min_size = get_max_child_min_size();
 
     auto min_size = max_child_min_size.max(custom_minimum_size);
@@ -33,7 +34,6 @@ void ScrollContainer::adjust_layout() {
     for (auto &child : children) {
         if (child->is_ui_node()) {
             auto cast_child = dynamic_cast<NodeUi *>(child.get());
-            cast_child->set_position({0, 0});
 
             if (!vscroll_enabled) {
                 cast_child->set_size({cast_child->get_size().x, size.y});
@@ -140,8 +140,6 @@ void ScrollContainer::input(InputEvent &event) {
 
 void ScrollContainer::update(double dt) {
     NodeUi::update(dt);
-
-    adjust_layout();
 
     if (children.empty() || !children.front()->is_ui_node()) {
         return;

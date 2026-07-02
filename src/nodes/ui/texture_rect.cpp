@@ -13,9 +13,14 @@ TextureRect::TextureRect() {
     type = NodeType::TextureRect;
 }
 
-void TextureRect::set_texture(const std::shared_ptr<Image> &new_image) {
+void TextureRect::set_texture(const std::shared_ptr<Image> &new_texture) {
+    if (texture == new_texture) {
+        return;
+    }
+
     // Texture can be null.
-    texture = new_image;
+    texture = new_texture;
+    queue_relayout();
 }
 
 std::shared_ptr<Image> TextureRect::get_texture() const {
@@ -112,8 +117,12 @@ void TextureRect::calc_minimum_size() {
     }
 }
 
-void TextureRect::set_stretch_mode(TextureRect::StretchMode new_stretch_mode) {
-    stretch_mode = new_stretch_mode;
+void TextureRect::set_stretch_mode(StretchMode new_mode) {
+    if (stretch_mode == new_mode) {
+        return;
+    }
+    stretch_mode = new_mode;
+    queue_relayout();
 }
 
 } // namespace vecgui

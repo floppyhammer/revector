@@ -21,24 +21,30 @@ TabContainer::TabContainer() {
 }
 
 void TabContainer::adjust_layout() {
-    // Adjust self size.
+    // Ensure self satisfies minimum size constraints.
     size = get_effective_minimum_size().max(size);
 
     auto tab_button_height = button_container->get_effective_minimum_size().y;
 
-    for (int i = 0; i < children.size(); i++) {
+    // Key fix: explicitly assign position and size to the embedded tab bar container.
+    button_scroll_container->set_position({0, 0});
+    button_scroll_container->set_size({size.x, tab_button_height});
+
+    for (int i = 0; i < (int)children.size(); i++) {
         if (!children[i]->is_ui_node()) {
             continue;
         }
 
-        children[i]->set_visibility(i == current_tab);
+        // Set visibility only when state changes to avoid relayout loops.
+        bool should_be_visible = (current_tab.has_value() && (uint32_t)i == current_tab.value());
+        if (children[i]->get_visibility() != should_be_visible) {
+            children[i]->set_visibility(should_be_visible);
+        }
 
         auto ui_child = dynamic_cast<NodeUi *>(children[i].get());
         ui_child->set_position({0, tab_button_height});
         ui_child->set_size({size.x, size.y - tab_button_height});
     }
-
-    button_scroll_container->set_custom_minimum_size({size.x, tab_button_height});
 }
 
 void TabContainer::update(double dt) {
@@ -94,7 +100,7 @@ void TabContainer::draw() {
     vs->draw_style_box(theme_bg, global_pos, size);
     vs->draw_style_box(theme_tab_bg, global_pos, {size.x, tab_button_height});
 
-    for (const auto& btn : tab_buttons) {
+    for (const auto &btn : tab_buttons) {
         btn->theme_override_normal = default_theme->tab_container.styles["tab_button_normal"];
         btn->theme_override_hovered = btn->theme_override_normal;
         btn->theme_override_pressed = default_theme->tab_container.styles["tab_button_pressed"];
@@ -130,7 +136,11 @@ void TabContainer::reload_tab_buttons() {
         auto button = std::make_shared<Button>();
         button->set_pressed_style_to_toggled(true);
 
-        button->set_text(children[idx]->name);
+        if (children[idx]->name.empty()) {
+            button->set_text("TAB");
+        } else {
+            button->set_text(children[idx]->name);
+        }
 
         button_container->add_child(button);
         tab_buttons.push_back(button);

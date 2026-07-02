@@ -50,9 +50,7 @@ public:
 
     void set_font(std::shared_ptr<Font> new_font);
 
-    void set_font_size(uint32_t new_font_size) {
-        font_size_ = new_font_size;
-    }
+    void set_font_size(uint32_t new_font_size);
 
     uint32_t get_font_size() const {
         return font_size_;
@@ -70,6 +68,8 @@ public:
 
     void calc_minimum_size() override;
 
+    void adjust_layout() override;
+
     std::vector<Glyph> &get_glyphs();
 
     std::shared_ptr<Font> get_font() const;
@@ -85,13 +85,9 @@ public:
         return word_wrap_;
     }
 
-    void set_word_wrap(bool word_wrap) {
-        word_wrap_ = word_wrap;
-    }
+    void set_word_wrap(bool word_wrap);
 
-    void set_multi_line(bool enabled) {
-        multi_line_ = enabled;
-    }
+    void set_multi_line(bool enabled);
 
     std::optional<StyleBox> theme_override_bg;
     std::optional<TextStyle> theme_override_text_style;

@@ -61,9 +61,9 @@ private:
     std::shared_ptr<HBoxContainer> container;
 
     std::vector<std::shared_ptr<TreeItem>> children;
-    TreeItem *parent;
+    TreeItem *parent = nullptr;
 
-    Tree *tree;
+    Tree *tree = nullptr;
 
     StyleBox theme_selected;
 };

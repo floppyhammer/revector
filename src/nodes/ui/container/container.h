@@ -17,11 +17,11 @@ public:
 
     std::optional<StyleBox> theme_override_bg;
 
-protected:
     /// The most important method for containers.
     /// This adjusts its own size (not position), adjusts its children's sizes and local positions.
-    virtual void adjust_layout();
+    void adjust_layout() override;
 
+protected:
     std::vector<NodeUi *> get_visible_ui_children() const;
 };
 

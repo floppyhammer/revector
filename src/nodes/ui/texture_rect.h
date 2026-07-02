@@ -13,9 +13,9 @@ class TextureRect : public NodeUi {
 public:
     TextureRect();
 
-    void set_texture(const std::shared_ptr<Image> &p_texture);
+    void set_texture(const std::shared_ptr<Image> &new_texture);
 
-    [[nodiscard]] std::shared_ptr<Image> get_texture() const;
+    std::shared_ptr<Image> get_texture() const;
 
     void calc_minimum_size() override;
 
@@ -30,7 +30,7 @@ public:
         Max,
     };
 
-    void set_stretch_mode(StretchMode new_stretch_mode);
+    void set_stretch_mode(StretchMode new_mode);
 
     void draw() override;
 

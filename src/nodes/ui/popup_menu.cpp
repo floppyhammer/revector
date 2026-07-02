@@ -25,22 +25,6 @@ PopupMenu::PopupMenu() {
     scroll_container_->add_child(vbox_container_);
 }
 
-void PopupMenu::update(double dt) {
-    auto global_position = get_global_position();
-
-    margin_container_->set_custom_minimum_size(custom_minimum_size);
-    // float offset_y = 0;
-    // for (auto &item : items_) {
-    //     item->position = {0, offset_y};
-    //     offset_y += item_height_;
-    //     item->update(global_position, {size.x, item_height_});
-    // }
-
-    size = size.max(calculated_minimum_size);
-
-    NodeUi::update(dt);
-}
-
 void PopupMenu::draw() {
     if (!visible_) {
         return;
@@ -84,9 +68,25 @@ void PopupMenu::input(InputEvent &event) {
     NodeUi::input(event);
 }
 
+void PopupMenu::adjust_layout() {
+    size = size.max(calculated_minimum_size);
+
+    // Ensure the embedded container matches the menu's size.
+    if (margin_container_) {
+        margin_container_->set_size(size);
+    }
+}
+
 void PopupMenu::set_visibility(bool visible) {
+    if (visible_ == visible) {
+        return;
+    }
+
     visible_ = visible;
+
     if (visible_) {
+        calc_minimum_size();
+
         auto render_server = RenderServer::get_singleton();
         auto window = render_server->window_builder_->get_window(get_window_index());
 

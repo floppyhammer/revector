@@ -41,6 +41,8 @@ void propagate_draw(Node* node);
 /// Run calc_minimum_size() depth-first.
 void calc_minimum_size(Node* root);
 
+void layout_system(Node* root);
+
 /// Processing order: Input -> Update -> Draw.
 class SceneTree {
     friend class App;

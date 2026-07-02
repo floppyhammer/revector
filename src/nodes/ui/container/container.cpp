@@ -41,8 +41,6 @@ void Container::calc_minimum_size() {
 
 void Container::update(double dt) {
     NodeUi::update(dt);
-
-    adjust_layout();
 }
 
 void Container::draw() {

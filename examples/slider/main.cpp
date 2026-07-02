@@ -7,7 +7,7 @@ using namespace vecgui;
 
 class MyNode : public NodeUi {
     void custom_ready() override {
-        anchor_mode = AnchorFlag::FullRect;
+        set_anchor_flag(AnchorFlag::FullRect);
 
         auto slider1 = std::make_shared<Slider>();
         slider1->set_position({200, 200});

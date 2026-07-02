@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#define FTR(TAG) revector::TranslationServer::get_singleton()->get_translation(TAG)
+#define FTR(TAG) vecgui::TranslationServer::get_singleton()->get_translation(TAG)
 
 namespace vecgui {
 

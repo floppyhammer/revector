@@ -5,6 +5,7 @@
 
 #include "../servers/render_server.h"
 #include "proxy_window.h"
+#include "ui/node_ui.h"
 
 namespace vecgui {
 
@@ -177,6 +178,10 @@ void Node::add_child(const std::shared_ptr<Node> &new_child) {
     new_child->tree_ = tree_;
 
     children.push_back(new_child);
+
+    if (this->is_ui_node()) {
+        dynamic_cast<NodeUi *>(this)->queue_relayout();
+    }
 }
 
 void Node::add_child_at_index(const std::shared_ptr<Node> &new_child, uint32_t index) {
@@ -196,6 +201,10 @@ void Node::add_child_at_index(const std::shared_ptr<Node> &new_child, uint32_t i
     new_child->tree_ = tree_;
 
     children.insert(children.begin() + index, new_child);
+
+    if (this->is_ui_node()) {
+        dynamic_cast<NodeUi *>(this)->queue_relayout();
+    }
 }
 
 void Node::add_embedded_child(const std::shared_ptr<Node> &new_child) {
@@ -209,6 +218,10 @@ void Node::add_embedded_child(const std::shared_ptr<Node> &new_child) {
     new_child->tree_ = tree_;
 
     embedded_children.push_back(new_child);
+
+    if (this->is_ui_node()) {
+        dynamic_cast<NodeUi *>(this)->queue_relayout();
+    }
 }
 
 std::shared_ptr<Node> Node::get_child(size_t index) {
@@ -224,10 +237,18 @@ void Node::remove_child(size_t index) {
         return;
     }
     children.erase(children.begin() + index);
+
+    if (this->is_ui_node()) {
+        dynamic_cast<NodeUi *>(this)->queue_relayout();
+    }
 }
 
 void Node::remove_all_children() {
     children.clear();
+
+    if (this->is_ui_node()) {
+        dynamic_cast<NodeUi *>(this)->queue_relayout();
+    }
 }
 
 bool Node::is_ui_node() const {
@@ -235,7 +256,15 @@ bool Node::is_ui_node() const {
 }
 
 void Node::set_visibility(bool visible) {
+    if (visible_ == visible) {
+        return;
+    }
+
     visible_ = visible;
+
+    if (this->is_ui_node()) {
+        dynamic_cast<NodeUi *>(this)->queue_relayout();
+    }
 }
 
 void Node::show() {

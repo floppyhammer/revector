@@ -236,6 +236,7 @@ void Label::set_text(const std::string &new_text) {
     utf8_to_utf32(text_, text_u32_);
 
     need_to_remeasure = true;
+    queue_relayout();
 }
 
 void Label::insert_text(uint32_t codepoint_position, const std::string &new_text) {
@@ -252,6 +253,7 @@ void Label::insert_text(uint32_t codepoint_position, const std::string &new_text
     text_ = utf32_to_utf8(text_u32_);
 
     need_to_remeasure = true;
+    queue_relayout();
 }
 
 void Label::remove_text(uint32_t codepoint_position, uint32_t count) {
@@ -261,6 +263,7 @@ void Label::remove_text(uint32_t codepoint_position, uint32_t count) {
     text_ = utf32_to_utf8(text_u32_);
 
     need_to_remeasure = true;
+    queue_relayout();
 }
 
 std::string Label::get_sub_text(uint32_t codepoint_position, uint32_t count) const {
@@ -285,9 +288,8 @@ void Label::set_size(Vec2F new_size) {
         return;
     }
 
-    layout_is_dirty = true;
-
-    size = new_size.max(get_effective_minimum_size());
+    size = new_size;
+    queue_relayout();
 }
 
 /// A very crude way for line-breaking.
@@ -438,6 +440,32 @@ void Label::set_font(std::shared_ptr<Font> new_font) {
     font = std::move(new_font);
 
     need_to_remeasure = true;
+    queue_relayout();
+}
+
+void Label::set_font_size(uint32_t new_font_size) {
+    if (font_size_ == new_font_size) {
+        return;
+    }
+    font_size_ = new_font_size;
+    need_to_remeasure = true;
+    queue_relayout();
+}
+
+void Label::set_word_wrap(bool word_wrap) {
+    if (word_wrap_ == word_wrap) {
+        return;
+    }
+    word_wrap_ = word_wrap;
+    queue_relayout();
+}
+
+void Label::set_multi_line(bool enabled) {
+    if (multi_line_ == enabled) {
+        return;
+    }
+    multi_line_ = enabled;
+    queue_relayout();
 }
 
 void Label::consider_alignment() {
@@ -473,23 +501,6 @@ void Label::consider_alignment() {
 
 void Label::update(double dt) {
     NodeUi::update(dt);
-
-    if (get_global_visibility()) {
-        if (need_to_remeasure) {
-            need_to_remeasure = false;
-            measure();
-            layout_is_dirty = true;
-        }
-        if (layout_is_dirty) {
-            layout_is_dirty = false;
-            make_layout();
-        }
-
-        auto min_size = get_text_minimum_size();
-        size = size.max(min_size);
-
-        consider_alignment();
-    }
 }
 
 void Label::set_text_style(TextStyle _text_style) {
@@ -532,6 +543,7 @@ void Label::set_horizontal_alignment(Alignment alignment) {
     }
 
     horizontal_alignment = alignment;
+    queue_relayout();
 }
 
 void Label::set_vertical_alignment(Alignment alignment) {
@@ -540,15 +552,26 @@ void Label::set_vertical_alignment(Alignment alignment) {
     }
 
     vertical_alignment = alignment;
+    queue_relayout();
 }
 
 void Label::calc_minimum_size() {
+    if (need_to_remeasure) {
+        measure();
+        need_to_remeasure = false;
+    }
+
     auto min_size = get_text_minimum_size();
 
     // A Label has a minimal height even when the text is empty.
     min_size.y = std::max(min_size.y, (float)font_size_);
 
     calculated_minimum_size = min_size;
+}
+
+void Label::adjust_layout() {
+    make_layout();
+    consider_alignment();
 }
 
 Vec2F Label::get_text_minimum_size() const {

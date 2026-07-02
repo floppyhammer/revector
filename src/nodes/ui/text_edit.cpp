@@ -34,6 +34,7 @@ TextEdit::TextEdit() {
     margin_container->set_margin_all(4);
     margin_container->add_child(label);
     margin_container->set_mouse_filter(MouseFilter::Ignore);
+    margin_container->set_anchor_flag(AnchorFlag::FullRect);
 
     add_embedded_child(margin_container);
 
@@ -239,8 +240,6 @@ void TextEdit::input(InputEvent &event) {
 void TextEdit::update(double dt) {
     NodeUi::update(dt);
 
-    margin_container->set_size(size);
-
     caret_blink_timer += dt;
 }
 
@@ -272,12 +271,10 @@ void TextEdit::draw() {
             auto start = calculate_caret_position(std::min(current_caret_index, selection_start_index));
             auto end = calculate_caret_position(std::max(current_caret_index, selection_start_index));
             auto box_position = label->get_global_position() + start;
-            auto box_size = Vec2F(0, label->get_font_size()) + (end - start);
+            auto box_size = Vec2F(0, (float)label->get_font_size()) + (end - start);
             vector_server->draw_style_box(theme_selection, box_position, box_size);
         }
     }
-
-    label->set_size(size);
 
     // Draw text.
     label->draw();

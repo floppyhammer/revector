@@ -164,12 +164,24 @@ void calc_minimum_size(Node* root) {
     for (auto& node : descendants) {
         if (node->is_ui_node()) {
             auto ui_node = dynamic_cast<NodeUi*>(node);
-            // if (!ui_node->get_visibility()) {
-            //     continue;
-            // }
-            ui_node->calc_minimum_size();
-            // std::cout << "Node: " << get_node_type_name(node->type)
-            //           << ", size: " << ui_node->get_effective_minimum_size() << std::endl;
+            if (ui_node->is_layout_dirty()) {
+                ui_node->calc_minimum_size();
+            }
+        }
+    }
+}
+
+void layout_system(Node* root) {
+    std::vector<Node*> nodes;
+    dfs_preorder_ltr_traversal(root, nodes);
+    for (auto& node : nodes) {
+        if (node->is_ui_node()) {
+            auto ui_node = dynamic_cast<NodeUi*>(node);
+            if (ui_node->is_layout_dirty()) {
+                ui_node->apply_anchor();
+                ui_node->adjust_layout();
+                ui_node->clear_layout_dirty();
+            }
         }
     }
 }
@@ -204,6 +216,9 @@ void SceneTree::process(double dt) {
 
     // Run calc_minimum_size() depth-first.
     calc_minimum_size(root.get());
+
+    // Adjust container layouts.
+    layout_system(root.get());
 
     // Update global transform for each node.
     transform_system(root.get());

@@ -16,10 +16,10 @@ Button::Button() {
     // Don't add the label as a child since it's not a normal node but part of the button.
     label = std::make_shared<Label>();
     label->set_text("Button");
-    label->set_mouse_filter(MouseFilter::Ignore);
     label->set_horizontal_alignment(Alignment::Center);
     label->set_vertical_alignment(Alignment::Center);
     label->container_sizing.flag_h = ContainerSizingFlag::Fill;
+    label->set_mouse_filter(MouseFilter::Ignore);
 
     icon_rect = std::make_shared<TextureRect>();
     icon_rect->set_stretch_mode(TextureRect::StretchMode::KeepCentered);
@@ -34,7 +34,7 @@ Button::Button() {
     margin_container = std::make_shared<MarginContainer>();
     margin_container->set_margin_all(4);
     margin_container->add_child(hbox_container);
-    margin_container->set_size(size);
+    margin_container->set_anchor_flag(AnchorFlag::FullRect);
     margin_container->set_mouse_filter(MouseFilter::Ignore);
 
     add_embedded_child(margin_container);
@@ -201,18 +201,6 @@ void Button::draw() {
 
 void Button::set_position(Vec2F new_position) {
     position = new_position;
-}
-
-void Button::set_size(Vec2F p_size) {
-    if (size == p_size) {
-        return;
-    }
-
-    auto final_size = p_size.max(margin_container->get_effective_minimum_size());
-    final_size = final_size.max(custom_minimum_size);
-
-    margin_container->set_size(final_size);
-    size = final_size;
 }
 
 void Button::notify_pressed() {

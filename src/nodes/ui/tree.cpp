@@ -46,16 +46,16 @@ void Tree::input(InputEvent &event) {
 std::shared_ptr<TreeItem> Tree::create_item(const std::shared_ptr<TreeItem> &parent, const std::string &text) {
     if (parent == nullptr) {
         root = std::make_shared<TreeItem>();
-        root->set_text(text);
         root->tree = this;
+        root->set_text(text);
         return root;
     }
 
     auto item = std::make_shared<TreeItem>();
+    item->tree = this;
+    item->parent = parent.get();
     item->set_text(text);
     parent->add_child(item);
-    item->parent = parent.get();
-    item->tree = this;
 
     return item;
 }
@@ -102,6 +102,10 @@ TreeItem::TreeItem() {
         } else {
             collapse_button->set_icon_normal(expanded_tex);
         }
+
+        if (tree) {
+            tree->queue_relayout();
+        }
     };
     collapse_button->connect_signal("triggered", callback);
 
@@ -118,6 +122,11 @@ TreeItem::TreeItem() {
 
 uint32_t TreeItem::add_child(const std::shared_ptr<TreeItem> &item) {
     children.push_back(item);
+
+    if (tree) {
+        tree->queue_relayout();
+    }
+
     return children.size() - 1;
 }
 
@@ -186,9 +195,18 @@ void TreeItem::propagate_draw_(float folding_width, uint32_t depth, float &offse
     }
 
     container->set_position(Vec2F(offset_x, offset_y) + global_position);
-    container->set_size({item_height, item_height});
+    container->set_size({tree->get_size().x - offset_x, item_height});
 
-    calc_minimum_size(container.get());
+    // Ensure all internal nodes have their minimum sizes calculated before layout.
+    std::vector<Node*> descendants;
+    dfs_postorder_ltr_traversal(container.get(), descendants);
+    for (auto& node : descendants) {
+        if (node->is_ui_node()) {
+            dynamic_cast<NodeUi*>(node)->calc_minimum_size();
+        }
+    }
+
+    layout_system(container.get());
 
     transform_system(container.get());
 
@@ -196,6 +214,9 @@ void TreeItem::propagate_draw_(float folding_width, uint32_t depth, float &offse
     dfs_preorder_ltr_traversal(container.get(), nodes);
     for (auto &node : nodes) {
         node->update(0);
+        if (node->is_ui_node()) {
+            dynamic_cast<NodeUi *>(node)->clear_layout_dirty();
+        }
     }
 
     propagate_draw(container.get());
@@ -216,6 +237,8 @@ void TreeItem::propagate_calc_minimum_size(float folding_width,
     float offset_x = (float)depth * folding_width;
 
     uncollapsed_item_count++;
+
+    calc_minimum_size(container.get());
 
     // Firstly, the item height will be decided by the minimum height of the icon and label.
     float item_height = std::max(label->get_effective_minimum_size().y, icon->get_custom_minimum_size().y);
@@ -254,10 +277,16 @@ void TreeItem::input(InputEvent &event, Vec2F global_position) {
 
 void TreeItem::set_text(const std::string &text) {
     label->set_text(text);
+    if (tree) {
+        tree->queue_relayout();
+    }
 }
 
 void TreeItem::set_icon(const std::shared_ptr<Image> &texture) {
     icon->set_texture(texture);
+    if (tree) {
+        tree->queue_relayout();
+    }
 }
 
 } // namespace vecgui
