@@ -38,6 +38,7 @@ enum class AnchorFlag {
     RightWide,
     TopWide,
     BottomWide,
+    
     VCenterWide,
     HCenterWide,
 

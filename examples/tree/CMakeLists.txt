@@ -1,5 +1,5 @@
-add_executable(revector-tree ${SOURCE_FILES} main.cpp)
+add_executable(vecgui-tree ${SOURCE_FILES} main.cpp)
 
-target_include_directories(revector-tree PUBLIC "../../src")
+target_include_directories(vecgui-tree PUBLIC "../../src")
 
-target_link_libraries(revector-tree revector)
+target_link_libraries(vecgui-tree vecgui)

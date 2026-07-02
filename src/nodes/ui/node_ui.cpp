@@ -300,11 +300,11 @@ void NodeUi::apply_anchor() {
             size = {parent_size.x, actual_size.y};
         } break;
         case AnchorFlag::VCenterWide: {
-            position = {center_x, center_y};
+            position = {0, center_y};
             size = {parent_size.x, actual_size.y};
         } break;
         case AnchorFlag::HCenterWide: {
-            position = {center_x, center_y};
+            position = {center_x, 0};
             size = {actual_size.x, parent_size.y};
         } break;
         case AnchorFlag::FullRect: {

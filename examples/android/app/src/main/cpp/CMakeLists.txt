@@ -10,7 +10,7 @@ find_package(game-activity REQUIRED CONFIG)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -frtti -Wall \
                      -DVK_USE_PLATFORM_ANDROID_KHR")
 
-add_subdirectory(../../../../../../ revector)
+add_subdirectory(../../../../../../ vecgui)
 include_directories(../../../../../../)
 
 ################### GL

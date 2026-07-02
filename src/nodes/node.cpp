@@ -301,7 +301,7 @@ uint8_t Node::get_window_index() const {
 }
 
 void Node::when_parent_size_changed(Vec2F new_size) {
-    for (auto &child : children) {
+    for (auto &child : get_all_children()) {
         child->when_parent_size_changed(new_size);
     }
 }

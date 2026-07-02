@@ -15,7 +15,9 @@ ScrollContainer::ScrollContainer() {
 }
 
 void ScrollContainer::adjust_layout() {
-    if (children.empty()) return;
+    if (children.empty()) {
+        return;
+    }
 
     Vec2F max_child_min_size = get_max_child_min_size();
 

@@ -12,7 +12,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
 
-#ifndef REVECTOR_USE_FRIBIDI
+#ifndef VECGUI_USE_FRIBIDI
     #ifdef _WIN32
         // With Windows 10 Fall Creators Update and later, you can just include the single header <icu.h>.
         // See https://learn.microsoft.com/en-us/windows/win32/intl/international-components-for-unicode--icu-
@@ -273,7 +273,7 @@ Pathfinder::Path2d Font::get_glyph_path(uint16_t glyph_index, float scale) const
     return path;
 }
 
-#ifndef REVECTOR_USE_FRIBIDI
+#ifndef VECGUI_USE_FRIBIDI
 
 // Not font fallback when using ICU.
 
